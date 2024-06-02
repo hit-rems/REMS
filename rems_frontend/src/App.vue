@@ -5,7 +5,7 @@ import {User, Lock} from '@element-plus/icons-vue'
 <template>
   <div style="width: 100vw; height: 100vh; overflow: hidden; display: flex">
     <div style="flex: 1">
-      <el-image style="width: 100%; height: 100%" fit="cover"
+      <el-image style="width: 100%; height: 100%"  fit="cover"
                 src="https://wallpaperm.cmcm.com/88fcf0ac8b5ae0bae9672eb528e0bea2.jpg"/>
     </div>
     <div style="width: 600px; background-color: white">
