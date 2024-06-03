@@ -55,15 +55,16 @@ import { userRegisterService, userLoginService} from '@/api/user.js'
 const register = async () => {
   const form = registerForm.value
   form.validate(async (valid) => {
-    if(valid){
-      //registerData是一个响应式对象,如果要获取值,需要.value
-      let result = await userRegisterService(registerData.value);
-      ElMessage.success(result.message ? result.message : '注册成功')
-    }
-    else{
-      ElMessage.error('请确保所有字段都填写正确!')
-    }
+    registerValid = valid
   })
+  if(registerValid){
+    //registerData是一个响应式对象,如果要获取值,需要.value
+    let result = await userRegisterService(registerData.value);
+    ElMessage.success(result.message ? result.message : '注册成功')
+  }
+  else{
+    ElMessage.error('请确保所有字段都填写正确!')
+  }
 }
 
 //绑定数据,复用注册表单的数据模型
@@ -76,20 +77,20 @@ const register = async () => {
 const login =async ()=>{
   const form = loginForm.value
   form.validate(async (valid) => {
-    if(valid){
-      //调用接口,完成登录
-      let result =  await userLoginService(registerData.value);
-      ElMessage.success('登录成功')
-      //把得到的token存储到pinia中
-      // tokenStore.setToken(result.data)
-      //跳转到首页 路由完成跳转
-      // router.push('/')
-    }
-    else {
-      console.log(valid)
-      ElMessage.error('请确保所有字段都填写正确!')
-    }
+    loginValid = valid
   })
+  if(loginValid){
+    //调用接口,完成登录
+    let result =  await userLoginService(registerData.value);
+    ElMessage.success('登录成功')
+    //把得到的token存储到pinia中
+    // tokenStore.setToken(result.data)
+    //跳转到首页 路由完成跳转
+    // router.push('/')
+  }
+  else {
+    ElMessage.error('请确保所有字段都填写正确!')
+  }
 }
 
 //定义函数,清空数据模型的数据
@@ -107,6 +108,9 @@ const clearRegisterData = ()=>{
 //表单引用
 const registerForm = ref(null)
 const loginForm = ref(null)
+
+let loginValid = true
+let registerValid = true
 
 </script>
 
