@@ -25,12 +25,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$")String password){
+    public Result register(User user){
         //查询用户
-        User u =userService.findByUserName(username);
+        User u =userService.findByUserName(user.getUsername());
         if (u==null){
             //注册
-            userService.register(username,password);
+            userService.register(user);
             return Result.success();
         }else {
             return Result.error("用户名已经被占用");
@@ -38,10 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@Pattern(regexp = "^\\S{1,15}$") String username, @Pattern(regexp = "^\\S{6,15}$")String password){
+    public Result<String> login(String username,String password){
         User u=userService.findByUserName(username);
         if (u==null){
-            return Result.error("用户名重复");
+            return Result.error("用户名错误");
         }else {
             //判断密码
             if (Md5Util.getMD5String(password).equals(u.getPassword())){

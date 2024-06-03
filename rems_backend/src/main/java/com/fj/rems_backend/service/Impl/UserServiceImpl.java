@@ -22,11 +22,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(String username, String password) {
+    public void register(User user) {
         //加密
-        String md5String = Md5Util.getMD5String(password);
+        String md5String = Md5Util.getMD5String(user.getPassword());
+        user.setPassword(md5String);
         //insert
-        userMapper.add(username,md5String);
+        userMapper.add(user);
     }
 
     @Override
