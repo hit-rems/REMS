@@ -8,7 +8,10 @@ const isRegister = ref(false)
 const registerData = ref({
     username: '',
     password: '',
-    rePassword: ''
+    rePassword: '',
+    nickname: '',
+    department: '',
+    type: ''
 })
 
 //校验密码的函数
@@ -28,29 +31,39 @@ const rules = {
         { required: true, message: '请输入用户名', trigger: 'blur' },
         { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
     ],
+    nickname: [
+      { required: true, message: '请输入昵称', trigger: 'blur' },
+      { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+    ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
     ],
     rePassword: [
         { validator: checkRePassword, trigger: 'blur' }
+    ],
+    department: [
+      { required: true, message: '请选择所属单位', trigger: 'change' }
+    ],
+    type: [
+      { required: true, message: '请选择类型', trigger: 'change' }
     ]
 }
 
 //调用后台接口,完成注册
 import { userRegisterService, userLoginService} from '@/api/user.js'
 const register = async () => {
-    //registerData是一个响应式对象,如果要获取值,需要.value
-    let result = await userRegisterService(registerData.value);
-    /* if (result.code === 0) {
-        //成功了
-        alert(result.msg ? result.msg : '注册成功');
-    }else{
-        //失败了
-        alert('注册失败')
-    } */
-    //alert(result.msg ? result.msg : '注册成功');
-    ElMessage.success(result.msg ? result.msg : '注册成功')
+  const form = registerForm.value
+  form.validate(async (valid) => {
+    if(valid){
+      //registerData是一个响应式对象,如果要获取值,需要.value
+      let result = await userRegisterService(registerData.value);
+      ElMessage.success(result.message ? result.message : '注册成功')
+    }
+    else{
+      ElMessage.error('请确保所有字段都填写正确!')
+    }
+  })
 }
 
 //绑定数据,复用注册表单的数据模型
@@ -61,19 +74,22 @@ const register = async () => {
 // const router = useRouter()
 // const tokenStore = useTokenStore();
 const login =async ()=>{
-    //调用接口,完成登录
-   let result =  await userLoginService(registerData.value);
-   /* if(result.code===0){
-    alert(result.msg? result.msg : '登录成功')
-   }else{
-    alert('登录失败')
-   } */
-   //alert(result.msg? result.msg : '登录成功')
-   ElMessage.success(result.msg ? result.msg : '登录成功')
-   //把得到的token存储到pinia中
-   tokenStore.setToken(result.data)
-   //跳转到首页 路由完成跳转
-   router.push('/')
+  const form = loginForm.value
+  form.validate(async (valid) => {
+    if(valid){
+      //调用接口,完成登录
+      let result =  await userLoginService(registerData.value);
+      ElMessage.success('登录成功')
+      //把得到的token存储到pinia中
+      // tokenStore.setToken(result.data)
+      //跳转到首页 路由完成跳转
+      // router.push('/')
+    }
+    else {
+      console.log(valid)
+      ElMessage.error('请确保所有字段都填写正确!')
+    }
+  })
 }
 
 //定义函数,清空数据模型的数据
@@ -81,9 +97,17 @@ const clearRegisterData = ()=>{
     registerData.value={
         username:'',
         password:'',
-        rePassword:''
+        rePassword:'',
+        nickname: '',
+        department: '',
+        type: ''
     }
 }
+
+//表单引用
+const registerForm = ref(null)
+const loginForm = ref(null)
+
 </script>
 
 <template>
@@ -91,12 +115,15 @@ const clearRegisterData = ()=>{
         <el-col :span="12" class="bg"></el-col>
         <el-col :span="6" :offset="3" class="form">
             <!-- 注册表单 -->
-            <el-form ref="form" size="large" autocomplete="off" v-if="isRegister" :model="registerData" :rules="rules">
+            <el-form ref="registerForm" size="large" autocomplete="off" v-if="isRegister" :model="registerData" :rules="rules">
                 <el-form-item>
                     <h1>注册</h1>
                 </el-form-item>
                 <el-form-item prop="username">
                     <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
+                </el-form-item>
+                <el-form-item prop="nickname">
+                  <el-input :prefix-icon="User" placeholder="请输入昵称" v-model="registerData.nickname"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码"
@@ -106,6 +133,22 @@ const clearRegisterData = ()=>{
                     <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码"
                         v-model="registerData.rePassword"></el-input>
                 </el-form-item>
+
+                <el-form-item prop="type">
+                  <el-select v-model="registerData.type" placeholder="请选择类型(学生/管理员)">
+                    <el-option label="学生" value="学生"></el-option>
+                    <el-option label="管理员" value="管理员"></el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item prop="department">
+                  <el-select v-model="registerData.department" placeholder="请选择所属单位">
+                    <el-option label="计算学部" value="计算学部"></el-option>
+                    <el-option label="数学学院" value="数学学院"></el-option>
+                    <el-option label="物理学院" value="物理学院"></el-option>
+                  </el-select>
+                </el-form-item>
+
                 <!-- 注册按钮 -->
                 <el-form-item>
                     <el-button class="button" type="primary" auto-insert-space @click="register">
@@ -119,7 +162,7 @@ const clearRegisterData = ()=>{
                 </el-form-item>
             </el-form>
             <!-- 登录表单 -->
-            <el-form ref="form" size="large" autocomplete="off" v-else :model="registerData" :rules="rules">
+            <el-form ref="loginForm" size="large" autocomplete="off" v-else :model="registerData" :rules="rules">
                 <el-form-item>
                     <h1>登录</h1>
                 </el-form-item>
