@@ -1,6 +1,6 @@
 package com.fj.rems_backend.config;
 
-import com.fj.rems.interceptors.LoginInterceptor;
+import com.fj.rems_backend.interceptors.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

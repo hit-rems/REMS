@@ -1,6 +1,6 @@
 package com.fj.rems_backend.controller;
 
-import com.fj.rems.pojo.Result;
+import com.fj.rems_backend.pojo.Result;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

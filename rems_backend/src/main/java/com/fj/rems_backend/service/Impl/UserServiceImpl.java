@@ -1,10 +1,10 @@
 package com.fj.rems_backend.service.Impl;
 
-import com.fj.rems.mapper.UserMapper;
-import com.fj.rems.pojo.User;
-import com.fj.rems.service.UserService;
-import com.fj.rems.utils.Md5Util;
-import com.fj.rems.utils.ThreadLocalUtil;
+import com.fj.rems_backend.mapper.UserMapper;
+import com.fj.rems_backend.pojo.User;
+import com.fj.rems_backend.service.UserService;
+import com.fj.rems_backend.utils.Md5Util;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(String username, String password) {
+    public void register(User user) {
         //加密
-        String md5String = Md5Util.getMD5String(password);
+        String md5String = Md5Util.getMD5String(user.getPassword());
+        user.setPassword(md5String);
         //insert
-        userMapper.add(username,md5String);
+        userMapper.add(user);
     }
 
     @Override

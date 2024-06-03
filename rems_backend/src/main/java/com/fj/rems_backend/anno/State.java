@@ -1,6 +1,6 @@
 package com.fj.rems_backend.anno;
 
-import com.fj.rems.validation.StateValidation;
+import com.fj.rems_backend.validation.StateValidation;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
