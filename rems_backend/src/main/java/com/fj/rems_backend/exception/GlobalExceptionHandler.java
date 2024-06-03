@@ -1,6 +1,6 @@
 package com.fj.rems_backend.exception;
 
-import com.fj.rems.pojo.Result;
+import com.fj.rems_backend.pojo.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

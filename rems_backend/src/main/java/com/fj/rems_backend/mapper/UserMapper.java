@@ -1,6 +1,6 @@
 package com.fj.rems_backend.mapper;
 
-import com.fj.rems.pojo.User;
+import com.fj.rems_backend.pojo.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

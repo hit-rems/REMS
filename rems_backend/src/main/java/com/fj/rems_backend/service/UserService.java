@@ -1,6 +1,6 @@
 package com.fj.rems_backend.service;
 
-import com.fj.rems.pojo.User;
+import com.fj.rems_backend.pojo.User;
 
 
 public interface UserService {

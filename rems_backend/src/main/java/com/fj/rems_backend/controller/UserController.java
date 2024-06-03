@@ -1,11 +1,11 @@
 package com.fj.rems_backend.controller;
 
-import com.fj.rems.pojo.Result;
-import com.fj.rems.pojo.User;
-import com.fj.rems.service.UserService;
-import com.fj.rems.utils.JwtUtil;
-import com.fj.rems.utils.Md5Util;
-import com.fj.rems.utils.ThreadLocalUtil;
+import com.fj.rems_backend.pojo.Result;
+import com.fj.rems_backend.pojo.User;
+import com.fj.rems_backend.service.UserService;
+import com.fj.rems_backend.utils.JwtUtil;
+import com.fj.rems_backend.utils.Md5Util;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;

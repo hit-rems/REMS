@@ -1,7 +1,7 @@
 package com.fj.rems_backend.interceptors;
 
-import com.fj.rems.utils.JwtUtil;
-import com.fj.rems.utils.ThreadLocalUtil;
+import com.fj.rems_backend.utils.JwtUtil;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
