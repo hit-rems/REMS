@@ -60,21 +60,21 @@ const register = async () => {
 // import {useRouter} from 'vue-router'
 // const router = useRouter()
 // const tokenStore = useTokenStore();
-// const login =async ()=>{
-//     //调用接口,完成登录
-//    let result =  await userLoginService(registerData.value);
-//    /* if(result.code===0){
-//     alert(result.msg? result.msg : '登录成功')
-//    }else{
-//     alert('登录失败')
-//    } */
-//    //alert(result.msg? result.msg : '登录成功')
-//    ElMessage.success(result.msg ? result.msg : '登录成功')
-//    //把得到的token存储到pinia中
-//    tokenStore.setToken(result.data)
-//    //跳转到首页 路由完成跳转
-//    router.push('/')
-// }
+const login =async ()=>{
+    //调用接口,完成登录
+   let result =  await userLoginService(registerData.value);
+   /* if(result.code===0){
+    alert(result.msg? result.msg : '登录成功')
+   }else{
+    alert('登录失败')
+   } */
+   //alert(result.msg? result.msg : '登录成功')
+   ElMessage.success(result.msg ? result.msg : '登录成功')
+   //把得到的token存储到pinia中
+   tokenStore.setToken(result.data)
+   //跳转到首页 路由完成跳转
+   router.push('/')
+}
 
 //定义函数,清空数据模型的数据
 const clearRegisterData = ()=>{
