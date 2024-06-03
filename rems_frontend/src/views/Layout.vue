@@ -82,13 +82,13 @@ const handleCommand = (command)=>{
                     <el-icon>
                         <Management />
                     </el-icon>
-                    <span>文章分类</span>
+                    <span>科研设备分类</span>
                 </el-menu-item>
                 <el-menu-item index="/article/manage">
                     <el-icon>
                         <Promotion />
                     </el-icon>
-                    <span>文章管理</span>
+                    <span>科研设备管理</span>
                 </el-menu-item>
                 <el-sub-menu >
                     <template #title>
@@ -145,9 +145,6 @@ const handleCommand = (command)=>{
             </el-header>
             <!-- 中间区域 -->
             <el-main>
-                <!-- <div style="width: 1290px; height: 570px;border: 1px solid red;">
-                    内容展示区
-                </div> -->
                 <router-view></router-view>
             </el-main>
             <!-- 底部区域 -->
