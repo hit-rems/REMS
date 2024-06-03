@@ -5,17 +5,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.fj</groupId>
-    <artifactId>project_heima</artifactId>
+    <artifactId>rems_backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>project_heima</name>
-    <description>project_heima</description>
+    <name>rems_backend</name>
+    <description>rems_backend</description>
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
