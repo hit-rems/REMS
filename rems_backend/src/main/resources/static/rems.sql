@@ -35,7 +35,6 @@ create table equipment(
                          id int unsigned primary key comment '设备号',
                          type varchar(128) default '' comment '设备类型',
                          name varchar(128) not null comment '设备名称',
-                         status varchar(10) not null comment '状态：只能是[空闲] 或者 [占用]',
                          department varchar(128) default '' comment '所属单位',
                          discard varchar(10) not null comment '是否报废：只能是[运行] 或者 [报废]',
                          brand varchar(128) not null comment '品牌',
