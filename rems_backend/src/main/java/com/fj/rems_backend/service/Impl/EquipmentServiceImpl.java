@@ -112,6 +112,21 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
     }
 
+    @Override
+    public void delete(Integer id) {
+        equipmentMapper.delete(id);
+    }
+
+    @Override
+    public void update(Map<String,Object> map) {
+        equipmentMapper.update(map);
+    }
+
+    @Override
+    public void numbSub() {
+        equipmentMapper.numbSub();
+    }
+
 
     @Override
     public List<Map<String, Integer>> category() {

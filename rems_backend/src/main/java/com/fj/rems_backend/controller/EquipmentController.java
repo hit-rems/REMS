@@ -49,6 +49,22 @@ public class EquipmentController {
         return Result.success();
     }
 
+    //设备删除根据id
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable Integer id){
+        equipmentService.delete(id);
+        return Result.success();
+    }
+
+    //批量删除
+    @DeleteMapping("/delete")
+    public Result deleteList(@RequestBody List<Integer> ids){
+        for (Integer id : ids) {
+            equipmentService.delete(id);
+        }
+        return Result.success();
+    }
+
     //分页查询，可选的查询条件（local,id,type，name，status，department，discard，create_time,update_time）
     @PostMapping("/pagelist")
     public Result<PageBean<Equipment>> list(@RequestBody Map<String,Object> map){
@@ -60,5 +76,12 @@ public class EquipmentController {
     @GetMapping("/category")
     public Result<List<Map<String,Integer>>> category(){
         return Result.success(equipmentService.category());
+    }
+
+    //修改设备信息
+    @PutMapping("/update")
+    public Result update(@RequestBody Map<String,Object> map){
+        equipmentService.update(map);
+        return Result.success();
     }
 }

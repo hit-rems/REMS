@@ -20,4 +20,10 @@ public interface EquipmentService {
     List<Map<String, Integer>> category();
 
     void uploadFileList(MultipartFile[] files);
+
+    void delete(Integer id);
+
+    void update(Map<String,Object> map);
+
+    void numbSub();
 }

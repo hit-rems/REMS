@@ -37,4 +37,21 @@
             </if>
         </where>
     </select>
+
+    <update id="update">
+        update equipment
+        <set>
+            <if test="map.department!=null">
+                department=#{map.department},
+            </if>
+            <if test="map.discard!=null">
+                discard=#{map.discard},
+            </if>
+            <if test="map.num!=null">
+                num=#{map.num},
+            </if>
+            update_time=#{map.update_time},
+        </set>
+        where id=#{map.id}
+    </update>
 </mapper>

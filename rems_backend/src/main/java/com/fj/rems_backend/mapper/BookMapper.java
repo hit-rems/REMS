@@ -3,6 +3,7 @@ package com.fj.rems_backend.mapper;
 import com.fj.rems_backend.pojo.Book;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface BookMapper {
