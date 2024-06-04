@@ -90,7 +90,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             //拆分
             String suffix = fileName.substring(fileName.lastIndexOf("."));
             //将前缀按_拆分
-            String[] split = fileName.split("-");
+            String[] split = fileName.substring(0, fileName.lastIndexOf(".")).split("_");
             Equipment equipment = new Equipment();
             equipment.setId(Integer.parseInt(split[0]));
             equipment.setType(split[1]);
