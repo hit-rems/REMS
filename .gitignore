@@ -2,7 +2,6 @@
 .bak/
 .vscode/
 
-rems.sql
 *.class
 *.iml
 
