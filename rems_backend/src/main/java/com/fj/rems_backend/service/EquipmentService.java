@@ -15,4 +15,6 @@ public interface EquipmentService {
     PageBean<Equipment> pagelist(Map<String, Object> map);
 
     String uploadFile(MultipartFile file);
+
+    Map<String, Integer> category();
 }

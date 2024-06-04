@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -48,4 +49,9 @@ public class EquipmentController {
         return Result.success(equipmentPageBean);
     }
 
+    //获取设备的所有分类信息
+    @GetMapping("/category")
+    public Result<Map<String,Integer>> category(){
+        return Result.success(equipmentService.category());
+    }
 }

@@ -72,4 +72,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
         return filePath + newFileName;
     }
+
+    @Override
+    public Map<String, Integer> category() {
+        return equipmentMapper.category();
+    }
 }

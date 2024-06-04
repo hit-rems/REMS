@@ -20,4 +20,7 @@ public interface EquipmentMapper {
 
     //分页查询，可选的查询条件（id,type，name，status，department，discard，create_time,update_time）
     List<Equipment> pagelist(@Param("map") Map<String, Object> map);
+
+    @Select("select type,count(*) as num from equipment group by type")
+    Map<String, Integer> category();
 }
