@@ -41,8 +41,6 @@ import { equipmentCategoryListService, equipmentListService,equipmentAddService 
 const equipmentCategoryList = async () => {
     let result = await equipmentCategoryListService();
     categorys.value = result.data;
-    console.log("hahah")
-    console.log(categorys.value)
 }
 
 //获取科研设备列表数据
@@ -55,9 +53,6 @@ const equipmentList = async () => {
     }
 
     let result = await equipmentListService(params);
-
-    console.log("hello")
-    console.log(result)
 
     //渲染视图
     total.value = result.data.total;
@@ -94,7 +89,7 @@ const tokenStore = useTokenStore();
 
 //上传成功的回调函数
 const uploadSuccess = (result)=>{
-    equipmentModel.value.coverImg = result.data;
+    equipmentModel.value.url = result.data;
     console.log(result.data);
 }
 
@@ -205,12 +200,12 @@ const addequipment = async ()=>{
                      -->
                    
                     <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"
-                    action="/api/upload"
+                    action="/api/equipment/upload"
                     name="file"
                     :headers="{'Authorization':tokenStore.token}"
                     :on-success="uploadSuccess"
                     >
-                        <img v-if="equipmentModel.coverImg" :src="equipmentModel.coverImg" class="avatar" />
+                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>
