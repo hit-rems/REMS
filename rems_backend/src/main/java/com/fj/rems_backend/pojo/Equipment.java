@@ -10,7 +10,6 @@ public class Equipment {
     private Integer id;
     private String type;
     private String name;
-    private String status;
     private String department;
     private String discard;
     private String brand;

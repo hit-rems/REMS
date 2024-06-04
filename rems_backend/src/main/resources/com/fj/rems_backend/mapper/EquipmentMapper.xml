@@ -8,6 +8,12 @@
         select * from equipment
         <where>
             1=1
+            <if test="map.local!=null">
+                and department=(SELECT department FROM user WHERE id=#{userId})
+            </if>
+            <if test="map.id!=null">
+                and id=#{map.id}
+            </if>
             <if test="map.id!=null">
                 and id=#{map.id}
             </if>
@@ -16,9 +22,6 @@
             </if>
             <if test="map.name!=null">
                 and name=#{map.name}
-            </if>
-            <if test="map.status!=null">
-                and status=#{map.status}
             </if>
             <if test="map.department!=null">
                 and department=#{map.department}

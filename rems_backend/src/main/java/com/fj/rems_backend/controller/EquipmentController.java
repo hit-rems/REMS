@@ -42,7 +42,7 @@ public class EquipmentController {
         return Result.success(filePath);
     }
 
-    //分页查询，可选的查询条件（id,type，name，status，department，discard，create_time,update_time）
+    //分页查询，可选的查询条件（local,id,type，name，status，department，discard，create_time,update_time）
     @PostMapping("/pagelist")
     public Result<PageBean<Equipment>> list(@RequestBody Map<String,Object> map){
         PageBean<Equipment> equipmentPageBean=equipmentService.pagelist(map);

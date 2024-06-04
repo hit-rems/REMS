@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +29,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void add(Equipment equipment) {
+        equipment.setDiscard("正常");
+        equipment.setCreateTime(LocalDateTime.now());
+        equipment.setUpdateTime(LocalDateTime.now());
         equipmentMapper.add(equipment);
     }
 
@@ -41,9 +45,12 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         //2.开启分页查询 PageHelper
         PageHelper.startPage(pageNum,pageSize);
+        //获取当前用户的id
+        Map<String,Object> user = ThreadLocalUtil.get();
+        Integer userId = (Integer) user.get("id");
 
         //3.调用mapper
-        List<Equipment> as = equipmentMapper.pagelist(map);
+        List<Equipment> as = equipmentMapper.pagelist(map,userId);
         //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
         Page<Equipment> p = (Page<Equipment>) as;
 
