@@ -60,7 +60,9 @@ const register = async () => {
   if(registerValid){
     //registerData是一个响应式对象,如果要获取值,需要.value
     let result = await userRegisterService(registerData.value);
-    ElMessage.success(result.message ? result.message : '注册成功')
+    ElMessage.success('注册成功')
+    isRegister.value = false
+    clearRegisterData()
   }
   else{
     ElMessage.error('请确保所有字段都填写正确!')
@@ -131,11 +133,11 @@ let registerValid = true
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码"
-                        v-model="registerData.password"></el-input>
+                        v-model="registerData.password" show-password></el-input>
                 </el-form-item>
                 <el-form-item prop="rePassword">
                     <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码"
-                        v-model="registerData.rePassword"></el-input>
+                        v-model="registerData.rePassword" show-password></el-input>
                 </el-form-item>
 
                 <el-form-item prop="type">
@@ -174,7 +176,7 @@ let registerValid = true
                     <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password"></el-input>
+                    <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password" show-password></el-input>
                 </el-form-item>
                 <el-form-item class="flex">
                     <div class="flex">
