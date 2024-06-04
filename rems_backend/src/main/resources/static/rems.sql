@@ -37,10 +37,11 @@ create table equipment(
                          name varchar(128) not null comment '设备名称',
                          department varchar(128) default '' comment '所属单位',
                          discard varchar(10) not null comment '是否报废：只能是[运行] 或者 [报废]',
-                         brand varchar(128) not null comment '品牌',
+                         brand varchar(128) default '' comment '品牌',
                          create_time datetime not null comment '购置日期',
                          update_time datetime not null comment '最新维护日期',
-                         url varchar(128) not null comment '设备图片'
+                         url varchar(128) not null comment '设备图片',
+                         num int unsigned not null comment '设备数量'
 --                          constraint fk_department_equipment foreign key (department) references department(id)-- 外键约束
 );
 

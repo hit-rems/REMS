@@ -9,9 +9,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +82,36 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
         return filePath + newFileName;
     }
+    @Override
+    public void uploadFileList(MultipartFile[] files) {
+        for (MultipartFile file : files) {
+            //获取名字
+            String fileName = file.getOriginalFilename();
+            //拆分
+            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            //将前缀按_拆分
+            String[] split = fileName.split("-");
+            Equipment equipment = new Equipment();
+            equipment.setId(Integer.parseInt(split[0]));
+            equipment.setType(split[1]);
+            equipment.setName(split[2]);
+            equipment.setDepartment(split[3]);
+            equipment.setDiscard("正常");
+            equipment.setBrand(split[4]);
+            equipment.setNum(Integer.valueOf(split[5]));
+            equipment.setCreateTime(LocalDateTime.now());
+            equipment.setUpdateTime(LocalDateTime.now());
+            String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
+            try {
+                file.transferTo(new java.io.File("D:/remsFile/" + newFileName));
+                equipment.setUrl("D:/remsFile/" + newFileName);
+                equipmentMapper.add(equipment);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public List<Map<String, Integer>> category() {

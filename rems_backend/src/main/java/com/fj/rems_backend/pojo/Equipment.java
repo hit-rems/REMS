@@ -18,4 +18,5 @@ public class Equipment {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     private String url;
+    private Integer num;
 }

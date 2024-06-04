@@ -42,6 +42,13 @@ public class EquipmentController {
         return Result.success(filePath);
     }
 
+
+    @PostMapping("/uploadlist")
+    public Result FileUploadList(@RequestParam("files") MultipartFile[] files) {
+        equipmentService.uploadFileList(files);
+        return Result.success();
+    }
+
     //分页查询，可选的查询条件（local,id,type，name，status，department，discard，create_time,update_time）
     @PostMapping("/pagelist")
     public Result<PageBean<Equipment>> list(@RequestBody Map<String,Object> map){
