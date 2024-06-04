@@ -9,7 +9,7 @@ export const equipmentCategoryListService = ()=>{
 
 //科研设备分类添加
 export const equipmentCategoryAddService = (categoryData)=>{
-    return request.post('equipment/category',categoryData)
+    return request.get('/category/add',categoryData)
 }
 
 //科研设备分类修改
