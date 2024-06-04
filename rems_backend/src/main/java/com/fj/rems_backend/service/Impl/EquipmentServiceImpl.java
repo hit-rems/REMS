@@ -109,6 +109,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             try {
                 file.transferTo(new java.io.File("D:/remsFile/" + newFileName));
                 equipment.setUrl("D:/remsFile/" + newFileName);
+                categoryService.addOne(equipment.getType());
                 equipmentMapper.add(equipment);
             } catch (IOException e) {
                 e.printStackTrace();

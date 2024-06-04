@@ -22,6 +22,8 @@ import java.util.UUID;
 public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
+    @Autowired
+    private CategoryService categoryService;
 
     //添加设备
     @PostMapping("/add")
@@ -53,6 +55,10 @@ public class EquipmentController {
             Equipment equipment = equipmentService.findByEquipmentNo(Integer.parseInt(split[0]));
             if (equipment != null) {
                 return Result.error(fileName+"文件的设备号已经被占用");
+            }
+            //判断根据种类是否在category表中存在
+            if (categoryService.findByCategoryName(split[1]) == null) {
+                return Result.error(fileName+"文件的种类不存在");
             }
         }
         equipmentService.uploadFileList(files);

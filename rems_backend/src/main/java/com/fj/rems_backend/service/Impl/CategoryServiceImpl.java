@@ -22,4 +22,14 @@ public class CategoryServiceImpl implements CategoryService {
     public void addOne(String name) {
         categoryMapper.addnum(name,1);
     }
+
+    @Override
+    public Integer findByCategoryName(String s) {
+        return categoryMapper.findByCategoryName(s);
+    }
+
+    @Override
+    public void addCategory(String name) {
+        categoryMapper.addCategory(name);
+    }
 }

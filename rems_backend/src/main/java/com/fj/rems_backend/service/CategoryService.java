@@ -8,4 +8,7 @@ public interface CategoryService{
 
     void addOne(String name);
 
+    Integer findByCategoryName(String s);
+
+    void addCategory(String name);
 }
