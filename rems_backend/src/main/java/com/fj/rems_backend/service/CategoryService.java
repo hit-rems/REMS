@@ -6,4 +6,6 @@ import java.util.Map;
 public interface CategoryService{
     List<Map<String, Integer>> list();
 
+    void addOne(String name);
+
 }

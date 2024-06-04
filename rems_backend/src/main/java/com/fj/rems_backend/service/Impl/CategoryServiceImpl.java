@@ -17,4 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Map<String, Integer>> list() {
         return categoryMapper.list();
     }
+
+    @Override
+    public void addOne(String name) {
+        categoryMapper.addnum(name,1);
+    }
 }

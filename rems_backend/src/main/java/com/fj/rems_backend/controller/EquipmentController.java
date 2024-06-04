@@ -3,6 +3,7 @@ package com.fj.rems_backend.controller;
 import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.pojo.Result;
+import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
