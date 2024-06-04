@@ -7,7 +7,8 @@ import {
 import { ref } from 'vue'
 
 //设备分类数据模型
-const categorys = ref([])
+const categorys = ref([
+])
 
 //用户搜索时下拉框选中的设备类型和设备状态
 const type = ref('')
@@ -40,6 +41,8 @@ import { equipmentCategoryListService, equipmentListService,equipmentAddService 
 const equipmentCategoryList = async () => {
     let result = await equipmentCategoryListService();
     categorys.value = result.data;
+    console.log("hahah")
+    console.log(categorys.value)
 }
 
 //获取科研设备列表数据
@@ -124,7 +127,7 @@ const addequipment = async ()=>{
         <el-form inline>
             <el-form-item label="设备类型：">
                 <el-select placeholder="请选择" v-model="type" style="width: 120px;">
-                    <el-option v-for="c in categorys" :key="c.type" :label="c.type" :value="c.type">
+                    <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
                     </el-option>
                 </el-select>
             </el-form-item>

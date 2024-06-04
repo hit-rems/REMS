@@ -17,6 +17,8 @@ public interface EquipmentService {
 
     String uploadFile(MultipartFile file);
 
+    List<Map<String, Integer>> category();
+
     void uploadFileList(MultipartFile[] files);
 
     void delete(Integer id);

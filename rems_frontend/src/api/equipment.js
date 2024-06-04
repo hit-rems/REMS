@@ -4,7 +4,7 @@ import { useTokenStore } from '@/stores/token.js'
 
 //科研设备分类列表查询
 export const equipmentCategoryListService = ()=>{
-    return request.get('equipment/category')
+    return request.get('category/list')
 }
 
 //科研设备分类添加

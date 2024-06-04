@@ -3,7 +3,6 @@ package com.fj.rems_backend.service.Impl;
 import com.fj.rems_backend.mapper.EquipmentMapper;
 import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
-import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.service.EquipmentService;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
@@ -25,8 +24,6 @@ import java.util.UUID;
 public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     private EquipmentMapper equipmentMapper;
-    @Autowired
-    private CategoryService categoryService;
 
     @Override
     public Equipment findByEquipmentNo(Integer id) {
@@ -38,7 +35,6 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipment.setDiscard("正常");
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
-        categoryService.addOne(equipment.getType());
         equipmentMapper.add(equipment);
     }
 
@@ -94,7 +90,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             //拆分
             String suffix = fileName.substring(fileName.lastIndexOf("."));
             //将前缀按_拆分
-            String[] split = fileName.substring(0, fileName.lastIndexOf(".")).split("_");
+            String[] split = fileName.split("-");
             Equipment equipment = new Equipment();
             equipment.setId(Integer.parseInt(split[0]));
             equipment.setType(split[1]);
@@ -132,4 +128,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentMapper.numbSub();
     }
 
+
+    @Override
+    public List<Map<String, Integer>> category() {
+        return equipmentMapper.category();
+    }
 }
