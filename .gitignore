@@ -1,1 +1,10 @@
-.idea
+.idea/
+.bak/
+.vscode/
+
+rems.sql
+*.class
+*.iml
+
+target/
+application.yaml
