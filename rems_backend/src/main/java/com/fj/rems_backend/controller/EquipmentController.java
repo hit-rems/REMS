@@ -81,12 +81,6 @@ public class EquipmentController {
         return Result.success(equipmentPageBean);
     }
 
-    //获取设备的所有分类信息
-    @GetMapping("/category")
-    public Result<List<Map<String,Integer>>> category(){
-        return Result.success(equipmentService.category());
-    }
-
     //修改设备信息
     @PutMapping("/update")
     public Result update(@RequestBody Map<String,Object> map){

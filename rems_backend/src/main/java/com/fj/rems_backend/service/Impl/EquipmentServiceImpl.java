@@ -127,9 +127,4 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentMapper.numbSub();
     }
 
-
-    @Override
-    public List<Map<String, Integer>> category() {
-        return equipmentMapper.category();
-    }
 }
