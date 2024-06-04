@@ -22,6 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         } catch (Exception e) {
             response.setStatus(401);
+            response.setHeader("Location", "/login");
             return false;
         }
     }

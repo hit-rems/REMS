@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fj.rems_backend.mapper.EquipmentMapper">
+    <!--动态sql-->
+    <select id="pagelist" resultType="com.fj.rems_backend.pojo.Equipment">
+        select * from equipment
+        <where>
+            1=1
+            <if test="map.id!=null">
+                and id=#{map.id}
+            </if>
+            <if test="map.type!=null">
+                and type=#{map.type}
+            </if>
+            <if test="map.name!=null">
+                and name=#{map.name}
+            </if>
+            <if test="map.status!=null">
+                and status=#{map.status}
+            </if>
+            <if test="map.department!=null">
+                and department=#{map.department}
+            </if>
+            <if test="map.discard!=null">
+                and discard=#{map.discard}
+            </if>
+            <if test="map.createTime!=null">
+                and create_time=#{map.create_time}
+            </if>
+            <if test="map.updateTime!=null">
+                and update_time=#{map.update_time}
+            </if>
+        </where>
+    </select>
+</mapper>
