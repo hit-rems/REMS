@@ -3,7 +3,6 @@ package com.fj.rems_backend.controller;
 import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.pojo.Result;
-import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,15 +45,6 @@ public class EquipmentController {
 
     @PostMapping("/uploadlist")
     public Result FileUploadList(@RequestParam("files") MultipartFile[] files) {
-        for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
-            String[] split = fileName.split("_");
-            //判断是否存在
-            Equipment equipment = equipmentService.findByEquipmentNo(Integer.parseInt(split[0]));
-            if (equipment != null) {
-                return Result.error(fileName+"文件的设备号已经被占用");
-            }
-        }
         equipmentService.uploadFileList(files);
         return Result.success();
     }
@@ -80,6 +70,12 @@ public class EquipmentController {
     public Result<PageBean<Equipment>> list(@RequestBody Map<String,Object> map){
         PageBean<Equipment> equipmentPageBean=equipmentService.pagelist(map);
         return Result.success(equipmentPageBean);
+    }
+
+    //获取设备的所有分类信息
+    @GetMapping("/category")
+    public Result<List<Map<String,Integer>>> category(){
+        return Result.success(equipmentService.category());
     }
 
     //修改设备信息
