@@ -12,7 +12,7 @@ public interface EquipmentMapper {
     @Select("select * from equipment where id = #{id}")
     Equipment findByEquipmentNo(Integer id);
 
-    @Insert("insert into equipment(id,type,name,department,discard,brand,create_time,update_time,url,num) values(#{id},#{type},#{name},#{department},#{discard},#{brand},#{createTime},#{updateTime},#{url},#{num})")
+    @Insert("insert into equipment(id,type,name,department,discard,brand,create_time,update_time,url) values(#{id},#{type},#{name},#{department},#{discard},#{brand},#{createTime},#{updateTime},#{url})")
     void add(Equipment equipment);
 
     //分页查询，可选的查询条件（id,type，name，status，department，discard，create_time,update_time）
@@ -23,6 +23,4 @@ public interface EquipmentMapper {
 
     void update(@Param("map") Map<String,Object> map);
 
-    @Update("update equipment set num=num-1 ,update_time=now() where id=#{id}")
-    void numbSub();
 }

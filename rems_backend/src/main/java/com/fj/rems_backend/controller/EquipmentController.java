@@ -32,7 +32,9 @@ public class EquipmentController {
         Equipment e = equipmentService.findByEquipmentNo(equipment.getId());
         if (e!=null){
             return Result.error("设备号已经被占用");
-        }else {
+        } else if (categoryService.findByCategoryName(equipment.getType()) == null){
+            return Result.error("种类不存在");
+        } else {
             equipmentService.add(equipment);
             return Result.success();
         }
