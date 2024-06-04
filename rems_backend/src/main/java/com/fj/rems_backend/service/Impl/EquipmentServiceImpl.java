@@ -38,7 +38,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipment.setDiscard("正常");
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
-        categoryService.addOne(equipment.getType());
+        categoryService.addNum(equipment.getType(),1);
         equipmentMapper.add(equipment);
     }
 
@@ -102,14 +102,13 @@ public class EquipmentServiceImpl implements EquipmentService {
             equipment.setDepartment(split[3]);
             equipment.setDiscard("正常");
             equipment.setBrand(split[4]);
-            equipment.setNum(Integer.valueOf(split[5]));
             equipment.setCreateTime(LocalDateTime.now());
             equipment.setUpdateTime(LocalDateTime.now());
             String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
             try {
                 file.transferTo(new java.io.File("D:/remsFile/" + newFileName));
                 equipment.setUrl("D:/remsFile/" + newFileName);
-                categoryService.addOne(equipment.getType());
+                categoryService.addNum(equipment.getType(),1);
                 equipmentMapper.add(equipment);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -119,17 +118,13 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void delete(Integer id) {
+        categoryService.subNum(equipmentMapper.findByEquipmentNo(id).getType(),1);
         equipmentMapper.delete(id);
     }
 
     @Override
     public void update(Map<String,Object> map) {
         equipmentMapper.update(map);
-    }
-
-    @Override
-    public void numbSub() {
-        equipmentMapper.numbSub();
     }
 
 }

@@ -26,7 +26,6 @@ public class BookServiceImpl implements BookService {
         book.setStatus("待审核");
         book.setCreateTime(LocalDateTime.now());
         book.setUpdateTime(LocalDateTime.now());
-        equipmentService.numbSub();
         bookMapper.add(book);
     }
 }

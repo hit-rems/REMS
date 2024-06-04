@@ -19,8 +19,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addOne(String name) {
-        categoryMapper.addnum(name,1);
+    public void addNum(String name,int i) {
+        categoryMapper.addnum(name,i);
     }
 
     @Override
@@ -31,5 +31,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void addCategory(String name) {
         categoryMapper.addCategory(name);
+    }
+
+    @Override
+    public void subNum(String type, int i) {
+        categoryMapper.addnum(type,-i);
     }
 }

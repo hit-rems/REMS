@@ -47,9 +47,6 @@
             <if test="map.discard!=null">
                 discard=#{map.discard},
             </if>
-            <if test="map.num!=null">
-                num=#{map.num},
-            </if>
             update_time=#{map.update_time},
         </set>
         where id=#{map.id}
