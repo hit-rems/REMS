@@ -24,11 +24,13 @@ public class CategoryController {
     }
 
     //添加，path传参
-    @GetMapping("/add/{name}")
-    public Result addOne(@PathVariable String name){
+    @GetMapping("/add")
+    public Result addOne(String name){
+        if(categoryService.findByCategoryName(name)!=null){
+            return Result.error("分类已存在");
+        }
         categoryService.addCategory(name);
         return Result.success();
-
     }
 
 }
