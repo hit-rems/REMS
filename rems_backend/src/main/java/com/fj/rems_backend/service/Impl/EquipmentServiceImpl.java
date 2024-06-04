@@ -81,7 +81,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public Map<String, Integer> category() {
+    public List<Map<String, Integer>> category() {
         return equipmentMapper.category();
     }
 }

@@ -22,5 +22,5 @@ public interface EquipmentMapper {
     List<Equipment> pagelist(@Param("map") Map<String, Object> map,@Param("userId") Integer userId);
 
     @Select("select type,count(*) as num from equipment group by type")
-    Map<String, Integer> category();
+    List<Map<String, Integer>> category();
 }

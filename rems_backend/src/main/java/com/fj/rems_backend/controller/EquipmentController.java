@@ -51,7 +51,7 @@ public class EquipmentController {
 
     //获取设备的所有分类信息
     @GetMapping("/category")
-    public Result<Map<String,Integer>> category(){
+    public Result<List<Map<String,Integer>>> category(){
         return Result.success(equipmentService.category());
     }
 }
