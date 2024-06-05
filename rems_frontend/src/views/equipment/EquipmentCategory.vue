@@ -205,7 +205,7 @@ const deleteCategory = (row) => {
       </template>
     </el-dialog>
     <!-- 饼图容器 -->
-    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+    <div style="display: flex; justify-content: center; align-items: center; padding-top: 0px;">
       <EquipmentCategoryPieChart :chartData="chartData" />
     </div>
   </el-card>

@@ -20,14 +20,16 @@ export default {
     const setOption = () => {
       const option = {
         title: {
-          text: '分类名称和数量信息'
+          text: '',
+          left: 'center'
         },
         tooltip: {
           trigger: 'item'
         },
         legend: {
           orient: 'vertical',
-          left: 'right'
+          left: '90%',
+          top: 'middle',
         },
         series: [
           {
