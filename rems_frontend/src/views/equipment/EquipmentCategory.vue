@@ -16,11 +16,18 @@ import {
   categoryPageListService,
 } from '@/api/category.js'
 
+//饼图数据
+const chartData = ref([])
 //获取所有分类
 const categories = ref([])
 const categoryList = async () => {
   let result = await categoryListService();
   categories.value = result.data;
+
+  chartData.value = categories.value.map(category => ({
+    name: category.name,
+    value: category.num
+  }));
 }
 
 //分页条数据模型
@@ -51,14 +58,6 @@ const categoryModel = ref({
   name: '',
   num: '',
 })
-
-//饼图数据
-const chartData = computed(() => {
-  return categories.value.map(category => ({
-    name: category.name,
-    value: category.num
-  }));
-});
 
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
