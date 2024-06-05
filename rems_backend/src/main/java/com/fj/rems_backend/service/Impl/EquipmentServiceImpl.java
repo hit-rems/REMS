@@ -9,6 +9,7 @@ import com.fj.rems_backend.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     private EquipmentMapper equipmentMapper;
     @Autowired
     private CategoryService categoryService;
+    @Value("${file.staticAccessPath}")
+    private String staticAccessPath;
+    @Value("${file.uploadFolder}")
+    private String uploadFolder;
 
     @Override
     public Equipment findByEquipmentNo(Integer id) {
@@ -34,11 +39,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public void add(Equipment equipment) {
+    public void add(Equipment equipment, MultipartFile file) {
         equipment.setDiscard("正常");
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
         categoryService.addNum(equipment.getType(),1);
+        //文件上传
+        String filePath = uploadFile(file);
+        equipment.setUrl(filePath);
         equipmentMapper.add(equipment);
     }
 
@@ -70,22 +78,26 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public String uploadFile(MultipartFile file) {
         //在D盘创建一个文件夹remsFile，用于存放上传的文件
-        File dir = new File("D:/remsFile");
+        File dir = new File(uploadFolder);
         // 如果这个目录不存在，就创建它
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        String filePath = "D:/remsFile/";
+        //获取名字
         String fileName = file.getOriginalFilename();
+        //拆分
         String suffix = fileName.substring(fileName.lastIndexOf("."));
+        //保存
         String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
         try {
-            file.transferTo(new java.io.File(filePath + newFileName));
-        } catch (Exception e) {
+            file.transferTo(new java.io.File(uploadFolder + newFileName));
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return filePath + newFileName;
+        //返回外部访问地址
+        return staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName;
     }
+
     @Override
     public void uploadFileList(MultipartFile[] files) {
         for (MultipartFile file : files) {
