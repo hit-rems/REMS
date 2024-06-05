@@ -21,3 +21,13 @@ export const equipmentAddService = (equipmentData)=>{
     // }
     return request.post('/equipment/add', params);
 }
+
+//科研设备删除
+export const equipmentDeleteService = (id)=>{
+    return request.delete('/equipment/delete/'+id)
+}
+
+//科研设备修改
+export const equipmentUpdateService = (equipmentData)=>{
+    return request.put('/equipment/edit', equipmentData)
+}
