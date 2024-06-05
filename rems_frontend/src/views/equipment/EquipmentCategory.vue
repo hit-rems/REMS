@@ -3,53 +3,70 @@ import {
   Edit,
   Delete
 } from '@element-plus/icons-vue'
-import { ref } from 'vue'
-const categorys = ref([
-  {
-    "id": 1,
-    "categoryName": "美食",
-    "createTime": "2023-09-02 12:06:59",
-    "updateTime": "2023-09-02 12:06:59"
-  },
-  {
-    "id": 2,
-    "categoryName": "娱乐",
-    "createTime": "2023-09-02 12:08:16",
-    "updateTime": "2023-09-02 12:08:16"
-  },
-])
+import {ref} from 'vue'
+
+const categorys = ref([])
 //声明一个异步的函数
-import { equipmentCategoryListService, equipmentCategoryAddService, equipmentCategoryUpdateService,equipmentCategoryDeleteService } from '@/api/equipment.js'
-const equipmentCategoryList = async () => {
-  let result = await equipmentCategoryListService();
+import {
+  categoryListService,
+  categoryAddService,
+  categoryUpdateService,
+  categoryDeleteService
+} from '@/api/category.js'
+
+const categoryList = async () => {
+  let result = await categoryListService();
   categorys.value = result.data;
 }
 
-equipmentCategoryList();
+categoryList();
 //控制添加分类弹窗
 const dialogVisible = ref(false)
 
 //添加分类数据模型
 const categoryModel = ref({
-  categoryName: '',
+  name: '',
+  num: '',
 })
+
+//分页条数据模型
+const pageNum = ref(1)//当前页
+const total = ref(20)//总条数
+const pageSize = ref(10)//每页条数
+
+//当每页条数发生了变化，调用此函数
+const onSizeChange = (size) => {
+  pageSize.value = size
+  categoryList()
+}
+//当前页码发生变化，调用此函数
+const onCurrentChange = (num) => {
+  pageNum.value = num
+  categoryList()
+}
 
 //添加分类表单校验
 const rules = {
-  categoryName: [
-    { required: true, message: '请输入分类名称', trigger: 'blur' },
+  name: [
+    {required: true, message: '请输入分类名称', trigger: 'blur'},
   ],
 }
 
 //调用接口,添加表单
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
+
 const addCategory = async () => {
+  // 当 categoryModel.value.name 为空时，提示用户
+  if (!categoryModel.value.name) {
+    ElMessage.error('请输入分类名称')
+    return
+  }
   //调用接口
-  let result = await equipmentCategoryAddService(categoryModel.value);
+  let result = await categoryAddService(categoryModel.value.name);
   ElMessage.success(result.msg ? result.msg : '添加成功')
 
   //调用获取所有科研设备分类的函数
-  equipmentCategoryList();
+  categoryList();
   dialogVisible.value = false;
 }
 
@@ -58,9 +75,9 @@ const title = ref('')
 
 //展示编辑弹窗
 const showDialog = (row) => {
-  dialogVisible.value = true; title.value = '编辑分类'
+  dialogVisible.value = true;
   //数据拷贝
-  categoryModel.value.categoryName = row.categoryName;
+  categoryModel.value.name = row.name;
   //扩展id属性,将来需要传递给后台,完成分类的修改
   categoryModel.value.id = row.id
 }
@@ -68,22 +85,23 @@ const showDialog = (row) => {
 //编辑分类
 const updateCategory = async () => {
   //调用接口
-  let result = await equipmentCategoryUpdateService(categoryModel.value);
+  let result = await categoryUpdateService(categoryModel.value);
   ElMessage.success('修改成功')
 
   //调用获取所有分类的函数
-  equipmentCategoryList();
+  categoryList();
   //隐藏弹窗
   dialogVisible.value = false;
 }
 
 //清空模型的数据
 const clearData = () => {
-  categoryModel.value.categoryName = '';
+  categoryModel.value.name = '';
 }
 
 //删除分类
 import {ElMessageBox} from 'element-plus'
+
 const deleteCategory = (row) => {
   //提示用户  确认框
 
@@ -98,13 +116,13 @@ const deleteCategory = (row) => {
   )
       .then(async () => {
         //调用接口
-        let result = await equipmentCategoryDeleteService(row.id);
+        let result = await categoryDeleteService(row.id);
         ElMessage({
           type: 'success',
           message: '删除成功',
         })
         //刷新列表
-        equipmentCategoryList();
+        categoryList();
       })
       .catch(() => {
         ElMessage({
@@ -125,30 +143,38 @@ const deleteCategory = (row) => {
       </div>
     </template>
     <el-table :data="categorys" style="width: 100%">
-      <el-table-column label="序号" width="100" type="index"> </el-table-column>
-      <el-table-column label="分类名称" prop="categoryName"></el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
+      <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
+      <el-table-column label="数量" prop="num" align="center"></el-table-column>
+      <el-table-column label="操作" width="100" align="center">
         <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
+          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row); title = '编辑分类'"></el-button>
           <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory(row)"></el-button>
         </template>
       </el-table-column>
       <template #empty>
-        <el-empty description="没有数据" />
+        <el-empty description="没有数据"/>
       </template>
     </el-table>
+
+    <!-- 分页条 -->
+    <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[3, 5, 10, 15]"
+                   layout="jumper, total, sizes, prev, pager, next" background :total="total"
+                   @size-change="onSizeChange"
+                   @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end"/>
 
     <!-- 添加分类弹窗 -->
     <el-dialog v-model="dialogVisible" :title="title" width="30%">
       <el-form :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px">
-        <el-form-item label="分类名称" prop="categoryName">
-          <el-input v-model="categoryModel.categoryName" minlength="1" maxlength="10"></el-input>
+        <el-form-item label="分类名称" prop="name">
+          <el-input v-model="categoryModel.name" minlength="1" maxlength="10"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="title == '添加分类' ? addCategory() : updateCategory()"> 确认 </el-button>
+                    <el-button type="primary"
+                               @click="title === '添加分类' ? addCategory() : updateCategory()"> 确认 </el-button>
                 </span>
       </template>
     </el-dialog>
