@@ -2,8 +2,8 @@ package com.fj.rems_backend.service.Impl;
 
 
 import com.fj.rems_backend.mapper.CategoryMapper;
+import com.fj.rems_backend.mapper.EquipmentMapper;
 import com.fj.rems_backend.pojo.Category;
-import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ import java.util.Map;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private EquipmentMapper equipmentMapper;
     @Override
     public List<Category> list() {
         return categoryMapper.list();
@@ -63,5 +66,18 @@ public class CategoryServiceImpl implements CategoryService {
         pb.setTotal(p.getTotal());
         pb.setItems(p.getResult());
         return pb;
+    }
+
+    @Override
+    public void updateCategory(String nameOld, String nameNew) {
+        //修改设备表中的分类
+        equipmentMapper.updateType(nameOld,nameNew);
+        //修改分类表中的分类
+        categoryMapper.updateCategory(nameOld,nameNew);
+    }
+
+    @Override
+    public void deleteCategory(String name) {
+        categoryMapper.deleteCategory(name);
     }
 }

@@ -18,4 +18,8 @@ public interface CategoryService{
     void subNum(String type, int i);
 
     PageBean<Category> pagelist(Map<String, Object> map);
+
+    void updateCategory(String nameOld, String nameNew);
+
+    void deleteCategory(String name);
 }

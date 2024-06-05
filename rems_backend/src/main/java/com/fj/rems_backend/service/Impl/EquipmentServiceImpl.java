@@ -1,5 +1,6 @@
 package com.fj.rems_backend.service.Impl;
 
+import com.fj.rems_backend.mapper.CategoryMapper;
 import com.fj.rems_backend.mapper.EquipmentMapper;
 import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
@@ -27,7 +28,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     private EquipmentMapper equipmentMapper;
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMapper categoryMapper;
+
     @Value("${file.staticAccessPath}")
     private String staticAccessPath;
     @Value("${file.uploadFolder}")
@@ -43,7 +45,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipment.setDiscard("正常");
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
-        categoryService.addNum(equipment.getType(),1);
+        categoryMapper.addnum(equipment.getType(),1);
         equipmentMapper.add(equipment);
     }
 
@@ -118,7 +120,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             try {
                 file.transferTo(new java.io.File(uploadFolder + newFileName));
                 equipment.setUrl(staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName);
-                categoryService.addNum(equipment.getType(),1);
+                categoryMapper.addnum(equipment.getType(),1);
                 equipmentMapper.add(equipment);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -128,7 +130,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void delete(Integer id) {
-        categoryService.subNum(equipmentMapper.findByEquipmentNo(id).getType(),1);
+        categoryMapper.addnum(equipmentMapper.findByEquipmentNo(id).getType(),-1);
         equipmentMapper.delete(id);
     }
 

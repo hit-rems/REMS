@@ -5,6 +5,7 @@ import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.pojo.Result;
 import com.fj.rems_backend.service.CategoryService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,10 +35,22 @@ public class CategoryController {
     }
 
     //分页查询
-    //分页查询，可选的查询条件（local,id,type，name，status，department，discard，create_time,update_time）
     @PostMapping("/pagelist")
     public Result<PageBean<Category>> list(@RequestBody Map<String,Object> map){
         return Result.success(categoryService.pagelist(map));
     }
 
+    //编辑
+    @GetMapping("/edit")
+    public Result edit(String nameOld,String nameNew){
+        categoryService.updateCategory(nameOld,nameNew);
+        return Result.success();
+    }
+
+    //删除
+    @DeleteMapping("/delete")
+    public Result delete(String name){
+        categoryService.deleteCategory(name);
+        return Result.success();
+    }
 }

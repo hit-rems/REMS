@@ -23,4 +23,6 @@ public interface EquipmentMapper {
 
     void update(@Param("map") Map<String,Object> map);
 
+    @Update("update equipment set type=#{nameNew} where type=#{nameOld}")
+    void updateType(String nameOld, String nameNew);
 }

@@ -16,8 +16,6 @@ import java.util.Map;
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookMapper bookMapper;
-    @Autowired
-    private EquipmentService equipmentService;
 
     @Override
     public void add(Book book) {
