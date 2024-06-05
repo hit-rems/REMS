@@ -138,7 +138,7 @@ const addEquipmentForm = ref(null)
 
 //添加设备
 import {ElMessage, ElMessageBox} from 'element-plus'
-const addequipment = async ()=>{
+const addEquipment = async ()=>{
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
     console.log("in function")
@@ -247,7 +247,6 @@ const onFileChange = (e) => {
 
 }
 
-
 const deleteEquipment = (row) => {
   //提示用户  确认框
   ElMessageBox.confirm(
@@ -273,6 +272,29 @@ const deleteEquipment = (row) => {
       })
 }
 
+const title = ref('')
+
+//展示编辑弹窗
+const showDrawer = (row) => {
+  visibleDrawer.value = true;
+  //数据拷贝
+  equipmentModel.value.id = row.id;
+  equipmentModel.value.name = row.name;
+  equipmentModel.value.id = row.id;
+  equipmentModel.value.type = row.type;
+  equipmentModel.value.brand = row.brand;
+  equipmentModel.value.department = row.department;
+  equipmentModel.value.discard = row.discard;
+}
+
+// TODO:修改设备信息的表单验证
+const updateEquipment = async () => {
+  let result = await equipmentUpdateService(equipmentModel.value);
+  ElMessage.success('修改成功')
+
+  equipmentList();
+  visibleDrawer.value = false;
+}
 
 </script>
 
@@ -283,7 +305,8 @@ const deleteEquipment = (row) => {
             <div class="header">
                 <span>科研设备管理</span>
                 <div class="extra">
-                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>
+<!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
+                  <el-button type="primary" @click="visibleDrawer = true; title='添加设备'; clearEquipmentModel()">添加设备</el-button>
                 </div>
             </div>
         </template>
@@ -318,7 +341,8 @@ const deleteEquipment = (row) => {
           <el-table-column label="维护时间" width="200" prop="updateTime"> </el-table-column>
           <el-table-column label="操作" width="100">
                 <template #default="{ row }">
-                    <el-button :icon="Edit" circle plain type="primary"></el-button>
+<!--                    <el-button :icon="Edit" circle plain type="primary" @click="updateEquipment(row)"></el-button>-->
+                    <el-button :icon="Edit" circle plain type="primary" @click="showDrawer(row); title = '编辑设备'"></el-button>
                     <el-button :icon="Delete" circle plain type="danger" @click="deleteEquipment(row)"></el-button>
                 </template>
           </el-table-column>
@@ -332,7 +356,8 @@ const deleteEquipment = (row) => {
             @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end" />
 
         <!-- 抽屉 -->
-        <el-drawer v-model="visibleDrawer" title="添加设备" direction="rtl" size="50%">
+<!--        <el-drawer v-model="visibleDrawer" title="添加设备" direction="rtl" size="50%">-->
+        <el-drawer v-model="visibleDrawer" :title="title" direction="rtl" size="50%">
             <!-- 添加设备表单 -->
             <el-form ref="addEquipmentForm" :model="equipmentModel"  :rules="addRules" label-width="100px">
                 <el-form-item label="设备号" prop="id">
@@ -398,7 +423,9 @@ const deleteEquipment = (row) => {
 <!--                </el-form-item>-->
                 <!--添加设备按钮-->
                 <el-form-item>
-                    <el-button type="primary" @click="addequipment()">添加设备</el-button>
+<!--                    <el-button type="primary" @click="addEquipment()">添加设备</el-button>-->
+                    <el-button type="primary"
+                               @click="title === '添加设备' ? addEquipment() : updateEquipment()">确认</el-button>
                 </el-form-item>
             </el-form>
         </el-drawer>

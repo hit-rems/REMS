@@ -29,5 +29,5 @@ export const equipmentDeleteService = (id)=>{
 
 //科研设备修改
 export const equipmentUpdateService = (equipmentData)=>{
-    return request.put('/equipment/edit', equipmentData)
+    return request.put('/equipment/update', equipmentData)
 }
