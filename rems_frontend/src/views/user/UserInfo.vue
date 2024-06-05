@@ -13,9 +13,8 @@ const rules = {
             trigger: 'blur'
         }
     ],
-    email: [
-        { required: true, message: '请输入用户邮箱', trigger: 'blur' },
-        { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
+    department: [
+        { required: true, message: '请选择所属单位', trigger: 'change' }
     ]
 }
 
@@ -23,8 +22,12 @@ const rules = {
 import {userInfoUpdateService} from '@/api/user.js'
 import {ElMessage} from 'element-plus'
 const updateUserInfo = async ()=>{
+    let params = {
+        nickname: userInfo.value.nickname,
+        department: userInfo.value.department
+    }
     //调用接口
-    let result = await userInfoUpdateService(userInfo.value);
+    let result = await userInfoUpdateService(params);
     ElMessage.success(result.msg? result.msg : '修改成功');
     
     //修改pinia中的个人信息
@@ -41,14 +44,18 @@ const updateUserInfo = async ()=>{
         <el-row>
             <el-col :span="12">
                 <el-form :model="userInfo" :rules="rules" label-width="100px" size="large">
-                    <el-form-item label="登录名称">
+                    <el-form-item label="用户名">
                         <el-input v-model="userInfo.username" disabled></el-input>
                     </el-form-item>
-                    <el-form-item label="用户昵称" prop="nickname">
+                    <el-form-item label="昵称" prop="nickname">
                         <el-input v-model="userInfo.nickname"></el-input>
                     </el-form-item>
-                    <el-form-item label="用户邮箱" prop="email">
-                        <el-input v-model="userInfo.email"></el-input>
+                    <el-form-item label="所属单位" prop="department">
+                        <el-select v-model="userInfo.department" placeholder="请选择所属单位">
+                            <el-option label="计算学部" value="计算学部"></el-option>
+                            <el-option label="数学学院" value="数学学院"></el-option>
+                            <el-option label="物理学院" value="物理学院"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateUserInfo">提交修改</el-button>
