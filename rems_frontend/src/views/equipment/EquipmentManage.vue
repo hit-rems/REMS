@@ -37,7 +37,13 @@ const onCurrentChange = (num) => {
 
 
 //回显科研设备分类
-import { equipmentCategoryListService, equipmentListService,equipmentAddService } from '@/api/equipment.js'
+import { equipmentCategoryListService,
+  equipmentListService,
+  equipmentAddService,
+  equipmentDeleteService,
+  equipmentUpdateService
+} from '@/api/equipment.js'
+
 const equipmentCategoryList = async () => {
     let result = await equipmentCategoryListService();
     categorys.value = result.data;
@@ -131,7 +137,7 @@ const uploadSuccess = (result)=>{
 const addEquipmentForm = ref(null)
 
 //添加设备
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElMessageBox} from 'element-plus'
 const addequipment = async ()=>{
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
@@ -242,6 +248,32 @@ const onFileChange = (e) => {
 }
 
 
+const deleteEquipment = (row) => {
+  //提示用户  确认框
+  ElMessageBox.confirm(
+      '你确认要删除该设备吗?',
+      '温馨提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(async () => {
+        //调用接口
+        console.log(row.id)
+        let result = await equipmentDeleteService(row.id);
+        ElMessage({type: 'success', message: '删除成功'})
+        //刷新设备列表
+        equipmentList();
+      })
+      .catch(() => {
+        ElMessage({type: 'info', message: '用户取消了删除',
+        })
+      })
+}
+
+
 </script>
 
 
@@ -287,7 +319,7 @@ const onFileChange = (e) => {
           <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary"></el-button>
-                    <el-button :icon="Delete" circle plain type="danger"></el-button>
+                    <el-button :icon="Delete" circle plain type="danger" @click="deleteEquipment(row)"></el-button>
                 </template>
           </el-table-column>
             <template #empty>
