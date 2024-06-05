@@ -3,9 +3,11 @@ import {
   Edit,
   Delete
 } from '@element-plus/icons-vue'
-import {ref} from 'vue'
+import {reactive, ref} from 'vue'
+import {computed} from 'vue'
+import EquipmentCategoryPieChart from './EquipmentCategoryPieChart.vue'
 
-const categorys = ref([])
+const categories = ref([])
 //声明一个异步的函数
 import {
   categoryListService,
@@ -16,7 +18,16 @@ import {
 
 const categoryList = async () => {
   let result = await categoryListService();
-  categorys.value = result.data;
+  categories.value = result.data;
+}
+
+const categoryPagelist = async () => {
+  let params = {
+    pageNum: pageNum.value,
+    pageSize: pageSize.value
+  }
+  let result = await categoryPageListService(params);
+  categories.value = result.data;
 }
 
 categoryList();
@@ -28,6 +39,14 @@ const categoryModel = ref({
   name: '',
   num: '',
 })
+
+//饼图数据
+const chartData = computed(() => {
+  return categories.value.map(category => ({
+    name: category.name,
+    value: category.num
+  }));
+});
 
 //分页条数据模型
 const pageNum = ref(1)//当前页
@@ -142,7 +161,7 @@ const deleteCategory = (row) => {
         </div>
       </div>
     </template>
-    <el-table :data="categorys" style="width: 100%">
+    <el-table :data="categories" style="width: 100%">
       <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
       <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
       <el-table-column label="数量" prop="num" align="center"></el-table-column>
@@ -178,6 +197,10 @@ const deleteCategory = (row) => {
                 </span>
       </template>
     </el-dialog>
+    <!-- 饼图容器 -->
+    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+      <EquipmentCategoryPieChart :chartData="chartData" />
+    </div>
   </el-card>
 </template>
 
