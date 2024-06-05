@@ -34,10 +34,16 @@ public class CategoryController {
     }
 
     //分页查询
-    //分页查询，可选的查询条件（local,id,type，name，status，department，discard，create_time,update_time）
     @PostMapping("/pagelist")
     public Result<PageBean<Category>> list(@RequestBody Map<String,Object> map){
         return Result.success(categoryService.pagelist(map));
+    }
+
+    //编辑
+    @GetMapping("/edit")
+    public Result edit(String nameOld,String nameNew){
+        categoryService.updateCategory(nameOld,nameNew);
+        return Result.success();
     }
 
 }

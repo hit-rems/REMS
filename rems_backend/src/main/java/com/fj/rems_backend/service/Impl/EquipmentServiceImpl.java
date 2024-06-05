@@ -137,4 +137,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentMapper.update(map);
     }
 
+    @Override
+    public void updateType(String nameOld, String nameNew) {
+        equipmentMapper.updateType(nameOld,nameNew);
+    }
+
 }

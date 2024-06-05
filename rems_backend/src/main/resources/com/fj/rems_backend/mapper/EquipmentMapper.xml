@@ -41,6 +41,9 @@
     <update id="update">
         update equipment
         <set>
+            <if test="map.type!=null">
+                type=#{map.type},
+            </if>
             <if test="map.department!=null">
                 department=#{map.department},
             </if>

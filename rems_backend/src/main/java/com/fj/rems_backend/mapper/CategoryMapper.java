@@ -20,4 +20,6 @@ public interface CategoryMapper {
     @Insert("insert into category(name,num) values(#{name},0)")
     void addCategory(String name);
 
+    @Update("update category set name=#{nameNew} where name=#{nameOld}")
+    void updateCategory(String nameOld, String nameNew);
 }
