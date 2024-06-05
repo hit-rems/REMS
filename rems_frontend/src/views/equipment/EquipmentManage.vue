@@ -71,7 +71,7 @@ import { Plus } from '@element-plus/icons-vue'
 const visibleDrawer = ref(false)
 //添加表单数据模型
 const equipmentModel = ref({
-    id: '',
+    id: 0,
     type: '',
     name: '',
     department: '',
@@ -79,7 +79,8 @@ const equipmentModel = ref({
     brand: '',
     createTime: '',
     updateTime: '',
-    url: '',
+    file: null,
+    // url: '',
 })
 
 const addRules = {
@@ -111,7 +112,8 @@ const clearEquipmentModel = ()=>{
     brand: '',
     createTime: '',
     updateTime: '',
-    url: '',
+    file: null,
+    // url: '',
   }
 }
 
@@ -120,48 +122,80 @@ import { useTokenStore } from '@/stores/token.js';
 const tokenStore = useTokenStore();
 
 //上传成功的回调函数
-const uploadSuccess = (result)=>{
-    equipmentModel.value.url = result.data;
-    console.log(result.data);
-}
+// const uploadSuccess = (result)=>{
+//     equipmentModel.value.url = result.data;
+//     console.log(result.data);
+// }
 
-let addValid = true
 const addEquipmentForm = ref(null)
 
 //添加设备
 import {ElMessage} from 'element-plus'
 const addequipment = async ()=>{
-  // const form = addEquipmentForm.value
-  // console.log(form)
-  // form.validate(async (valid) => {
-  //   addValid = valid
-  // })
-  // console.log(addValid)
-  // console.log(equipmentModel.value)
-  // if (addValid) {
-  //   // 调用接口
-  //   let result = await equipmentAddService(equipmentModel.value);
-  //   ElMessage.success('添加成功');
-  //   // 让抽屉消失
-  //   visibleDrawer.value = false;
-  //   // 刷新当前列表
-  //   equipmentList();
-  //   //清除添加设备页面的原数据
-  //   clearEquipmentModel();
-  // } else {
-  //   ElMessage.error('添加设备失败，请检查输入项');
-  // }
+  const form = addEquipmentForm.value
+  form.validate(async (valid) => {
+    console.log("in function")
+    console.log(valid)
+    if (valid) {
+      if (equipmentModel.value.file) {
+        const formData = new FormData()
+        // 遍历 equipmentModel.value 并添加到 formData 中
+        for (const key in equipmentModel.value) {
+          if (key === 'file' && equipmentModel.value.file) {
+            formData.append('file', equipmentModel.value.file)
+          } else {
+            formData.append(key, equipmentModel.value[key])
+          }
+        }
+        console.log("form")
+        console.log(formData)
 
-    console.log(equipmentModel.value)
-    //调用接口
-    let result = await equipmentAddService(equipmentModel.value);
+        // formData.append('file', equipmentModel.value.file)
+        // const uploadResult = await fetch('/api/equipment/upload', {
+        //       method: 'POST',
+        //       headers: {'Authorization': tokenStore.token},
+        //       body: formData
+        //     }
+        // )
+        // 调用接口
+        let result = await equipmentAddService(equipmentModel.value);
+        ElMessage.success('添加成功');
+        // 让抽屉消失
+        visibleDrawer.value = false;
+        // 刷新当前列表
+        equipmentList();
+        //清除添加设备页面的原数据
+        clearEquipmentModel();
 
-    ElMessage.success('添加成功');
-    //让抽屉消失
-    visibleDrawer.value = false;
-    //刷新当前列表
-    equipmentList()
+        // // 调用接口
+        // let result = await equipmentAddService(equipmentModel.value);
+        // ElMessage.success('添加成功');
+        // // 让抽屉消失
+        // visibleDrawer.value = false;
+        // // 刷新当前列表
+        // equipmentList();
+        // //清除添加设备页面的原数据
+        // clearEquipmentModel();
+      }else{
+        ElMessage.error('未检测到图片')
+      }
+    }
+    else {
+      ElMessage.error('添加设备失败，请检查输入项');
+    }
+  })
+
+    // console.log(equipmentModel.value)
+    // //调用接口
+    // let result = await equipmentAddService(equipmentModel.value);
+    //
+    // ElMessage.success('添加成功');
+    // //让抽屉消失
+    // visibleDrawer.value = false;
+    // //刷新当前列表
+    // equipmentList()
 }
+
 </script>
 
 
@@ -224,7 +258,7 @@ const addequipment = async ()=>{
             <!-- 添加设备表单 -->
             <el-form ref="addEquipmentForm" :model="equipmentModel"  :rules="addRules" label-width="100px">
                 <el-form-item label="设备号" prop="id">
-                  <el-input v-model="equipmentModel.id" placeholder="请输入设备号"></el-input>
+                  <el-input v-model="equipmentModel.id" type="number" placeholder="请输入设备号"></el-input>
                 </el-form-item>
                 <el-form-item label="设备名称" prop="name">
                     <el-input v-model="equipmentModel.name" placeholder="请输入设备名称"></el-input>
@@ -255,18 +289,23 @@ const addequipment = async ()=>{
                         on-success:设置上传成功的回调函数
                      -->
                    
-                    <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"
-                    action="/api/equipment/upload"
-                    name="file"
-                    :headers="{'Authorization':tokenStore.token}"
-                    :on-success="uploadSuccess"
-                    >
-                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />
+<!--                    <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
+<!--                    action="/api/equipment/upload"-->
+<!--                    name="file"-->
+<!--                    :headers="{'Authorization':tokenStore.token}"-->
+<!--                    :on-success="uploadSuccess"-->
+<!--                    >-->
+                  <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="true"
+                             name="file"
+                             :before-upload="(file) => equipmentModel.file = file"
+                  >
+                        <img v-if="equipmentModel.file" :src="equipmentModel.file" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>
                     </el-upload>
                 </el-form-item>
+                <!--添加设备按钮-->
                 <el-form-item>
                     <el-button type="primary" @click="addequipment()">添加设备</el-button>
                 </el-form-item>
