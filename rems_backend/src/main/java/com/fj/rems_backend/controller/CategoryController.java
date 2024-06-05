@@ -48,9 +48,9 @@ public class CategoryController {
     }
 
     //删除
-    @Delete("/delete")
+    @DeleteMapping("/delete")
     public Result delete(String name){
-//        categoryService.deleteCategory(name);
+        categoryService.deleteCategory(name);
         return Result.success();
     }
 }

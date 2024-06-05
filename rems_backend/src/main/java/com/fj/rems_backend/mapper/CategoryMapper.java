@@ -22,4 +22,7 @@ public interface CategoryMapper {
 
     @Update("update category set name=#{nameNew} where name=#{nameOld}")
     void updateCategory(String nameOld, String nameNew);
+
+    @Delete("delete from category where name=#{name}")
+    void deleteCategory(String name);
 }

@@ -75,4 +75,9 @@ public class CategoryServiceImpl implements CategoryService {
         //修改分类表中的分类
         categoryMapper.updateCategory(nameOld,nameNew);
     }
+
+    @Override
+    public void deleteCategory(String name) {
+        categoryMapper.deleteCategory(name);
+    }
 }

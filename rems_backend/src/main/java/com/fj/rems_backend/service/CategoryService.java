@@ -20,4 +20,6 @@ public interface CategoryService{
     PageBean<Category> pagelist(Map<String, Object> map);
 
     void updateCategory(String nameOld, String nameNew);
+
+    void deleteCategory(String name);
 }
