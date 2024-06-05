@@ -1,10 +1,13 @@
 package com.fj.rems_backend.service;
 
+import com.fj.rems_backend.pojo.Category;
+import com.fj.rems_backend.pojo.PageBean;
+
 import java.util.List;
 import java.util.Map;
 
 public interface CategoryService{
-    List<Map<String, Integer>> list();
+    List<Category> list();
 
     void addNum(String name,int i);
 
@@ -13,4 +16,6 @@ public interface CategoryService{
     void addCategory(String name);
 
     void subNum(String type, int i);
+
+    PageBean<Category> pagelist(Map<String, Object> map);
 }
