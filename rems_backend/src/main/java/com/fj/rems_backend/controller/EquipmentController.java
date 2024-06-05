@@ -27,7 +27,7 @@ public class EquipmentController {
 
     //添加设备
     @PostMapping("/add")
-    public Result add(Equipment equipment){
+    public Result add(Equipment equipment, MultipartFile file){
         //查询设备号是否存在
         Equipment e = equipmentService.findByEquipmentNo(equipment.getId());
         if (e!=null){
@@ -35,7 +35,7 @@ public class EquipmentController {
         } else if (categoryService.findByCategoryName(equipment.getType()) == null){
             return Result.error("种类不存在");
         } else {
-            equipmentService.add(equipment);
+            equipmentService.add(equipment,file);
             return Result.success();
         }
     }
@@ -75,7 +75,7 @@ public class EquipmentController {
     }
 
     //批量删除
-    @DeleteMapping("/delete")
+    @DeleteMapping("/deletelist")
     public Result deleteList(@RequestBody List<Integer> ids){
         for (Integer id : ids) {
             equipmentService.delete(id);

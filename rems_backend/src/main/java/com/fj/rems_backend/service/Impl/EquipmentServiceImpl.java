@@ -41,10 +41,13 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public void add(Equipment equipment) {
+    public void add(Equipment equipment, MultipartFile file) {
         equipment.setDiscard("正常");
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
+        //文件上传
+        String url = uploadFile(file);
+        equipment.setUrl(url);
         categoryMapper.addnum(equipment.getType(),1);
         equipmentMapper.add(equipment);
     }
@@ -119,7 +122,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
             try {
                 file.transferTo(new java.io.File(uploadFolder + newFileName));
-                equipment.setUrl(staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName);
+                equipment.setUrl("http://localhost:8080"+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName);
                 categoryMapper.addnum(equipment.getType(),1);
                 equipmentMapper.add(equipment);
             } catch (IOException e) {
