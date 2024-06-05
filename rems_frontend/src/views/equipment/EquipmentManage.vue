@@ -125,7 +125,7 @@ const tokenStore = useTokenStore();
 const uploadSuccess = (result)=>{
     equipmentModel.value.url = result.data;
     console.log(result.data);
-    fetchImageWithHeaders(equipmentModel.value.url)
+    // fetchImageWithHeaders(equipmentModel.value.url)
 }
 
 const addEquipmentForm = ref(null)
@@ -198,45 +198,47 @@ const addequipment = async ()=>{
 }
 
 
-const imageSrc = ref('')
-
-// 获取图片并设置 Blob URL
-const fetchImageWithHeaders = async (url) => {
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': tokenStore.token
-      }
-    })
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const blob = await response.blob()
-    imageSrc.value = URL.createObjectURL(blob)
-    console.log(imageSrc.value)
-  } catch (error) {
-    console.error('Error fetching image:', error)
-  }
-}
+// const imageSrc = ref('')
+//
+// // 获取图片并设置 Blob URL
+// const fetchImageWithHeaders = async (url) => {
+//   try {
+//     const response = await fetch(url, {
+//       method: 'GET',
+//       headers: {
+//         'Authorization': tokenStore.token
+//       }
+//     })
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok')
+//     }
+//     const blob = await response.blob()
+//     imageSrc.value = URL.createObjectURL(blob)
+//     console.log(imageSrc.value)
+//   } catch (error) {
+//     console.error('Error fetching image:', error)
+//   }
+// }
 
 const imageData = ref(null)
-
 const onFileChange = (e) => {
   const file = e.target.files[0]; // 获取图片资源
+  console.log("file")
+  console.log(file)
 
   // 只选择图片文件
   if (!file.type.match('image.*')) {
     return false;
   }
-
   const reader = new FileReader();
   reader.readAsDataURL(file); // 读取文件
-
   // 渲染文件
   reader.onload = (arg) => {
     imageData.value = arg.target.result; // 将Data URL存储在imageData中
+    console.log("imageData")
+    console.log(imageData.value)
   };
+
 }
 
 
@@ -324,17 +326,16 @@ const onFileChange = (e) => {
                   </el-select>
                 </el-form-item>
 
-              <el-form-item>
+              <el-form-item label="设备图片">
                 <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
                 <label for="img_input"></label>
                 <div class="preview_box">
-                  <img v-if="imageData" class="preview" :src="imageData" alt="preview"/>
+                  <img v-if="imageData" class="preview" :src="imageData" width="50%" height="50%" alt="preview"/>
                 </div>
-
-
-
               </el-form-item>
-                <el-form-item label="设备图片">
+
+<!--              </el-form-item>-->
+<!--                <el-form-item label="设备图片">-->
                     <!-- 
                         auto-upload:设置是否自动上传
                         action:设置服务器接口路径
@@ -342,28 +343,27 @@ const onFileChange = (e) => {
                         headers:设置上传的请求头
                         on-success:设置上传成功的回调函数
                      -->
-                  <div>{{imageSrc}}</div>
-                  <br>
-                  <div>{{equipmentModel.url}}</div>
-                  <>
+<!--                  <div>{{imageSrc}}</div>-->
+<!--                  <br>-->
+<!--                  <div>{{equipmentModel.url}}</div>-->
 
-                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"
-                    action="/api/equipment/upload"
-                    name="file"
-                    :headers="{'Authorization':tokenStore.token}"
-                    :on-success="uploadSuccess"
-                    >
+<!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
+<!--                    action="/api/equipment/upload"-->
+<!--                    name="file"-->
+<!--                    :headers="{'Authorization':tokenStore.token}"-->
+<!--                    :on-success="uploadSuccess"-->
+<!--                    >-->
 <!--                  <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="true"-->
 <!--                             name="file"-->
 <!--                             :before-upload="(file) => equipmentModel.file = file"-->
 <!--                      <img src="http://localhost:8080/file/3745cb6e60014a259ae5cebc650a8beb.png" :header="{'Authorization':tokenStore.token}">-->
 <!--                      <img v-if="equipmentModel.url" :src="imageSrc" class="avatar"/>-->
-                      <!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
+<!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
 <!--                        <el-icon v-else class="avatar-uploader-icon">-->
 <!--                            <Plus />-->
 <!--                        </el-icon>-->
-                    </el-upload>
-                </el-form-item>
+<!--                    </el-upload>-->
+<!--                </el-form-item>-->
                 <!--添加设备按钮-->
                 <el-form-item>
                     <el-button type="primary" @click="addequipment()">添加设备</el-button>
