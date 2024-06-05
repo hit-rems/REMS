@@ -28,8 +28,12 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          left: '90%',
+          left: '85%',
           top: 'middle',
+          formatter: function (name) {
+            // 如果文本过长，添加省略号
+            return name.length > 4 ? name.slice(0, 4) + '...' : name;
+          },
         },
         series: [
           {
