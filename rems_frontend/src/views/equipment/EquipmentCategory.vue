@@ -3,34 +3,46 @@ import {
   Edit,
   Delete
 } from '@element-plus/icons-vue'
-import {reactive, ref} from 'vue'
+import {ref} from 'vue'
 import {computed} from 'vue'
 import EquipmentCategoryPieChart from './EquipmentCategoryPieChart.vue'
 
-const categories = ref([])
 //声明一个异步的函数
 import {
   categoryListService,
   categoryAddService,
   categoryUpdateService,
-  categoryDeleteService
+  categoryDeleteService,
+  categoryPageListService,
 } from '@/api/category.js'
 
+//获取所有分类
+const categories = ref([])
 const categoryList = async () => {
   let result = await categoryListService();
   categories.value = result.data;
 }
 
+//分页条数据模型
+const pageNum = ref(1)//当前页
+const total = ref(20)//总条数
+const pageSize = ref(5)//每页条数
+
+//查询当前页面的所有分类
+const categoriesThisPage = ref([])
 const categoryPagelist = async () => {
   let params = {
     pageNum: pageNum.value,
     pageSize: pageSize.value
   }
   let result = await categoryPageListService(params);
-  categories.value = result.data;
+  total.value = result.data.total;
+  categoriesThisPage.value = result.data.items;
 }
 
-categoryList();
+categoryList();  //刷新所有分类列表
+categoryPagelist();  //刷新当前页面的分类列表
+
 //控制添加分类弹窗
 const dialogVisible = ref(false)
 
@@ -48,20 +60,15 @@ const chartData = computed(() => {
   }));
 });
 
-//分页条数据模型
-const pageNum = ref(1)//当前页
-const total = ref(20)//总条数
-const pageSize = ref(10)//每页条数
-
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
   pageSize.value = size
-  categoryList()
+  categoryPagelist()
 }
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
   pageNum.value = num
-  categoryList()
+  categoryPagelist()
 }
 
 //添加分类表单校验
@@ -84,8 +91,8 @@ const addCategory = async () => {
   let result = await categoryAddService(categoryModel.value.name);
   ElMessage.success(result.msg ? result.msg : '添加成功')
 
-  //调用获取所有科研设备分类的函数
-  categoryList();
+  categoryList();  //刷新所有分类列表
+  categoryPagelist();  //刷新当前页面的分类列表
   dialogVisible.value = false;
 }
 
@@ -107,8 +114,8 @@ const updateCategory = async () => {
   let result = await categoryUpdateService(categoryModel.value);
   ElMessage.success('修改成功')
 
-  //调用获取所有分类的函数
-  categoryList();
+  categoryList();  //刷新所有分类列表
+  categoryPagelist();  //刷新当前页面的分类列表
   //隐藏弹窗
   dialogVisible.value = false;
 }
@@ -142,6 +149,7 @@ const deleteCategory = (row) => {
         })
         //刷新列表
         categoryList();
+        categoryPageList();
       })
       .catch(() => {
         ElMessage({
@@ -161,7 +169,7 @@ const deleteCategory = (row) => {
         </div>
       </div>
     </template>
-    <el-table :data="categories" style="width: 100%">
+    <el-table :data="categoriesThisPage" style="width: 100%">
       <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
       <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
       <el-table-column label="数量" prop="num" align="center"></el-table-column>

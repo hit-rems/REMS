@@ -13,10 +13,15 @@ export const categoryAddService = (categoryData)=>{
 
 //科研设备分类修改
 export const categoryUpdateService = (categoryData)=>{
-    return  request.put('equipment/category',categoryData)
+    return  request.put('/category/edit',categoryData)
 }
 
 //科研设备分类删除
 export const categoryDeleteService = (id)=>{
-    return request.delete('equipment/category?id='+id)
+    return request.delete('/category/delete?id='+id)
+}
+
+//科研设备分页查询
+export const categoryPageListService = (params)=>{
+    return  request.post('/category/pagelist', params)
 }
