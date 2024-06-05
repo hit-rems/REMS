@@ -136,6 +136,8 @@ const uploadSuccess = (result)=>{
 
 const addEquipmentForm = ref(null)
 
+// const params = new URLSearchParams()
+
 //添加设备
 import {ElMessage, ElMessageBox} from 'element-plus'
 const addEquipment = async ()=>{
@@ -144,13 +146,19 @@ const addEquipment = async ()=>{
     console.log("in function")
     console.log(valid)
     if (valid) {
-      if (equipmentModel.value.file) {
+      // if (equipmentModel.value.file) {
+
+        // for(let key in equipmentModel.value){
+        //   params.append(key,equipmentModel.value[key]);
+        // }
+
         const formData = new FormData()
         // 遍历 equipmentModel.value 并添加到 formData 中
         for (const key in equipmentModel.value) {
           if (key === 'file' && equipmentModel.value.file) {
             formData.append('file', equipmentModel.value.file)
-          } else {
+          }
+          else {
             formData.append(key, equipmentModel.value[key])
           }
         }
@@ -165,7 +173,8 @@ const addEquipment = async ()=>{
         //     }
         // )
         // 调用接口
-        let result = await equipmentAddService(equipmentModel.value);
+        // let result = await equipmentAddService(equipmentModel.value);
+        let result = await equipmentAddService(formData);
         ElMessage.success('添加成功');
         // 让抽屉消失
         visibleDrawer.value = false;
@@ -183,9 +192,10 @@ const addEquipment = async ()=>{
         // equipmentList();
         // //清除添加设备页面的原数据
         // clearEquipmentModel();
-      }else{
-        ElMessage.error('未检测到图片')
-      }
+
+      // }else{
+      //   ElMessage.error('未检测到图片')
+      // }
     }
     else {
       ElMessage.error('添加设备失败，请检查输入项');
@@ -203,34 +213,14 @@ const addEquipment = async ()=>{
     // equipmentList()
 }
 
-
-// const imageSrc = ref('')
-//
-// // 获取图片并设置 Blob URL
-// const fetchImageWithHeaders = async (url) => {
-//   try {
-//     const response = await fetch(url, {
-//       method: 'GET',
-//       headers: {
-//         'Authorization': tokenStore.token
-//       }
-//     })
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok')
-//     }
-//     const blob = await response.blob()
-//     imageSrc.value = URL.createObjectURL(blob)
-//     console.log(imageSrc.value)
-//   } catch (error) {
-//     console.error('Error fetching image:', error)
-//   }
-// }
-
 const imageData = ref(null)
 const onFileChange = (e) => {
   const file = e.target.files[0]; // 获取图片资源
   console.log("file")
   console.log(file)
+  equipmentModel.value.file = file
+  console.log("equipmentModel.file")
+  console.log(equipmentModel.value.file)
 
   // 只选择图片文件
   if (!file.type.match('image.*')) {
@@ -295,6 +285,11 @@ const updateEquipment = async () => {
   equipmentList();
   visibleDrawer.value = false;
 }
+
+const headerHandler = () => {
+  return {'Authorization':tokenStore.token}
+}
+
 
 </script>
 
@@ -405,16 +400,23 @@ const updateEquipment = async () => {
 <!--                  <div>{{equipmentModel.url}}</div>-->
 
 <!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
+<!--                    :headers="{'Authorization':tokenStore.token}"-->
 <!--                    action="/api/equipment/upload"-->
 <!--                    name="file"-->
-<!--                    :headers="{'Authorization':tokenStore.token}"-->
 <!--                    :on-success="uploadSuccess"-->
 <!--                    >-->
-<!--                  <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="true"-->
+
+<!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
+<!--                             :headers="headerHandler"-->
+<!--                             action="/api/equipment/upload"-->
+<!--                             name="file"-->
+<!--                             :on-success="uploadSuccess"-->
+<!--                  >-->
+
+                  <!--                  <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="true"-->
 <!--                             name="file"-->
 <!--                             :before-upload="(file) => equipmentModel.file = file"-->
 <!--                      <img src="http://localhost:8080/file/3745cb6e60014a259ae5cebc650a8beb.png" :header="{'Authorization':tokenStore.token}">-->
-<!--                      <img v-if="equipmentModel.url" :src="imageSrc" class="avatar"/>-->
 <!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
 <!--                        <el-icon v-else class="avatar-uploader-icon">-->
 <!--                            <Plus />-->
