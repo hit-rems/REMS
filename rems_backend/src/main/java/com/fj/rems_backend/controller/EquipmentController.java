@@ -27,7 +27,7 @@ public class EquipmentController {
 
     //添加设备
     @PostMapping("/add")
-    public Result add(Equipment equipment, MultipartFile file){
+    public Result add(Equipment equipment){
         //查询设备号是否存在
         Equipment e = equipmentService.findByEquipmentNo(equipment.getId());
         if (e!=null){
@@ -35,7 +35,7 @@ public class EquipmentController {
         } else if (categoryService.findByCategoryName(equipment.getType()) == null){
             return Result.error("种类不存在");
         } else {
-            equipmentService.add(equipment,file);
+            equipmentService.add(equipment);
             return Result.success();
         }
     }

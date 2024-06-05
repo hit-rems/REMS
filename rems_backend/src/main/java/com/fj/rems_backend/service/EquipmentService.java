@@ -11,7 +11,7 @@ public interface EquipmentService {
 
     Equipment findByEquipmentNo(Integer id);
 
-    void add(Equipment equipment, MultipartFile file);
+    void add(Equipment equipment);
 
     PageBean<Equipment> pagelist(Map<String, Object> map);
 

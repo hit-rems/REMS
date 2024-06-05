@@ -2,7 +2,13 @@ package com.fj.rems_backend.service.Impl;
 
 
 import com.fj.rems_backend.mapper.CategoryMapper;
+import com.fj.rems_backend.pojo.Category;
+import com.fj.rems_backend.pojo.Equipment;
+import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.service.CategoryService;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
     @Override
-    public List<Map<String, Integer>> list() {
+    public List<Category> list() {
         return categoryMapper.list();
     }
 
@@ -36,5 +42,26 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void subNum(String type, int i) {
         categoryMapper.addnum(type,-i);
+    }
+
+    @Override
+    public PageBean<Category> pagelist(Map<String, Object> map) {
+        //1.创建PageBean对象
+        PageBean<Category> pb = new PageBean<>();
+        Integer pageNum = (Integer) map.get("pageNum");
+        Integer pageSize = (Integer) map.get("pageSize");
+
+        //2.开启分页查询 PageHelper
+        PageHelper.startPage(pageNum,pageSize);
+
+        //3.调用mapper
+        List<Category> as = categoryMapper.list();
+        //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
+        Page<Category> p = (Page<Category>) as;
+
+        //把数据填充到PageBean对象中
+        pb.setTotal(p.getTotal());
+        pb.setItems(p.getResult());
+        return pb;
     }
 }
