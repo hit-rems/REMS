@@ -4,7 +4,8 @@ import {
   Delete
 } from '@element-plus/icons-vue'
 import {ref} from 'vue'
-import EquipmentCategoryPieChart from './EquipmentCategoryPieChart.vue'
+import EquipmentCategoryPieChart from '@/compoments/EquipmentCategoryPieChart.vue'
+import Pager from '@/compoments/Pager.vue'
 
 //声明一个异步的函数
 import {
@@ -32,7 +33,7 @@ const categoryList = async () => {
 //分页条数据模型
 const pageNum = ref(1)//当前页
 const total = ref(20)//总条数
-const pageSize = ref(5)//每页条数
+const pageSize = ref(10)//每页条数
 
 //查询当前页面的所有分类
 const categoriesThisPage = ref([])
@@ -131,7 +132,7 @@ import {ElMessageBox} from 'element-plus'
 const deleteCategory = (row) => {
   //如果 row.num > 0,提示用户,不允许删除
   if (row.num > 0) {
-    ElMessage.error('该分类下有设备,不允许删除')
+    ElMessage.error('该分类下有设备，不允许删除')
     return
   }
 
@@ -184,10 +185,7 @@ const deleteCategory = (row) => {
     </el-table>
 
     <!-- 分页条 -->
-    <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[3, 5, 10, 15]"
-                   layout="jumper, total, sizes, prev, pager, next" background :total="total"
-                   @size-change="onSizeChange"
-                   @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end"/>
+    <Pager v-model:pageNum="pageNum" v-model:pageSize="pageSize" :total="total" />
 
     <!-- 添加分类弹窗 -->
     <el-dialog v-model="dialogVisible" :title="title" width="30%">
@@ -206,7 +204,7 @@ const deleteCategory = (row) => {
     </el-dialog>
     <!-- 饼图容器 -->
     <div style="display: flex; justify-content: center; align-items: center; padding-top: 0px;">
-      <EquipmentCategoryPieChart :chartData="chartData" />
+      <EquipmentCategoryPieChart :chartData="chartData"/>
     </div>
   </el-card>
 </template>
