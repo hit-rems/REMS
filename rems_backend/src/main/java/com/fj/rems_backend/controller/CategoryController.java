@@ -5,6 +5,7 @@ import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.pojo.Result;
 import com.fj.rems_backend.service.CategoryService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,4 +47,10 @@ public class CategoryController {
         return Result.success();
     }
 
+    //删除
+    @Delete("/delete")
+    public Result delete(String name){
+        categoryService.deleteCategory(name);
+        return Result.success();
+    }
 }

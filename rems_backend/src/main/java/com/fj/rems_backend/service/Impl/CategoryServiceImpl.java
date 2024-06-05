@@ -2,11 +2,10 @@ package com.fj.rems_backend.service.Impl;
 
 
 import com.fj.rems_backend.mapper.CategoryMapper;
+import com.fj.rems_backend.mapper.EquipmentMapper;
 import com.fj.rems_backend.pojo.Category;
-import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.service.CategoryService;
-import com.fj.rems_backend.service.EquipmentService;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -22,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentMapper equipmentMapper;
     @Override
     public List<Category> list() {
         return categoryMapper.list();
@@ -72,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategory(String nameOld, String nameNew) {
         //修改设备表中的分类
-        equipmentService.updateType(nameOld,nameNew);
+        equipmentMapper.updateType(nameOld,nameNew);
         //修改分类表中的分类
         categoryMapper.updateCategory(nameOld,nameNew);
     }

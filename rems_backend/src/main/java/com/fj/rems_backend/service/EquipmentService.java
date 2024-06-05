@@ -23,5 +23,4 @@ public interface EquipmentService {
 
     void update(Map<String,Object> map);
 
-    void updateType(String nameOld, String nameNew);
 }
