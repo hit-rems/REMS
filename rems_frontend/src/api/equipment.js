@@ -29,5 +29,5 @@ export const equipmentListService = (params)=>{
 
 //科研设备添加
 export const equipmentAddService = (equipmentData)=>{
-    return request.post('/equipment/add',equipmentData);
+    return request.post('/equipment/add', equipmentData);
 }

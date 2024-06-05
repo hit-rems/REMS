@@ -82,6 +82,38 @@ const equipmentModel = ref({
     url: '',
 })
 
+const addRules = {
+  id: [
+    { required: true, message: '请输入设备号', trigger: 'blur' },
+    { type: 'number', message: '设备号必须为整数', trigger: 'blur', transform: value => Number(value) }
+  ],
+  name: [
+    { required: true, message: '请输入设备名称', trigger: 'blur' }
+  ],
+  type: [
+    { required: true, message: '请选择设备类型', trigger: 'change' }
+  ],
+  brand: [
+    { required: true, message: '请输入设备品牌', trigger: 'blur' }
+  ],
+  department: [
+    { required: true, message: '请选择所属单位', trigger: 'change' }
+  ]
+}
+
+const clearEquipmentModel = ()=>{
+  equipmentModel.value={
+    id: 0,
+    type: '',
+    name: '',
+    department: '',
+    discard: '',
+    brand: '',
+    createTime: '',
+    updateTime: '',
+    url: '',
+  }
+}
 
 //导入token
 import { useTokenStore } from '@/stores/token.js';
@@ -93,9 +125,34 @@ const uploadSuccess = (result)=>{
     console.log(result.data);
 }
 
+let addValid = true
+const addEquipmentForm = ref(null)
+
 //添加设备
 import {ElMessage} from 'element-plus'
 const addequipment = async ()=>{
+  // const form = addEquipmentForm.value
+  // console.log(form)
+  // form.validate(async (valid) => {
+  //   addValid = valid
+  // })
+  // console.log(addValid)
+  // console.log(equipmentModel.value)
+  // if (addValid) {
+  //   // 调用接口
+  //   let result = await equipmentAddService(equipmentModel.value);
+  //   ElMessage.success('添加成功');
+  //   // 让抽屉消失
+  //   visibleDrawer.value = false;
+  //   // 刷新当前列表
+  //   equipmentList();
+  //   //清除添加设备页面的原数据
+  //   clearEquipmentModel();
+  // } else {
+  //   ElMessage.error('添加设备失败，请检查输入项');
+  // }
+
+    console.log(equipmentModel.value)
     //调用接口
     let result = await equipmentAddService(equipmentModel.value);
 
@@ -165,24 +222,23 @@ const addequipment = async ()=>{
         <!-- 抽屉 -->
         <el-drawer v-model="visibleDrawer" title="添加设备" direction="rtl" size="50%">
             <!-- 添加设备表单 -->
-
-            <el-form :model="equipmentModel" label-width="100px">
-                <el-form-item label="设备号">
+            <el-form ref="addEquipmentForm" :model="equipmentModel"  :rules="addRules" label-width="100px">
+                <el-form-item label="设备号" prop="id">
                   <el-input v-model="equipmentModel.id" placeholder="请输入设备号"></el-input>
                 </el-form-item>
-                <el-form-item label="设备名称">
+                <el-form-item label="设备名称" prop="name">
                     <el-input v-model="equipmentModel.name" placeholder="请输入设备名称"></el-input>
                 </el-form-item>
-                <el-form-item label="设备类型">
+                <el-form-item label="设备类型" prop="type">
                     <el-select placeholder="请选择" v-model="equipmentModel.type">
-                        <el-option v-for="c in categorys" :key="c.type" :label="c.type" :value="c.type">
+                        <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="品牌">
+                <el-form-item label="品牌" prop="brand">
                   <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
                 </el-form-item>
-                <el-form-item label="所属单位">
+                <el-form-item label="所属单位" prop="department">
                   <el-select placeholder="请选择" v-model="equipmentModel.department">
                     <el-option label="计算学部" value="计算学部"></el-option>
                     <el-option label="数学学院" value="数学学院"></el-option>
