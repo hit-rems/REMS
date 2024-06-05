@@ -64,7 +64,9 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public Result update(User user){
+    public Result update(@RequestBody User user){
+        Map<String,Object> clians = ThreadLocalUtil.get();
+        user.setId((Integer) clians.get("id"));
         userService.update(user);
         return Result.success();
     }
@@ -79,18 +81,11 @@ public class UserController {
     public Result updatePwd(@RequestBody Map<String,String> params){
         String old_pwd=params.get("old_pwd");
         String new_pwd=params.get("new_pwd");
-        String re_pwd=params.get("re_pwd");
-        if (!StringUtils.hasLength(old_pwd)||!StringUtils.hasLength(new_pwd)||!StringUtils.hasLength(re_pwd)){
-            return Result.error("缺少参数");
-        }
         Map<String,Object> map = ThreadLocalUtil.get();
         String name = (String) map.get("username");
         User user = userService.findByUserName(name);
         if (!user.getPassword().equals(Md5Util.getMD5String(old_pwd))){
             return Result.error("密码错误");
-        }
-        if (!new_pwd.equals(re_pwd)){
-            return Result.error("新旧密码不一致");
         }
         userService.updatePwd(new_pwd);
         return Result.success();

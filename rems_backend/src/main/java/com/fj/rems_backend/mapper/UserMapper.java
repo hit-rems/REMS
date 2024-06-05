@@ -14,12 +14,12 @@ public interface UserMapper {
     @Insert("insert into user(username,password,nickname,department,type) values(#{username},#{password},#{nickname},#{department},#{type})")
     void add(User user);
 
-    @Update("update user set nickname=#{nickname},email=#{email},update_time=now() where id=#{id}")
+    @Update("update user set nickname=#{nickname},department=#{department} where id=#{id}")
     void update(User user);
 
     @Update("update user set user_pic=#{avatarUrl},update_time=now() where id=#{id}")
     void updateAvatar(String avatarUrl,Integer id);
 
-    @Update("update user set password=#{newPwd},update_time=now() where id=#{id}")
+    @Update("update user set password=#{newPwd} where id=#{id}")
     void updatePwd(String newPwd,Integer id);
 }

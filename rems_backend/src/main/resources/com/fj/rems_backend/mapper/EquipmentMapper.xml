@@ -14,9 +14,6 @@
             <if test="map.id!=null">
                 and id=#{map.id}
             </if>
-            <if test="map.id!=null">
-                and id=#{map.id}
-            </if>
             <if test="map.type!=null">
                 and type=#{map.type}
             </if>
@@ -41,14 +38,23 @@
     <update id="update">
         update equipment
         <set>
+            <if test="map.id!=null">
+                id=#{map.id},
+            </if>
             <if test="map.type!=null">
                 type=#{map.type},
+            </if>
+            <if test="map.name!=null">
+                name=#{map.name},
             </if>
             <if test="map.department!=null">
                 department=#{map.department},
             </if>
             <if test="map.discard!=null">
                 discard=#{map.discard},
+            </if>
+            <if test="map.brand!=null">
+                brand=#{map.brand},
             </if>
             update_time=#{map.update_time},
         </set>
