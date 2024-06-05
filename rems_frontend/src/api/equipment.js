@@ -29,10 +29,10 @@ export const equipmentListService = (params)=>{
 
 //科研设备添加
 export const equipmentAddService = (equipmentData)=>{
-    //借助于UrlSearchParams完成传递
-    const params = new URLSearchParams()
-    for(let key in equipmentData){
-        params.append(key,equipmentData[key]);
-    }
+    // //借助于UrlSearchParams完成传递
+    // const params = new URLSearchParams()
+    // for(let key in equipmentData){
+    //     params.append(key,equipmentData[key]);
+    // }
     return request.post('/equipment/add', params);
 }
