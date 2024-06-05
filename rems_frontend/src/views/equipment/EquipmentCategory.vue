@@ -4,7 +4,6 @@ import {
   Delete
 } from '@element-plus/icons-vue'
 import {ref} from 'vue'
-import {computed} from 'vue'
 import EquipmentCategoryPieChart from './EquipmentCategoryPieChart.vue'
 
 //声明一个异步的函数
@@ -99,10 +98,12 @@ const addCategory = async () => {
 const title = ref('')
 
 //展示编辑弹窗
+const oldName = ref('')
 const showDialog = (row) => {
   dialogVisible.value = true;
   //数据拷贝
   categoryModel.value.name = row.name;
+  oldName.value = row.name
   //扩展id属性,将来需要传递给后台,完成分类的修改
   categoryModel.value.id = row.id
 }
@@ -110,8 +111,8 @@ const showDialog = (row) => {
 //编辑分类
 const updateCategory = async () => {
   //调用接口
-  let result = await categoryUpdateService(categoryModel.value);
-  ElMessage.success('修改成功')
+  let result = await categoryUpdateService(oldName.value, categoryModel.value.name);
+  ElMessage.success(result.msg ? result.msg : '修改成功')
 
   categoryList();  //刷新所有分类列表
   categoryPagelist();  //刷新当前页面的分类列表
@@ -128,8 +129,13 @@ const clearData = () => {
 import {ElMessageBox} from 'element-plus'
 
 const deleteCategory = (row) => {
-  //提示用户  确认框
+  //如果 row.num > 0,提示用户,不允许删除
+  if (row.num > 0) {
+    ElMessage.error('该分类下有设备,不允许删除')
+    return
+  }
 
+  //提示用户  确认框
   ElMessageBox.confirm(
       '你确认要删除该分类信息吗?',
       '温馨提示',
@@ -141,20 +147,14 @@ const deleteCategory = (row) => {
   )
       .then(async () => {
         //调用接口
-        let result = await categoryDeleteService(row.id);
-        ElMessage({
-          type: 'success',
-          message: '删除成功',
-        })
+        await categoryDeleteService(row.name);
+        ElMessage({type: 'success', message: '删除成功'})
         //刷新列表
         categoryList();
-        categoryPageList();
+        categoryPagelist();
       })
       .catch(() => {
-        ElMessage({
-          type: 'info',
-          message: '用户取消了删除',
-        })
+        ElMessage({type: 'info', message: '用户取消了删除'})
       })
 }
 </script>
@@ -205,7 +205,7 @@ const deleteCategory = (row) => {
       </template>
     </el-dialog>
     <!-- 饼图容器 -->
-    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+    <div style="display: flex; justify-content: center; align-items: center; padding-top: 0px;">
       <EquipmentCategoryPieChart :chartData="chartData" />
     </div>
   </el-card>

@@ -20,14 +20,20 @@ export default {
     const setOption = () => {
       const option = {
         title: {
-          text: '分类名称和数量信息'
+          text: '',
+          left: 'center'
         },
         tooltip: {
           trigger: 'item'
         },
         legend: {
           orient: 'vertical',
-          left: 'right'
+          left: '85%',
+          top: 'middle',
+          formatter: function (name) {
+            // 如果文本过长，添加省略号
+            return name.length > 4 ? name.slice(0, 4) + '...' : name;
+          },
         },
         series: [
           {
