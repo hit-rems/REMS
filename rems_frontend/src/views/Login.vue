@@ -54,6 +54,10 @@ const rules = {
 import { userRegisterService, userLoginService} from '@/api/user.js'
 const register = async () => {
   const form = registerForm.value
+
+  console.log("register")
+  console.log(registerForm.value)
+
   form.validate(async (valid) => {
     registerValid = valid
   })
