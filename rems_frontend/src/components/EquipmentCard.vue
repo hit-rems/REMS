@@ -45,7 +45,7 @@ export default {
   height: 150px;
 }
 
-::v-deep .descriptions .el-descriptions__title {
+:deep(.descriptions .el-descriptions__title) {
   white-space: nowrap; /* Prevents the text from wrapping */
   overflow: hidden; /* Hides the text that overflows the container */
   text-overflow: ellipsis; /* Displays an ellipsis (...) when the text overflows */

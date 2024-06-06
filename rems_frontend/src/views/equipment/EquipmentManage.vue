@@ -478,7 +478,7 @@ const showDialog = () => {
 
 /* 抽屉样式 */
 .avatar-uploader {
-  ::v-deep {
+  :deep() {
     .avatar {
       width: 178px;
       height: 178px;
