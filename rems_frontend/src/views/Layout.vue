@@ -30,9 +30,16 @@ const getUserInfo = async()=>{
 }
 
 getUserInfo();
+// console.log(userInfoStore.info)
+
 //条目被点击后,调用的函数
 import {useRouter} from 'vue-router'
 const router = useRouter();
+
+if(!userInfoStore.info){
+  router.push('/login')
+}
+
 import {ElMessage,ElMessageBox} from 'element-plus'
 const handleCommand = (command)=>{
     //判断指令
@@ -145,7 +152,7 @@ const handleCommand = (command)=>{
                 <!-- command: 条目被点击后会触发,在事件函数上可以声明一个参数,接收条目对应的指令 -->
                 <el-dropdown placement="bottom-end" @command="handleCommand">
                     <span class="el-dropdown__box">
-                        <el-avatar :src="userInfoStore.info.url" />
+                        <el-avatar v-if="userInfoStore.info" :src="userInfoStore.info.url"/>
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
