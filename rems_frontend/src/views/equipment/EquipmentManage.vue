@@ -7,6 +7,7 @@ import {
 import {ref} from 'vue'
 import Table from '@/components/Table.vue'
 import Pager from '@/components/Pager.vue'
+import EquipmentDialog from '@/components/EquipmentDialog.vue'
 
 //设备分类数据模型
 const categories = ref([])
@@ -327,6 +328,12 @@ const columns = [
   },
 ]
 
+const dialogVisible = ref(false)
+const showDialog = (row) => {
+  dialogVisible.value = true;
+  title.value = '批量添加设备';
+}
+
 </script>
 
 
@@ -337,7 +344,7 @@ const columns = [
         <span>科研设备管理</span>
         <div class="extra">
           <!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
-          <el-button type="primary" @click="showDialog = true; title='批量添加设备'; clearEquipmentModel()">批量添加设备
+          <el-button type="primary" @click="showDialog();">批量添加设备
           </el-button>
           <el-button type="primary" @click="visibleDrawer = true; title='添加设备'; clearEquipmentModel()">添加设备
           </el-button>
@@ -441,6 +448,10 @@ const columns = [
         </el-form-item>
       </el-form>
     </el-drawer>
+
+    <!-- 批量添加设备 -->
+    <EquipmentDialog :dialogVisible.sync="dialogVisible" :title="批量添加设备" @update:dialogVisible="dialogVisible = $event"
+                     :batchAddEquipment="batchAddEquipment"/>
   </el-card>
 </template>
 
