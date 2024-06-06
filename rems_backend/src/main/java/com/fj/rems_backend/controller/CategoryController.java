@@ -43,6 +43,9 @@ public class CategoryController {
     //编辑
     @GetMapping("/edit")
     public Result edit(String nameOld,String nameNew){
+        if(categoryService.findByCategoryName(nameOld)!=null){
+            return Result.error("分类已经存在");
+        }
         categoryService.updateCategory(nameOld,nameNew);
         return Result.success();
     }

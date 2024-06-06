@@ -6,6 +6,7 @@ import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
 import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.service.EquipmentService;
+import com.fj.rems_backend.service.FileUploadService;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -29,6 +30,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     private EquipmentMapper equipmentMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private FileUploadService fileUploadService;
 
     @Value("${file.staticAccessPath}")
     private String staticAccessPath;
@@ -46,7 +49,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipment.setCreateTime(LocalDateTime.now());
         equipment.setUpdateTime(LocalDateTime.now());
         //文件上传
-        String url = uploadFile(file);
+        String url = fileUploadService.uploadFile(file);
         equipment.setUrl(url);
         categoryMapper.addnum(equipment.getType(),1);
         equipmentMapper.add(equipment);
@@ -75,30 +78,6 @@ public class EquipmentServiceImpl implements EquipmentService {
         pb.setTotal(p.getTotal());
         pb.setItems(p.getResult());
         return pb;
-    }
-
-    @Override
-    public String uploadFile(MultipartFile file) {
-        //在D盘创建一个文件夹remsFile，用于存放上传的文件
-        File dir = new File(uploadFolder);
-        // 如果这个目录不存在，就创建它
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        //获取名字
-        String fileName = file.getOriginalFilename();
-        //拆分
-        String suffix = fileName.substring(fileName.lastIndexOf("."));
-        //保存
-        String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
-        try {
-            file.transferTo(new java.io.File(uploadFolder + newFileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //返回外部访问地址，http...
-        String url="http://localhost:8080"+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName;
-        return url;
     }
 
     @Override

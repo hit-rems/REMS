@@ -15,8 +15,6 @@ public interface EquipmentService {
 
     PageBean<Equipment> pagelist(Map<String, Object> map);
 
-    String uploadFile(MultipartFile file);
-
     void uploadFileList(MultipartFile[] files);
 
     void delete(Integer id);

@@ -13,4 +13,5 @@ public class User {
     private String nickname;//昵称
     private String department;//部门
     private String type;//类型
+    private String url;//头像
 }

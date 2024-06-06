@@ -40,14 +40,6 @@ public class EquipmentController {
         }
     }
 
-    //设备照片文件上传
-    @PostMapping("/upload")
-    public Result<String> uploadFile(MultipartFile file) throws Exception {
-        String filePath = equipmentService.uploadFile(file);
-        return Result.success(filePath);
-    }
-
-
     @PostMapping("/uploadlist")
     public Result FileUploadList(@RequestParam("files") MultipartFile[] files) {
         for (MultipartFile file : files) {

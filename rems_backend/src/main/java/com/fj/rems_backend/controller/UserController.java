@@ -2,6 +2,7 @@ package com.fj.rems_backend.controller;
 
 import com.fj.rems_backend.pojo.Result;
 import com.fj.rems_backend.pojo.User;
+import com.fj.rems_backend.service.FileUploadService;
 import com.fj.rems_backend.service.UserService;
 import com.fj.rems_backend.utils.JwtUtil;
 import com.fj.rems_backend.utils.Md5Util;
@@ -9,9 +10,11 @@ import com.fj.rems_backend.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +26,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private FileUploadService fileUploadService;
 
     @PostMapping("/register")
     public Result register(User user){
@@ -71,12 +76,6 @@ public class UserController {
         return Result.success();
     }
 
-    @PatchMapping("/updateAvatar")
-    public Result updateAvatar(@RequestParam(name = "avatarUrl") @URL String avatarUrl){
-        userService.updateAvatar(avatarUrl);
-        return Result.success();
-    }
-
     @PatchMapping("/updatePwd")
     public Result updatePwd(@RequestBody Map<String,String> params){
         String old_pwd=params.get("old_pwd");
@@ -88,6 +87,13 @@ public class UserController {
             return Result.error("密码错误");
         }
         userService.updatePwd(new_pwd);
+        return Result.success();
+    }
+
+    @PostMapping("/updateAvatar")
+    public Result updateAvatar(MultipartFile file){
+        String url = fileUploadService.uploadFile(file);
+        userService.updateAvatar(url);
         return Result.success();
     }
 }
