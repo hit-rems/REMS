@@ -1,12 +1,11 @@
 <template>
   <el-table :data="categoriesThisPage" style="width: 100%">
-    <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
-    <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
-    <el-table-column label="数量" prop="num" align="center"></el-table-column>
-    <el-table-column label="操作" width="100" align="center">
-      <template #default="{ row }">
-        <el-button :icon="Edit" circle plain type="primary" @click="onEdit(row)"></el-button>
-        <el-button :icon="Delete" circle plain type="danger" @click="onDelete(row)"></el-button>
+    <el-table-column v-for="(column, index) in columns" :key="index"
+                     :label="column.label" :prop="column.prop" :width="column.width" :align="column.align">
+      <template v-if="Array.isArray(column.slot)" #default="{ row }">
+        <el-button v-for="(slot, slotIndex) in column.slot" :key="slotIndex"
+                   :icon="slot.icon" circle plain :type="slot.type"
+                   @click="slot.action(row)"></el-button>
       </template>
     </el-table-column>
     <template #empty>
@@ -16,22 +15,17 @@
 </template>
 
 <script>
-import {Edit, Delete} from '@element-plus/icons-vue'
 
 export default {
-  computed: {
-    Delete() {
-      return Delete
-    },
-    Edit() {
-      return Edit
-    }
-  },
-  props: {
+    props: {
     categoriesThisPage: Array,
     showDialog: Function,
     deleteCategory: Function,
-    title: String
+    title: String,
+    columns: {
+      type: Array,
+      required: true
+    }
   },
   components: {
     Edit,

@@ -160,6 +160,40 @@ const deleteCategory = (row) => {
         ElMessage({type: 'info', message: '用户取消了删除'})
       })
 }
+
+const onEdit = (row) => {
+  showDialog(row)
+  title.value = '编辑分类'
+}
+
+const onDelete = (row) => {
+  deleteCategory(row)
+}
+
+const columns = [
+  {label: '序号', width: '100', type: 'index', align: 'center'},
+  {label: '分类名称', prop: 'name', align: 'center'},
+  {label: '数量', prop: 'num', align: 'center'},
+  {
+    label: '操作',
+    width: '100',
+    align: 'center',
+    slot: [
+      {
+        icon: 'Edit',
+        type: 'primary',
+        action: onEdit,
+      },
+      {
+        icon: 'Delete',
+        type: 'danger',
+        action: onDelete,
+      }
+    ]
+  },
+]
+
+
 </script>
 <template>
   <el-card class="page-container">
@@ -169,7 +203,7 @@ const deleteCategory = (row) => {
                     @update:title="title = $event"/>
 
     <CategoryTable :categoriesThisPage="categoriesThisPage" :showDialog="showDialog" :deleteCategory="deleteCategory"
-                   :title.sync="title" @update:title="title = $event"/>
+                   :title.sync="title" @update:title="title = $event" :columns="columns"/>
 
     <!-- 分页条 -->
     <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
