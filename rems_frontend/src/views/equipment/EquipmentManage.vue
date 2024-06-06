@@ -55,6 +55,7 @@ import {
   equipmentCategoryListService,
   equipmentListService,
   equipmentAddService,
+  equipmentBatchAddService,
   equipmentDeleteService,
   equipmentUpdateService
 } from '@/api/equipment.js'
@@ -182,6 +183,16 @@ const addEquipment = async () => {
       ElMessage.error('添加设备失败，请检查输入项');
     }
   })
+}
+
+const batchAddEquipment = async (files) => {
+  // 调用接口
+  let result = await equipmentBatchAddService(files);
+  ElMessage.success('批量添加成功');
+  // 刷新当前列表
+  equipmentPageList();
+  // 关闭对话框
+  dialogVisible.value = false;
 }
 
 // 上传图片的事件

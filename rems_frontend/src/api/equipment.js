@@ -24,6 +24,24 @@ export const equipmentAddService = (equipmentData)=>{
     return request.post('/equipment/add', equipmentData);
 }
 
+//科研设备批量添加
+export const equipmentBatchAddService = (fileList)=>{
+    // 创建一个新的 FormData 对象
+    const formData = new FormData();
+
+
+    // 遍历文件列表，将文件添加到 formData 中
+    fileList.forEach((file) => {
+        formData.append('files', file.raw);
+    });
+
+    return request.post('/equipment/uploadlist', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
 //科研设备删除
 export const equipmentDeleteService = (id)=>{
     return request.delete('/equipment/delete/'+id)
