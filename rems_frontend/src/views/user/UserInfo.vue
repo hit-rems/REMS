@@ -28,7 +28,7 @@ const updateUserInfo = async () => {
   }
   // 调用接口
   let result = await userInfoUpdateService(params);
-  ElMessage.success(result.msg ? result.msg : '修改成功');
+  ElMessage.success(result.message ? result.message : '修改成功');
   // 修改 pinia 中的个人信息
   userInfoStore.setInfo(userInfo.value)
 }
@@ -88,11 +88,16 @@ const submitUpload = async () => {
             </el-select>
           </el-form-item>
         </el-form>
+        <el-row>
+          <el-col :span="24">
+            <el-button style="margin-right: 10px; float: right" type="primary" @click="updateUserInfo">提交修改</el-button>
+          </el-col>
+        </el-row>
       </el-col>
       <el-col :span="4">
       </el-col>
       <el-col :span="10">
-        <img :src="userInfo.url" class="user-avatar">
+        <img :src="userInfo.url" class="user-avatar" />
         <p>{{userInfo.url}}</p>
         <el-upload
             class="avatar-uploader"
@@ -100,15 +105,13 @@ const submitUpload = async () => {
             :auto-upload="false"
             :on-change="handleFileChange"
         >
-          <el-button type="primary">选择文件</el-button>
+          <template #trigger>
+            <el-button type="primary">选择图片</el-button>
+          </template>
+          <el-button style="margin-left: 20px;" type="success" @click="submitUpload">
+            上传头像
+          </el-button>
         </el-upload>
-        <el-button type="success" @click="submitUpload">上传头像</el-button>
-      </el-col>
-    </el-row>
-
-    <el-row>
-      <el-col :span="24">
-        <el-button type="primary" @click="updateUserInfo">提交修改</el-button>
       </el-col>
     </el-row>
   </el-card>
@@ -116,7 +119,7 @@ const submitUpload = async () => {
 
 <style scoped>
 .user-avatar {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 }
 </style>
