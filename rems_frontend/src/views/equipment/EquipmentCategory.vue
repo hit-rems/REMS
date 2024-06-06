@@ -1,11 +1,10 @@
 <script setup>
-import {
-  Edit,
-  Delete
-} from '@element-plus/icons-vue'
+import {Edit, Delete} from '@element-plus/icons-vue'
 import {ref} from 'vue'
-import EquipmentCategoryPieChart from '@/compoments/EquipmentCategoryPieChart.vue'
-import Pager from '@/compoments/Pager.vue'
+import EquipmentCategoryPieChart from '@/components/EquipmentCategoryPieChart.vue'
+import Pager from '@/components/Pager.vue'
+import CategoryDialog from "@/components/CategoryDialog.vue";
+import CategoryTable from '@/components/CategoryTable.vue'
 
 //声明一个异步的函数
 import {
@@ -172,20 +171,7 @@ const deleteCategory = (row) => {
         </div>
       </div>
     </template>
-    <el-table :data="categoriesThisPage" style="width: 100%">
-      <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
-      <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
-      <el-table-column label="数量" prop="num" align="center"></el-table-column>
-      <el-table-column label="操作" width="100" align="center">
-        <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row); title = '编辑分类'"></el-button>
-          <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory(row)"></el-button>
-        </template>
-      </el-table-column>
-      <template #empty>
-        <el-empty description="没有数据"/>
-      </template>
-    </el-table>
+    <CategoryTable :categoriesThisPage="categoriesThisPage" :showDialog="showDialog" :deleteCategory="deleteCategory"/>
 
     <!-- 分页条 -->
     <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
