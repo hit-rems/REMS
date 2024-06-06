@@ -91,13 +91,13 @@ const bookPageList = async () => {
 bookPageList();
 
 watch(currentTab, () => {
-    // 当 currentTab 变化时，调用 bookPageList
-    bookPageList();
-  });
+  // 仅当 currentTab 变化之后，调用 bookPageList，避免 currentTab 更新太慢导致数据错误
+  bookPageList();
+});
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total" @tab-click="bookPageList"/>
+  <Tabs :tabs="tabs" v-model="currentTab" :total="total"/>
   <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
   <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
            :on-current-change="onCurrentChange"/>
