@@ -5,7 +5,7 @@
 <mapper namespace="com.fj.rems_backend.mapper.AuditMapper">
     <!--动态sql-->
     <select id="list" resultType="com.fj.rems_backend.pojo.Audit">
-        SELECT book.id, equipment.id as equipmentId, equipment.name as equipmentName, CONCAT(user.username, user.nickname) as name, book.create_time as createTime, book.start_time as startTime, book.update_time as updateTime, book.end_time as endTime, book.reason, book.status
+        SELECT book.id, equipment.id as equipmentId, equipment.name as equipmentName, CONCAT(user.nickname," ","(",user.username,")") as name, book.create_time as createTime, book.start_time as startTime, book.update_time as updateTime, book.end_time as endTime, book.reason, book.status
         FROM book
                  INNER JOIN user
                             ON book.user_id = user.id

@@ -42,9 +42,9 @@ public class AuditServiceImpl implements AuditService {
         Map<String, Long> mapNum = new HashMap<>();
         List<Map<String, Object>> countStatus = auditMapper.countStatus();
         //统计总数量
-        Long total = (long)0;
+        Long total = 0L;
         for (Map<String, Object> map1 : countStatus) {
-            long num = (Long)map1.get("num");
+            Long num = (Long) map1.get("num");
             total += num;
             mapNum.put((String)map1.get("status"),num);
         }
