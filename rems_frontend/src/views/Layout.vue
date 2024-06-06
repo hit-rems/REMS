@@ -2,6 +2,7 @@
 import {
     Management,
     Promotion,
+    Stamp,
     UserFilled,
     User,
     Crop,
@@ -91,9 +92,7 @@ const handleCommand = (command)=>{
                     <span>科研设备管理</span>
                 </el-menu-item>
                 <el-menu-item index="/audits">
-                  <el-icon>
-                    <Promotion />
-                  </el-icon>
+                  <el-icon><Stamp /></el-icon>
                   <span>设备预约审核</span>
                 </el-menu-item>
                 <el-sub-menu >
