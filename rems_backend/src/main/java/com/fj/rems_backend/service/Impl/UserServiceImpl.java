@@ -22,6 +22,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUserId(Integer id) {
+        User u=userMapper.findByUserId(id);
+        return u;
+    }
+
+    @Override
     public void register(User user) {
         //加密
         String md5String = Md5Util.getMD5String(user.getPassword());

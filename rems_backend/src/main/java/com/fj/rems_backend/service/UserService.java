@@ -7,6 +7,8 @@ public interface UserService {
 
     User findByUserName(String username);
 
+    User findByUserId(Integer id);
+
     void register(User user);
 
     void update(User user);
