@@ -175,14 +175,20 @@ const handleCommand = (command)=>{
     height: 100vh;
 
     .el-aside {
+        margin-top: -10px;
+        margin-left: -10px;
+        margin-bottom: -10px;
+
         background-color: #232323;
 
         &__logo {
+            margin-top: 20px;
             height: 120px;
             background: url('@/assets/logo2.png') no-repeat center / 120px auto;
         }
 
         .el-menu {
+            margin-top: 20px;
             border-right: none;
         }
     }
