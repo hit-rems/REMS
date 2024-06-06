@@ -5,8 +5,8 @@
     <el-table-column label="数量" prop="num" align="center"></el-table-column>
     <el-table-column label="操作" width="100" align="center">
       <template #default="{ row }">
-        <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row); title = '编辑分类'"></el-button>
-        <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory(row)"></el-button>
+        <el-button :icon="Edit" circle plain type="primary" @click="onEdit(row)"></el-button>
+        <el-button :icon="Delete" circle plain type="danger" @click="onDelete(row)"></el-button>
       </template>
     </el-table-column>
     <template #empty>
@@ -30,11 +30,21 @@ export default {
   props: {
     categoriesThisPage: Array,
     showDialog: Function,
-    deleteCategory: Function
+    deleteCategory: Function,
+    title: String
   },
   components: {
     Edit,
     Delete
+  },
+  methods: {
+    onEdit(row) {
+      this.showDialog(row)
+      this.$emit('update:title', '编辑分类')
+    },
+    onDelete(row) {
+      this.deleteCategory(row)
+    }
   }
 }
 </script>
