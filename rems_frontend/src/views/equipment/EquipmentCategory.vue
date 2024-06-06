@@ -15,6 +15,11 @@ import {
   categoryPageListService,
 } from '@/api/category.js'
 
+import {
+  Edit,
+  Delete
+} from '@element-plus/icons-vue'
+
 //饼图数据
 const chartData = ref([])
 //获取所有分类
@@ -180,12 +185,12 @@ const columns = [
     align: 'center',
     slot: [
       {
-        icon: 'Edit',
+        icon: Edit,
         type: 'primary',
         action: onEdit,
       },
       {
-        icon: 'Delete',
+        icon: Delete,
         type: 'danger',
         action: onDelete,
       }
