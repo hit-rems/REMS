@@ -36,7 +36,7 @@ export default {
       <template #label>
         <div>
           {{ tab.label }}
-          <el-badge :value="eachTotal[tab.label]" class="item"></el-badge>
+          <el-badge :value="eachTotal[tab.label]" class="item" type="info"></el-badge>
         </div>
       </template>
       <!-- 插槽 -->
