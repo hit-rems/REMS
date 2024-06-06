@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface AuditService {
     PageBeanAudit<Audit> pagelist(Map<String, Object> map);
+
+    void update(Map<String, Object> map);
 }

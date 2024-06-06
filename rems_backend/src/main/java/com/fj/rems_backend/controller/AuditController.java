@@ -23,4 +23,10 @@ public class AuditController {
     public Result<PageBeanAudit<Audit>> list(@RequestBody Map<String,Object> map){
         return Result.success(auditService.pagelist(map));
     }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody Map<String,Object> map){
+        auditService.update(map);
+        return Result.success();
+    }
 }

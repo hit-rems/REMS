@@ -52,4 +52,11 @@ public class AuditServiceImpl implements AuditService {
         pb.setCountStatus(mapNum);
         return pb;
     }
+
+    @Override
+    public void update(Map<String, Object> map) {
+        int id = (int) map.get("id");
+        String status = (String) map.get("status");
+        auditMapper.update(id,status);
+    }
 }
