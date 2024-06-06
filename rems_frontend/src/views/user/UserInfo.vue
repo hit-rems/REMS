@@ -56,7 +56,9 @@ const submitUpload = async () => {
   console.log(result)
   if (result.code === 0) {
     //修改pinia中的数据
-    userInfoStore.info.url = result.data
+    userInfo.value.url = result.data
+    userInfoStore.setInfo(userInfo.value)
+
     ElMessage.success('头像上传成功')
   } else {
     ElMessage.error('头像上传失败')
@@ -97,8 +99,7 @@ const submitUpload = async () => {
       <el-col :span="4">
       </el-col>
       <el-col :span="10">
-        <img :src="userInfo.url" class="user-avatar" />
-        <p>{{userInfo.url}}</p>
+        <img :src="userInfo.url" class="user-avatar">
         <el-upload
             class="avatar-uploader"
             :show-file-list="false"
