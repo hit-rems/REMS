@@ -19,7 +19,10 @@ import {
 //饼图数据
 const chartData = ref([])
 //获取所有分类
-const categories = ref([])
+const categories = ref([{
+  name: '',
+  num: '',
+}])
 const categoryList = async () => {
   let result = await categoryListService();
   categories.value = result.data;
@@ -37,7 +40,7 @@ const pageSize = ref(10)//每页条数
 
 //查询当前页面的所有分类
 const categoriesThisPage = ref([])
-const categoryPagelist = async () => {
+const categoryPageList = async () => {
   let params = {
     pageNum: pageNum.value,
     pageSize: pageSize.value
@@ -48,7 +51,7 @@ const categoryPagelist = async () => {
 }
 
 categoryList();  //刷新所有分类列表
-categoryPagelist();  //刷新当前页面的分类列表
+categoryPageList();  //刷新当前页面的分类列表
 
 //控制添加分类弹窗
 const dialogVisible = ref(false)
@@ -62,12 +65,12 @@ const categoryModel = ref({
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
   pageSize.value = size
-  categoryPagelist()
+  categoryPageList()
 }
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
   pageNum.value = num
-  categoryPagelist()
+  categoryPageList()
 }
 
 //添加分类表单校验
@@ -87,11 +90,11 @@ const addCategory = async () => {
     return
   }
   //调用接口
-  let result = await categoryAddService(categoryModel.value.name);
-  ElMessage.success(result.msg ? result.msg : '添加成功')
+  await categoryAddService(categoryModel.value.name);
+  ElMessage.success('添加成功')
 
-  categoryList();  //刷新所有分类列表
-  categoryPagelist();  //刷新当前页面的分类列表
+  await categoryList();  //刷新所有分类列表
+  await categoryPageList();  //刷新当前页面的分类列表
   dialogVisible.value = false;
 }
 
@@ -112,11 +115,11 @@ const showDialog = (row) => {
 //编辑分类
 const updateCategory = async () => {
   //调用接口
-  let result = await categoryUpdateService(oldName.value, categoryModel.value.name);
-  ElMessage.success(result.msg ? result.msg : '修改成功')
+  await categoryUpdateService(oldName.value, categoryModel.value.name);
+  ElMessage.success('修改成功')
 
-  categoryList();  //刷新所有分类列表
-  categoryPagelist();  //刷新当前页面的分类列表
+  await categoryList();  //刷新所有分类列表
+  await categoryPageList();  //刷新当前页面的分类列表
   //隐藏弹窗
   dialogVisible.value = false;
 }
@@ -151,8 +154,8 @@ const deleteCategory = (row) => {
         await categoryDeleteService(row.name);
         ElMessage({type: 'success', message: '删除成功'})
         //刷新列表
-        categoryList();
-        categoryPagelist();
+        await categoryList();
+        await categoryPageList();
       })
       .catch(() => {
         ElMessage({type: 'info', message: '用户取消了删除'})
@@ -204,7 +207,7 @@ const deleteCategory = (row) => {
       </template>
     </el-dialog>
     <!-- 饼图容器 -->
-    <div style="display: flex; justify-content: center; align-items: center; padding-top: 0px;">
+    <div style="display: flex; justify-content: center; align-items: center;">
       <EquipmentCategoryPieChart :chartData="chartData"/>
     </div>
   </el-card>
