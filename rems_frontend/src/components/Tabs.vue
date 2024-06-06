@@ -22,8 +22,16 @@ export default {
 </script>
 
 <template>
-  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane v-for="tab in tabs" :key="tab.name" :label="tab.label" :name="tab.name">{{ tab.label }}</el-tab-pane>
+  <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+    <el-tab-pane
+      v-for="(tab, index) in tabs"
+      :key="tab.name"
+      :label="tab.label"
+      :name="tab.name"
+    >
+      <!-- 插槽 -->
+      <slot></slot>
+    </el-tab-pane>
   </el-tabs>
 </template>
 

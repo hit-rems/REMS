@@ -97,8 +97,9 @@ watch(currentTab, () => {
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total"/>
-  <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+  <Tabs :tabs="tabs" v-model="currentTab" :total="total">
+    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+  </Tabs>
   <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
            :on-current-change="onCurrentChange"/>
 </template>
