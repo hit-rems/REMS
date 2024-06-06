@@ -90,6 +90,12 @@ const handleCommand = (command)=>{
                     </el-icon>
                     <span>科研设备管理</span>
                 </el-menu-item>
+                <el-menu-item index="/book">
+                  <el-icon>
+                    <Management />
+                  </el-icon>
+                  <span>科研设备预约</span>
+                </el-menu-item>
                 <el-sub-menu >
                     <template #title>
                         <el-icon>
