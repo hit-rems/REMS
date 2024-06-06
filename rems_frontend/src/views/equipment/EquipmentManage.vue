@@ -187,6 +187,14 @@ const addEquipment = async () => {
 }
 
 const batchAddEquipment = async (files) => {
+  // 如果没有选择文件
+  if (!Array.isArray(files)) {
+    ElMessage.error('文件列表无效');
+    return;
+  } else if (files.length === 0) {
+    ElMessage.error('尚未选择文件');
+    return;
+  }
   // 调用接口
   let result = await equipmentBatchAddService(files);
   ElMessage.success('批量添加成功');
