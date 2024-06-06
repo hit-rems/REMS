@@ -2,6 +2,7 @@
 import {
     Management,
     Promotion,
+    Stamp,
     UserFilled,
     User,
     Crop,
@@ -78,23 +79,29 @@ const handleCommand = (command)=>{
             <!-- element-plus的菜单标签 -->
             <el-menu active-text-color="#ffd04b" background-color="#232323"  text-color="#fff"
                 router>
-                <el-menu-item index="/equipment/category">
+                <el-menu-item index="/category">
                     <el-icon>
                         <Management />
                     </el-icon>
                     <span>科研设备分类</span>
                 </el-menu-item>
-                <el-menu-item index="/equipment/manage">
+                <el-menu-item index="/equipment">
                     <el-icon>
                         <Promotion />
                     </el-icon>
                     <span>科研设备管理</span>
                 </el-menu-item>
+
                 <el-menu-item index="/book">
                   <el-icon>
                     <Management />
                   </el-icon>
                   <span>科研设备预约</span>
+                </el-menu-item>
+
+                  <el-menu-item index="/audits">
+                  <el-icon><Stamp /></el-icon>
+                  <span>设备预约审核</span>
                 </el-menu-item>
                 <el-sub-menu >
                     <template #title>

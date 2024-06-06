@@ -15,6 +15,7 @@ import UserInfoVue from '@/views/user/UserInfo.vue'
 import UserResetPasswordVue from '@/views/user/UserResetPassword.vue'
 
 import EquipmentBook from '@/views/book/EquipmentBook.vue'
+import EquipmentAudits from "@/views/audits/EquipmentAudits.vue";
 
 //定义路由关系
 const routes = [
@@ -23,28 +24,17 @@ const routes = [
     {
       path: '/',
       component: LayoutVue,
-      redirect:'/equipment/manage',
+      redirect:'/equipment',
       children: [
-          { path: '/equipment/category', component: EquipmentCategoryVue},
-          { path: '/equipment/manage', component: EquipmentManageVue},
+          { path: '/category', component: EquipmentCategoryVue},
+          { path: '/equipment', component: EquipmentManageVue},
           { path: '/user/info', component: UserInfoVue },
           { path: '/user/avatar', component: UserAvatarVue },
           { path: '/user/resetPassword', component: UserResetPasswordVue },
-          { path: '/book', component: EquipmentBook}
+          { path: '/book', component: EquipmentBook},
+          { path: '/audits', component: EquipmentAudits},
       ]
     }
-    // {
-    //   path: '/',
-    //   component: LayoutVue,
-    //   redirect:'/article/manage',
-    //   children: [
-    //     { path: '/article/category', component: ArticleCategoryVue },
-    //     { path: '/article/manage', component: ArticleManageVue },
-    //     { path: '/user/info', component: UserInfoVue },
-    //     { path: '/user/avatar', component: UserAvatarVue },
-    //     { path: '/user/resetPassword', component: UserResetPasswordVue }
-    //   ]
-    // }
 ]
 
 
