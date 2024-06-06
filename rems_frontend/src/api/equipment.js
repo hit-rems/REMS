@@ -29,7 +29,6 @@ export const equipmentBatchAddService = (fileList)=>{
     // 创建一个新的 FormData 对象
     const formData = new FormData();
 
-
     // 遍历文件列表，将文件添加到 formData 中
     fileList.forEach((file) => {
         formData.append('files', file.raw);
