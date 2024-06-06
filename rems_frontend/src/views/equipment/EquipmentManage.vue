@@ -1,16 +1,15 @@
 <script setup>
 import {
-    Edit,
-    Delete
+  Edit,
+  Delete
 } from '@element-plus/icons-vue'
 
-import { ref } from 'vue'
+import {ref} from 'vue'
 import Table from '@/components/Table.vue'
 import Pager from '@/components/Pager.vue'
 
 //设备分类数据模型
-const categorys = ref([
-])
+const categorys = ref([])
 
 //用户搜索时下拉框选中的设备类型和设备状态
 const type = ref('')
@@ -18,7 +17,7 @@ const discard = ref('')
 
 //设备列表数据模型
 const equipments = ref([
-    {},
+  {},
 ])
 
 //添加表单数据模型
@@ -42,17 +41,18 @@ const pageSize = ref(10)//每页条数
 
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
-    pageSize.value = size
-    equipmentList()
+  pageSize.value = size
+  equipmentList()
 }
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
-    pageNum.value = num
-    equipmentList()
+  pageNum.value = num
+  equipmentList()
 }
 
 
-import { equipmentCategoryListService,
+import {
+  equipmentCategoryListService,
   equipmentListService,
   equipmentAddService,
   equipmentDeleteService,
@@ -61,24 +61,30 @@ import { equipmentCategoryListService,
 
 //回显科研设备分类
 const equipmentCategoryList = async () => {
-    let result = await equipmentCategoryListService();
-    categorys.value = result.data;
+  let result = await equipmentCategoryListService();
+  categorys.value = result.data;
 }
 
 //获取科研设备列表数据
 const equipmentList = async () => {
-    let params = {
-        pageNum: pageNum.value,
-        pageSize: pageSize.value,
-        type: type.value ? type.value : null,
-        discard: discard.value ? discard.value : null,
+  let params = {
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+    type: type.value ? type.value : null,
+    discard: discard.value ? discard.value : null,
+  }
+
+  let result = await equipmentListService(params);
+  
+  //渲染视图
+  total.value = result.data.total;
+  equipments.value = result.data.items.map(item => {
+    // 假设 'updateTime' 是需要格式化的字段
+    if (item.updateTime) {
+      item.updateTime = formatDate(item.updateTime);
     }
-
-    let result = await equipmentListService(params);
-
-    //渲染视图
-    total.value = result.data.total;
-    equipments.value = result.data.items;
+    return item;
+  });
 
 }
 
@@ -87,49 +93,51 @@ equipmentList();
 
 // import { QuillEditor } from '@vueup/vue-quill'
 // import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { Plus } from '@element-plus/icons-vue'
+import {Plus} from '@element-plus/icons-vue'
 //控制抽屉是否显示
 const visibleDrawer = ref(false)
 
 const addRules = {
   id: [
-    { required: true, message: '请输入设备号', trigger: 'blur' },
-    { type: 'number', message: '设备号必须为整数', trigger: 'blur', transform: value => Number(value) }
+    {required: true, message: '请输入设备号', trigger: 'blur'},
+    {type: 'number', message: '设备号必须为整数', trigger: 'blur', transform: value => Number(value)}
   ],
   name: [
-    { required: true, message: '请输入设备名称', trigger: 'blur' }
+    {required: true, message: '请输入设备名称', trigger: 'blur'}
   ],
   type: [
-    { required: true, message: '请选择设备类型', trigger: 'change' }
+    {required: true, message: '请选择设备类型', trigger: 'change'}
   ],
   brand: [
-    { required: true, message: '请输入设备品牌', trigger: 'blur' }
+    {required: true, message: '请输入设备品牌', trigger: 'blur'}
   ],
   department: [
-    { required: true, message: '请选择所属单位', trigger: 'change' }
+    {required: true, message: '请选择所属单位', trigger: 'change'}
   ],
   file: [
-    {required:true, message:'请上传图片'}
+    {required: true, message: '请上传图片'}
   ],
 }
 
 const title = ref('')
 
 //导入token
-import { useTokenStore } from '@/stores/token.js';
+import {useTokenStore} from '@/stores/token.js';
+
 const tokenStore = useTokenStore();
 
 // 上传成功的回调函数
-const uploadSuccess = (result)=>{
-    equipmentModel.value.url = result.data;
-    console.log(result.data);
+const uploadSuccess = (result) => {
+  equipmentModel.value.url = result.data;
+  console.log(result.data);
 }
 
 
 const addEquipmentForm = ref(null)
 //添加设备
 import {ElMessage, ElMessageBox} from 'element-plus'
-const addEquipment = async ()=>{
+
+const addEquipment = async () => {
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
     console.log("valid:")
@@ -143,8 +151,7 @@ const addEquipment = async ()=>{
         for (const key in equipmentModel.value) {
           if (key === 'file' && equipmentModel.value.file) {
             formData.append('file', equipmentModel.value.file)
-          }
-          else {
+          } else {
             formData.append(key, equipmentModel.value[key])
           }
         }
@@ -168,11 +175,10 @@ const addEquipment = async ()=>{
         equipmentList();
         //清除添加设备页面的原数据
         clearEquipmentModel();
-      }else{
+      } else {
         ElMessage.error('未检测到图片')
       }
-    }
-    else {
+    } else {
       ElMessage.error('添加设备失败，请检查输入项');
     }
   })
@@ -245,14 +251,15 @@ const deleteEquipment = (row) => {
         equipmentList();
       })
       .catch(() => {
-        ElMessage({type: 'info', message: '用户取消了删除',
+        ElMessage({
+          type: 'info', message: '用户取消了删除',
         })
       })
 }
 
 
-const clearEquipmentModel = ()=>{
-  equipmentModel.value={
+const clearEquipmentModel = () => {
+  equipmentModel.value = {
     id: 0,
     type: '',
     name: '',
@@ -276,6 +283,12 @@ const onDelete = (row) => {
   deleteEquipment(row)
 }
 
+// 格式化时间
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  return new Date(dateString).toLocaleString('zh-CN', options).replace(/\//g, '-');
+}
+
 const columns = [
   {label: '设备号', width: '80', type: 'index', align: 'center'},
   {label: '设备名称', width: '250', prop: 'name', align: 'center'},
@@ -283,7 +296,7 @@ const columns = [
   {label: '品牌', width: '250', prop: 'brand', align: 'center'},
   {label: '所属单位', prop: 'department', align: 'center'},
   {label: '状态', width: '80', prop: 'discard', align: 'center'},
-  {label: '维护时间', width: '200', prop: 'updateTime', align: 'center'},
+  {label: '维护时间', width: '200', prop: 'updateTime', align: 'center', type: 'time'},
   {
     label: '操作',
     width: '100',
@@ -307,163 +320,166 @@ const columns = [
 
 
 <template>
-    <el-card class="page-container">
-        <template #header>
-            <div class="header">
-                <span>科研设备管理</span>
-                <div class="extra">
-<!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
-                  <el-button type="primary" @click="visibleDrawer = true; title='添加设备'; clearEquipmentModel()">添加设备</el-button>
-                </div>
-            </div>
-        </template>
+  <el-card class="page-container">
+    <template #header>
+      <div class="header">
+        <span>科研设备管理</span>
+        <div class="extra">
+          <!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
+          <el-button type="primary" @click="visibleDrawer = true; title='添加设备'; clearEquipmentModel()">添加设备
+          </el-button>
+        </div>
+      </div>
+    </template>
 
-        <!-- 搜索表单 -->
-        <el-form inline>
-            <el-form-item label="设备类型：">
-                <el-select placeholder="请选择" v-model="type" style="width: 120px;">
-                    <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+    <!-- 搜索表单 -->
+    <el-form inline>
+      <el-form-item label="设备类型：">
+        <el-select placeholder="请选择" v-model="type" style="width: 120px;">
+          <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
-            <el-form-item label="设备状态：">
-                <el-select placeholder="请选择" v-model="discard" style="width: 100px;">
-                    <el-option label="正常" value="正常"></el-option>
-                    <el-option label="报废" value="报废"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="equipmentList">搜索</el-button>
-                <el-button @click="type = ''; discard = ''">重置</el-button>
-            </el-form-item>
-        </el-form>
+      <el-form-item label="设备状态：">
+        <el-select placeholder="请选择" v-model="discard" style="width: 100px;">
+          <el-option label="正常" value="正常"></el-option>
+          <el-option label="报废" value="报废"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="equipmentList">搜索</el-button>
+        <el-button @click="type = ''; discard = ''">重置</el-button>
+      </el-form-item>
+    </el-form>
 
-        <!-- 设备列表 -->
-        <Table :columns="columns" :data="equipments" /> 
-        
-        <!-- 分页条 -->
-        <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
-        :on-current-change="onCurrentChange"/>
+    <!-- 设备列表 -->
+    <Table :columns="columns" :data="equipments"/>
 
-        <!-- 抽屉 -->
-        <el-drawer v-model="visibleDrawer" :title="title" direction="rtl" size="50%">
-            <!-- 添加设备表单 -->
-            <el-form ref="addEquipmentForm" :model="equipmentModel"  :rules="addRules" label-width="100px">
-                <el-form-item label="设备号" prop="id">
-                  <el-input v-model="equipmentModel.id" type="number" placeholder="请输入设备号"></el-input>
-                </el-form-item>
-                <el-form-item label="设备名称" prop="name">
-                    <el-input v-model="equipmentModel.name" placeholder="请输入设备名称"></el-input>
-                </el-form-item>
-                <el-form-item label="设备类型" prop="type">
-                    <el-select placeholder="请选择" v-model="equipmentModel.type">
-                        <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="品牌" prop="brand">
-                  <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
-                </el-form-item>
-                <el-form-item label="所属单位" prop="department">
-                  <el-select placeholder="请选择" v-model="equipmentModel.department">
-                    <el-option label="计算学部" value="计算学部"></el-option>
-                    <el-option label="数学学院" value="数学学院"></el-option>
-                    <el-option label="物理学院" value="物理学院"></el-option>
-                  </el-select>
-                </el-form-item>
+    <!-- 分页条 -->
+    <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+           :on-current-change="onCurrentChange"/>
 
-              <el-form-item label="设备图片" prop="file">
-                <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
-                <label for="img_input"></label>
-                <div v-if="imageData || equipmentModel.url" class="preview_box">
-                  <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%" alt="avatar"/>
-                  <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar">
-                </div>
-              </el-form-item>
+    <!-- 抽屉 -->
+    <el-drawer v-model="visibleDrawer" :title="title" direction="rtl" size="30%">
+      <!-- 添加设备表单 -->
+      <el-form ref="addEquipmentForm" :model="equipmentModel" :rules="addRules" label-width="100px">
+        <el-form-item label="设备号" prop="id">
+          <el-input v-model="equipmentModel.id" type="number" placeholder="请输入设备号"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名称" prop="name">
+          <el-input v-model="equipmentModel.name" placeholder="请输入设备名称"></el-input>
+        </el-form-item>
+        <el-form-item label="设备类型" prop="type">
+          <el-select placeholder="请选择" v-model="equipmentModel.type">
+            <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="品牌" prop="brand">
+          <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
+        </el-form-item>
+        <el-form-item label="所属单位" prop="department">
+          <el-select placeholder="请选择" v-model="equipmentModel.department">
+            <el-option label="计算学部" value="计算学部"></el-option>
+            <el-option label="数学学院" value="数学学院"></el-option>
+            <el-option label="物理学院" value="物理学院"></el-option>
+          </el-select>
+        </el-form-item>
 
-<!--                <el-form-item label="设备图片">-->
-                    <!--
-                        auto-upload:设置是否自动上传
-                        action:设置服务器接口路径
-                        name:设置上传的文件字段名
-                        headers:设置上传的请求头
-                        on-success:设置上传成功的回调函数
-                     -->
-<!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
-<!--                    :headers="{'Authorization':tokenStore.token}"-->
-<!--                    action="/api/equipment/upload"-->
-<!--                    name="file"-->
-<!--                    :on-success="uploadSuccess">-->
+        <el-form-item label="设备图片" prop="file">
+          <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
+          <label for="img_input"></label>
+          <div v-if="imageData || equipmentModel.url" class="preview_box">
+            <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%"
+                 alt="avatar"/>
+            <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar">
+          </div>
+        </el-form-item>
 
-<!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
-<!--                        <el-icon v-else class="avatar-uploader-icon">-->
-<!--                            <Plus />-->
-<!--                        </el-icon>-->
-<!--                    </el-upload>-->
-<!--                </el-form-item>-->
+        <!--                <el-form-item label="设备图片">-->
+        <!--
+            auto-upload:设置是否自动上传
+            action:设置服务器接口路径
+            name:设置上传的文件字段名
+            headers:设置上传的请求头
+            on-success:设置上传成功的回调函数
+         -->
+        <!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
+        <!--                    :headers="{'Authorization':tokenStore.token}"-->
+        <!--                    action="/api/equipment/upload"-->
+        <!--                    name="file"-->
+        <!--                    :on-success="uploadSuccess">-->
 
-                <!--添加设备按钮-->
-                <el-form-item>
-<!--                    <el-button type="primary" @click="addEquipment()">添加设备</el-button>-->
-                    <el-button type="primary"
-                               @click="title === '添加设备' ? addEquipment() : updateEquipment()">确认</el-button>
-                </el-form-item>
-            </el-form>
-        </el-drawer>
-    </el-card>
+        <!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
+        <!--                        <el-icon v-else class="avatar-uploader-icon">-->
+        <!--                            <Plus />-->
+        <!--                        </el-icon>-->
+        <!--                    </el-upload>-->
+        <!--                </el-form-item>-->
+
+        <!--添加设备按钮-->
+        <el-form-item>
+          <!--                    <el-button type="primary" @click="addEquipment()">添加设备</el-button>-->
+          <el-button type="primary"
+                     @click="title === '添加设备' ? addEquipment() : updateEquipment()">确认
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
+  </el-card>
 </template>
 
 
 <style lang="scss" scoped>
 .page-container {
-    min-height: 100%;
-    box-sizing: border-box;
+  min-height: 100%;
+  box-sizing: border-box;
 
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 /* 抽屉样式 */
 .avatar-uploader {
-    :deep() {
-        .avatar {
-            width: 178px;
-            height: 178px;
-            display: block;
-        }
-
-        .el-upload {
-            border: 1px dashed var(--el-border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: var(--el-transition-duration-fast);
-        }
-
-        .el-upload:hover {
-            border-color: var(--el-color-primary);
-        }
-
-        .el-icon.avatar-uploader-icon {
-            font-size: 28px;
-            color: #8c939d;
-            width: 178px;
-            height: 178px;
-            text-align: center;
-        }
+  ::v-deep {
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
     }
+
+    .el-upload {
+      border: 1px dashed var(--el-border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--el-transition-duration-fast);
+    }
+
+    .el-upload:hover {
+      border-color: var(--el-color-primary);
+    }
+
+    .el-icon.avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      text-align: center;
+    }
+  }
 }
 
 .editor {
-    width: 100%;
+  width: 100%;
 
-    :deep(.ql-editor) {
-        min-height: 200px;
-    }
+  :deep(.ql-editor) {
+    min-height: 200px;
+  }
 }
 </style>
