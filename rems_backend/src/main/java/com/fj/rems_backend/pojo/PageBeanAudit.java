@@ -15,5 +15,5 @@ import java.util.Map;
 public class PageBeanAudit<T>{
     private Long total;//总条数
     private List<T> items;//当前页数据集合
-    private Map<String,Integer> countStatus;//不同状态的申请单数量
+    private Map<String,Long> countStatus;//不同状态的申请单数量
 }

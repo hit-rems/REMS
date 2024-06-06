@@ -49,6 +49,7 @@ public class AuditServiceImpl implements AuditService {
             mapNum.put((String)map1.get("status"),num);
         }
         mapNum.put("全部",total);
+        pb.setCountStatus(mapNum);
         return pb;
     }
 }
