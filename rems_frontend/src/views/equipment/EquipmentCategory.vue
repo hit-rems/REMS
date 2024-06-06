@@ -1,11 +1,10 @@
 <script setup>
-import {
-  Edit,
-  Delete
-} from '@element-plus/icons-vue'
+import {Edit, Delete} from '@element-plus/icons-vue'
 import {ref} from 'vue'
-import EquipmentCategoryPieChart from '@/compoments/EquipmentCategoryPieChart.vue'
-import Pager from '@/compoments/Pager.vue'
+import EquipmentCategoryPieChart from '@/components/EquipmentCategoryPieChart.vue'
+import Pager from '@/components/Pager.vue'
+import CategoryDialog from "@/components/CategoryDialog.vue";
+import CategoryTable from '@/components/CategoryTable.vue'
 
 //声明一个异步的函数
 import {
@@ -19,7 +18,10 @@ import {
 //饼图数据
 const chartData = ref([])
 //获取所有分类
-const categories = ref([])
+const categories = ref([{
+  name: '',
+  num: '',
+}])
 const categoryList = async () => {
   let result = await categoryListService();
   categories.value = result.data;
@@ -37,7 +39,7 @@ const pageSize = ref(10)//每页条数
 
 //查询当前页面的所有分类
 const categoriesThisPage = ref([])
-const categoryPagelist = async () => {
+const categoryPageList = async () => {
   let params = {
     pageNum: pageNum.value,
     pageSize: pageSize.value
@@ -48,7 +50,7 @@ const categoryPagelist = async () => {
 }
 
 categoryList();  //刷新所有分类列表
-categoryPagelist();  //刷新当前页面的分类列表
+categoryPageList();  //刷新当前页面的分类列表
 
 //控制添加分类弹窗
 const dialogVisible = ref(false)
@@ -62,12 +64,12 @@ const categoryModel = ref({
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
   pageSize.value = size
-  categoryPagelist()
+  categoryPageList()
 }
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
   pageNum.value = num
-  categoryPagelist()
+  categoryPageList()
 }
 
 //添加分类表单校验
@@ -87,11 +89,11 @@ const addCategory = async () => {
     return
   }
   //调用接口
-  let result = await categoryAddService(categoryModel.value.name);
-  ElMessage.success(result.msg ? result.msg : '添加成功')
+  await categoryAddService(categoryModel.value.name);
+  ElMessage.success('添加成功')
 
-  categoryList();  //刷新所有分类列表
-  categoryPagelist();  //刷新当前页面的分类列表
+  await categoryList();  //刷新所有分类列表
+  await categoryPageList();  //刷新当前页面的分类列表
   dialogVisible.value = false;
 }
 
@@ -112,11 +114,11 @@ const showDialog = (row) => {
 //编辑分类
 const updateCategory = async () => {
   //调用接口
-  let result = await categoryUpdateService(oldName.value, categoryModel.value.name);
-  ElMessage.success(result.msg ? result.msg : '修改成功')
+  await categoryUpdateService(oldName.value, categoryModel.value.name);
+  ElMessage.success('修改成功')
 
-  categoryList();  //刷新所有分类列表
-  categoryPagelist();  //刷新当前页面的分类列表
+  await categoryList();  //刷新所有分类列表
+  await categoryPageList();  //刷新当前页面的分类列表
   //隐藏弹窗
   dialogVisible.value = false;
 }
@@ -151,8 +153,8 @@ const deleteCategory = (row) => {
         await categoryDeleteService(row.name);
         ElMessage({type: 'success', message: '删除成功'})
         //刷新列表
-        categoryList();
-        categoryPagelist();
+        await categoryList();
+        await categoryPageList();
       })
       .catch(() => {
         ElMessage({type: 'info', message: '用户取消了删除'})
@@ -169,43 +171,22 @@ const deleteCategory = (row) => {
         </div>
       </div>
     </template>
-    <el-table :data="categoriesThisPage" style="width: 100%">
-      <el-table-column label="序号" width="100" type="index" align="center"></el-table-column>
-      <el-table-column label="分类名称" prop="name" align="center"></el-table-column>
-      <el-table-column label="数量" prop="num" align="center"></el-table-column>
-      <el-table-column label="操作" width="100" align="center">
-        <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row); title = '编辑分类'"></el-button>
-          <el-button :icon="Delete" circle plain type="danger" @click="deleteCategory(row)"></el-button>
-        </template>
-      </el-table-column>
-      <template #empty>
-        <el-empty description="没有数据"/>
-      </template>
-    </el-table>
+    <CategoryTable :categoriesThisPage="categoriesThisPage" :showDialog="showDialog" :deleteCategory="deleteCategory"/>
 
     <!-- 分页条 -->
-    <Pager v-model:pageNum="pageNum" v-model:pageSize="pageSize" :total="total" />
+    <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+           :on-current-change="onCurrentChange"/>
 
     <!-- 添加分类弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="title" width="30%">
-      <el-form :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px">
-        <el-form-item label="分类名称" prop="name">
-          <el-input v-model="categoryModel.name" minlength="1" maxlength="10"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary"
-                               @click="title === '添加分类' ? addCategory() : updateCategory()"> 确认 </el-button>
-                </span>
-      </template>
-    </el-dialog>
+    <CategoryDialog :dialogVisible.sync="dialogVisible" :title="title" :categoryModel.sync="categoryModel"
+                    :rules="rules" :addCategory="addCategory" :updateCategory="updateCategory"
+                    @update:dialogVisible="dialogVisible = $event"/>
+
     <!-- 饼图容器 -->
-    <div style="display: flex; justify-content: center; align-items: center; padding-top: 0px;">
+    <div style="display: flex; justify-content: center; align-items: center;">
       <EquipmentCategoryPieChart :chartData="chartData"/>
     </div>
+
   </el-card>
 </template>
 
