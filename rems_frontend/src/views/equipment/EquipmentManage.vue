@@ -9,7 +9,7 @@ import Table from '@/components/Table.vue'
 import Pager from '@/components/Pager.vue'
 
 //设备分类数据模型
-const categorys = ref([])
+const categories = ref([])
 
 //用户搜索时下拉框选中的设备类型和设备状态
 const type = ref('')
@@ -42,12 +42,12 @@ const pageSize = ref(10)//每页条数
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
   pageSize.value = size
-  equipmentList()
+  equipmentPageList()
 }
 //当前页码发生变化，调用此函数
 const onCurrentChange = (num) => {
   pageNum.value = num
-  equipmentList()
+  equipmentPageList()
 }
 
 
@@ -62,11 +62,11 @@ import {
 //回显科研设备分类
 const equipmentCategoryList = async () => {
   let result = await equipmentCategoryListService();
-  categorys.value = result.data;
+  categories.value = result.data;
 }
 
 //获取科研设备列表数据
-const equipmentList = async () => {
+const equipmentPageList = async () => {
   let params = {
     pageNum: pageNum.value,
     pageSize: pageSize.value,
@@ -89,7 +89,7 @@ const equipmentList = async () => {
 }
 
 equipmentCategoryList()
-equipmentList();
+equipmentPageList();
 
 // import { QuillEditor } from '@vueup/vue-quill'
 // import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -172,7 +172,7 @@ const addEquipment = async () => {
         // 让抽屉消失
         visibleDrawer.value = false;
         // 刷新当前列表
-        equipmentList();
+        equipmentPageList();
         //清除添加设备页面的原数据
         clearEquipmentModel();
       } else {
@@ -227,7 +227,7 @@ const showDrawer = (row) => {
 const updateEquipment = async () => {
   let result = await equipmentUpdateService(equipmentModel.value);
   ElMessage.success('修改成功')
-  equipmentList();
+  equipmentPageList();
   visibleDrawer.value = false;
 }
 
@@ -248,7 +248,7 @@ const deleteEquipment = (row) => {
         let result = await equipmentDeleteService(row.id);
         ElMessage({type: 'success', message: '删除成功'})
         //刷新设备列表
-        equipmentList();
+        equipmentPageList();
       })
       .catch(() => {
         ElMessage({
@@ -326,6 +326,8 @@ const columns = [
         <span>科研设备管理</span>
         <div class="extra">
           <!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
+          <el-button type="primary" @click="showDialog = true; title='批量添加设备'; clearEquipmentModel()">批量添加设备
+          </el-button>
           <el-button type="primary" @click="visibleDrawer = true; title='添加设备'; clearEquipmentModel()">添加设备
           </el-button>
         </div>
@@ -336,7 +338,7 @@ const columns = [
     <el-form inline>
       <el-form-item label="设备类型：">
         <el-select placeholder="请选择" v-model="type" style="width: 120px;">
-          <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
+          <el-option v-for="c in categories" :key="c.name" :label="c.name" :value="c.name">
           </el-option>
         </el-select>
       </el-form-item>
@@ -348,7 +350,7 @@ const columns = [
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="equipmentList">搜索</el-button>
+        <el-button type="primary" @click="equipmentPageList">搜索</el-button>
         <el-button @click="type = ''; discard = ''">重置</el-button>
       </el-form-item>
     </el-form>
@@ -365,14 +367,15 @@ const columns = [
       <!-- 添加设备表单 -->
       <el-form ref="addEquipmentForm" :model="equipmentModel" :rules="addRules" label-width="100px">
         <el-form-item label="设备号" prop="id">
-          <el-input v-model="equipmentModel.id" type="number" placeholder="请输入设备号"></el-input>
+          <el-input v-if="title ==='添加设备'" v-model="equipmentModel.id" type="number" placeholder="请输入设备号"></el-input>
+          <el-input v-else v-model="equipmentModel.id" type="number" placeholder="请输入设备号" disabled></el-input>
         </el-form-item>
         <el-form-item label="设备名称" prop="name">
           <el-input v-model="equipmentModel.name" placeholder="请输入设备名称"></el-input>
         </el-form-item>
         <el-form-item label="设备类型" prop="type">
           <el-select placeholder="请选择" v-model="equipmentModel.type">
-            <el-option v-for="c in categorys" :key="c.name" :label="c.name" :value="c.name">
+            <el-option v-for="c in categories" :key="c.name" :label="c.name" :value="c.name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -391,9 +394,9 @@ const columns = [
           <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
           <label for="img_input"></label>
           <div v-if="imageData || equipmentModel.url" class="preview_box">
-            <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%"
+            <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%" style="margin-top: 10px;"
                  alt="avatar"/>
-            <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar">
+            <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar" style="margin-top: 10px;">
           </div>
         </el-form-item>
 
