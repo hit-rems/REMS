@@ -4,3 +4,8 @@ import request from '@/utils/request.js'
 export const bookPageListService = (params)=>{
     return request.post('/audit/pagelist', params)
 }
+
+//修改审核状态
+export const updateStatusService = (params)=>{
+    return request.post('/audit/update', params)
+}
