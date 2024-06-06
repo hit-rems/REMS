@@ -166,14 +166,14 @@ const handleCommand = (command)=>{
                 <router-view></router-view>
             </el-main>
             <!-- 底部区域 -->
-            <el-footer>科研设备管理平台 ©2024 Created by HIT team</el-footer>
+            <el-footer>科研设备管理平台 ©2024 Created by&nbsp;<a href="http://github.com/hit-rems" target="_blank">HIT-REMS team</a></el-footer>
         </el-container>
     </el-container>
 </template>
 
 <style lang="scss" scoped>
 .layout-container {
-    height: 100vh;
+    height: 98vh;
 
     .el-aside {
         margin-top: -10px;
