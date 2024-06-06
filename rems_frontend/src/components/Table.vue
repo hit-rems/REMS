@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="categoriesThisPage" style="width: 100%">
+  <el-table :data="content" style="width: 100%">
     <el-table-column v-for="(column, index) in columns" :key="index"
                      :label="column.label" :prop="column.prop" :width="column.width" :align="column.align" :type="column.type">
       <template v-if="Array.isArray(column.slot)" #default="{ row }">
@@ -18,22 +18,11 @@
 
 export default {
     props: {
-    categoriesThisPage: Array,
-    showDialog: Function,
-    deleteCategory: Function,
+    content: Array,
     title: String,
     columns: {
       type: Array,
       required: true
-    }
-  },
-  methods: {
-    onEdit(row) {
-      this.showDialog(row)
-      this.$emit('update:title', '编辑分类')
-    },
-    onDelete(row) {
-      this.deleteCategory(row)
     }
   }
 }

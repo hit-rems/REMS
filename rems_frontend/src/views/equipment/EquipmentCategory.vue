@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import EquipmentCategoryPieChart from '@/components/EquipmentCategoryPieChart.vue'
 import Pager from '@/components/Pager.vue'
 import CategoryHeader from '@/components/CategoryHeader.vue'
-import CategoryTable from '@/components/CategoryTable.vue'
+import Table from '@/components/Table.vue'
 import CategoryDialog from "@/components/CategoryDialog.vue";
 
 //声明一个异步的函数
@@ -207,8 +207,7 @@ const columns = [
                     @update:dialogVisible="dialogVisible = $event"
                     @update:title="title = $event"/>
 
-    <CategoryTable :categoriesThisPage="categoriesThisPage" :showDialog="showDialog" :deleteCategory="deleteCategory"
-                   :title.sync="title" @update:title="title = $event" :columns="columns"/>
+    <Table :content="categoriesThisPage" :title.sync="title" @update:title="title = $event" :columns="columns"/>
 
     <!-- 分页条 -->
     <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
