@@ -14,6 +14,8 @@ import UserAvatarVue from '@/views/user/UserAvatar.vue'
 import UserInfoVue from '@/views/user/UserInfo.vue'
 import UserResetPasswordVue from '@/views/user/UserResetPassword.vue'
 
+import EquipmentAudits from "@/views/audits/EquipmentAudits.vue";
+
 //定义路由关系
 const routes = [
     { path: '/login', component: LoginVue},
@@ -27,9 +29,11 @@ const routes = [
           { path: '/equipment/manage', component: EquipmentManageVue},
           { path: '/user/info', component: UserInfoVue },
           { path: '/user/avatar', component: UserAvatarVue },
-          { path: '/user/resetPassword', component: UserResetPasswordVue }
+          { path: '/user/resetPassword', component: UserResetPasswordVue },
+          { path: '/audits', component: EquipmentAudits},
       ]
     }
+
     // {
     //   path: '/',
     //   component: LayoutVue,
