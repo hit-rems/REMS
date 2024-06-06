@@ -1,10 +1,12 @@
 <template>
   <div class="equipment-book">
-    <EquipmentCard
-        v-for="equipment in equipmentList"
-        :key="equipment.id"
-        :equipmentModel="equipment"
-    />
+    <el-table :data="equipmentList" style="width: 100%">
+      <el-table-column>
+        <template #default="{ row }">
+          <EquipmentCard :equipmentModel="row" />
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -18,17 +20,18 @@ export default {
   },
   data() {
     return {
-      equipmentList: [
-        {
-          id: 'NO.GW421150300',
-          name: '100V3仿真器',
-          type: '开发板类/开发套件',
-          brand: '南京研旭电气科技',
-          url: '', // Replace with the actual image path
-        },
-        // Add more equipment objects as needed
-      ],
+      equipmentList: [],
     };
+  },
+  methods: {
+    async fetchEquipmentList() {
+      // Replace with your actual API call
+      const response = await fetch('https://api.example.com/equipment');
+      this.equipmentList = await response.json();
+    },
+  },
+  created() {
+    this.fetchEquipmentList();
   },
 };
 </script>

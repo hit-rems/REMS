@@ -1,27 +1,14 @@
 <template>
-  <div class="equipment-card">
-    <div class="equipment-info">
-      <div class="equipment-row">
-        <span class="label">编号</span>
-        <span class="value">{{ equipmentModel.id }}</span>
-      </div>
-      <div class="equipment-row">
-        <span class="label">名称</span>
-        <span class="label">{{ equipmentModel.name }}</span>
-      </div>
-      <div class="equipment-row">
-        <span class="label">类别</span>
-        <span class="value">{{ equipmentModel.type }}</span>
-      </div>
-      <div class="equipment-row">
-        <span class="label">品牌</span>
-        <span class="value">{{ equipmentModel.brand }}</span>
-      </div>
-    </div>
+  <el-card class="equipment-card" shadow="hover">
+    <el-descriptions :title="equipmentModel.name" :column="1">
+      <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
+      <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
+      <el-descriptions-item label="品牌">{{ equipmentModel.brand }}</el-descriptions-item>
+    </el-descriptions>
     <div class="equipment-image">
       <img :src="equipmentModel.url" :alt="equipmentModel.name" />
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -38,32 +25,7 @@ export default {
 
 <style scoped>
 .equipment-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 16px;
   max-width: 300px;
-  background-color: #fff;
-}
-
-.equipment-info {
-  margin-bottom: 16px;
-}
-
-.equipment-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.label {
-  font-weight: bold;
-  color: #666;
-}
-
-.value {
-  color: #333;
 }
 
 .equipment-image {
@@ -73,6 +35,6 @@ export default {
 
 .equipment-image img {
   max-width: 100%;
-  height: auto;
+  height: 150px;
 }
 </style>
