@@ -28,8 +28,6 @@ const getUserInfo = async()=>{
     //数据存储到pinia中
     userInfoStore.setInfo(result.data);
 }
-// 创建一个响应式引用来存储 url，为了重新渲染
-const url = computed(() => userInfoStore.info.url)
 
 getUserInfo();
 //条目被点击后,调用的函数
@@ -147,7 +145,7 @@ const handleCommand = (command)=>{
                 <!-- command: 条目被点击后会触发,在事件函数上可以声明一个参数,接收条目对应的指令 -->
                 <el-dropdown placement="bottom-end" @command="handleCommand">
                     <span class="el-dropdown__box">
-                        <el-avatar :src="url" />
+                        <el-avatar :src="userInfoStore.info.url" />
                         <el-icon>
                             <CaretBottom />
                         </el-icon>

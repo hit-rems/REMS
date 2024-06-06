@@ -5,7 +5,7 @@ import { userInfoUpdateService, userAvatarUpdateService } from '@/api/user.js'
 import { ElMessage } from 'element-plus'
 const userInfoStore = useUserInfoStore();
 
-const userInfo = ref({...userInfoStore.info})
+const userInfo = ref(JSON.parse(JSON.stringify(userInfoStore.info)));
 const rules = {
   nickname: [
     { required: true, message: '请输入用户昵称', trigger: 'blur' },
@@ -30,7 +30,9 @@ const updateUserInfo = async () => {
   let result = await userInfoUpdateService(params);
   ElMessage.success(result.message ? result.message : '修改成功');
   // 修改 pinia 中的个人信息
-  userInfoStore.setInfo(userInfo.value)
+  //创建一个新的对象，避免直接修改userInfo.value
+  userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
+  // userInfoStore.setInfo(userInfo.value)
 }
 
 // 选择的文件
@@ -57,7 +59,9 @@ const submitUpload = async () => {
   if (result.code === 0) {
     //修改pinia中的数据
     userInfo.value.url = result.data
-    userInfoStore.setInfo(userInfo.value)
+    //创建一个新的对象，避免直接修改userInfo.value
+    userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
+    // userInfoStore.setInfo(userInfo.value)
 
     ElMessage.success('头像上传成功')
   } else {
@@ -120,7 +124,7 @@ const submitUpload = async () => {
 
 <style scoped>
 .user-avatar {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 }
 </style>
