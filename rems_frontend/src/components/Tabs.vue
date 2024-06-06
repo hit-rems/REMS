@@ -2,6 +2,10 @@
 export default {
   props: {
     total: Number,
+    eachTotal:{
+      type: Array,
+      required: true
+    },
     tabs: {
       type: Array,
       required: true
@@ -29,6 +33,12 @@ export default {
       :label="tab.label"
       :name="tab.name"
     >
+      <template #label>
+        <div>
+          {{ tab.label }}
+          <el-badge :value="eachTotal[tab.label]" class="item"></el-badge>
+        </div>
+      </template>
       <!-- 插槽 -->
       <slot></slot>
     </el-tab-pane>
