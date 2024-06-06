@@ -33,5 +33,5 @@ export const userInfoUpdateService = (userInfoData)=>{
 
 //修改头像
 export const userAvatarUpdateService = (file)=>{
-   return request.post('/equipment/upload',file)
+   return request.post('/upload',file)
 }
