@@ -5,6 +5,8 @@ import {
 } from '@element-plus/icons-vue'
 
 import { ref } from 'vue'
+import Table from '@/components/Table.vue'
+import Pager from '@/components/Pager.vue'
 
 //设备分类数据模型
 const categorys = ref([
@@ -36,7 +38,7 @@ const equipmentModel = ref({
 //分页条数据模型
 const pageNum = ref(1)//当前页
 const total = ref(20)//总条数
-const pageSize = ref(5)//每页条数
+const pageSize = ref(10)//每页条数
 
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
@@ -265,6 +267,42 @@ const clearEquipmentModel = ()=>{
   imageData.value = null;
 }
 
+// 定义点击编辑和删除按钮的回调函数
+const onEdit = (row) => {
+  showDrawer(row)
+  title.value = '编辑设备'
+}
+const onDelete = (row) => {
+  deleteEquipment(row)
+}
+
+const columns = [
+  {label: '设备号', width: '80', type: 'index', align: 'center'},
+  {label: '设备名称', width: '250', prop: 'name', align: 'center'},
+  {label: '设备类型', width: '150', prop: 'type', align: 'center'},
+  {label: '品牌', width: '250', prop: 'brand', align: 'center'},
+  {label: '所属单位', prop: 'department', align: 'center'},
+  {label: '状态', width: '80', prop: 'discard', align: 'center'},
+  {label: '维护时间', width: '200', prop: 'updateTime', align: 'center'},
+  {
+    label: '操作',
+    width: '100',
+    align: 'center',
+    slot: [
+      {
+        icon: Edit,
+        type: 'primary',
+        action: onEdit,
+      },
+      {
+        icon: Delete,
+        type: 'danger',
+        action: onDelete,
+      }
+    ]
+  },
+]
+
 </script>
 
 
@@ -300,35 +338,15 @@ const clearEquipmentModel = ()=>{
                 <el-button @click="type = ''; discard = ''">重置</el-button>
             </el-form-item>
         </el-form>
+
         <!-- 设备列表 -->
-        <el-table :data="equipments" style="width: 100%">
-          <el-table-column label="设备号" prop="id"></el-table-column>
-          <el-table-column label="设备名称" prop="name"></el-table-column>
-          <el-table-column label="设备类型" prop="type"></el-table-column>
-          <el-table-column label="品牌" prop="brand"></el-table-column>
-          <el-table-column label="所属单位" prop="department"></el-table-column>
-          <el-table-column label="状态" prop="discard"></el-table-column>
-          <el-table-column label="维护时间" width="200" prop="updateTime"> </el-table-column>
-          <el-table-column label="操作" width="100">
-                <template #default="{ row }">
-<!--                    <el-button :icon="Edit" circle plain type="primary" @click="updateEquipment(row)"></el-button>-->
-                    <el-button :icon="Edit" circle plain type="primary" @click="showDrawer(row); title = '编辑设备'"></el-button>
-                    <el-button :icon="Delete" circle plain type="danger" @click="deleteEquipment(row)"></el-button>
-                </template>
-          </el-table-column>
-
-            <template #empty>
-                <el-empty description="没有数据" />
-            </template>
-        </el-table>
-
-      <!-- 分页条 -->
-        <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[3, 5, 10, 15]"
-            layout="jumper, total, sizes, prev, pager, next" background :total="total" @size-change="onSizeChange"
-            @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end" />
+        <Table :columns="columns" :data="equipments" /> 
+        
+        <!-- 分页条 -->
+        <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+        :on-current-change="onCurrentChange"/>
 
         <!-- 抽屉 -->
-<!--        <el-drawer v-model="visibleDrawer" title="添加设备" direction="rtl" size="50%">-->
         <el-drawer v-model="visibleDrawer" :title="title" direction="rtl" size="50%">
             <!-- 添加设备表单 -->
             <el-form ref="addEquipmentForm" :model="equipmentModel"  :rules="addRules" label-width="100px">
