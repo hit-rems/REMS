@@ -2,9 +2,10 @@
   <el-dialog :model-value="dialogVisible" @update:model-value="$emit('update:dialogVisible', $event)"
              :title="批量添加设备"
              width="50%">
-    <el-form label-width="auto" style="padding-right: 30px"
+    <el-form label-width="auto" style="padding-left: 50px; padding-right: 50px"
              @submit.native.prevent="batchAddEquipment(fileList)">
-      <el-form-item label="选择多张图片">
+      <el-form-item>
+        <h3>选择多张图片</h3>
         <el-upload
           v-model:file-list="fileList"
           class="upload-demo"

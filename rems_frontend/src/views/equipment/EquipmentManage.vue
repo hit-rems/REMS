@@ -329,7 +329,7 @@ const columns = [
 ]
 
 const dialogVisible = ref(false)
-const showDialog = (row) => {
+const showDialog = () => {
   dialogVisible.value = true;
   title.value = '批量添加设备';
 }
