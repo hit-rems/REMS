@@ -18,15 +18,15 @@ const tabs = [
 const currentTab = ref(tabs[0].name);
 
 const currentContent = ref([{
-  id: '1',
-  equipmentId: '1',
-  equipmentName: '设备1',
-  name: '张三 (zhangsan)',
-  createTime: '2021-09-01 12:00:00',
-  startTime: '2021-09-01 12:00:00',
-  endTime: '2021-09-01 12:00:00',
-  reason: '实验',
-  status: '待审核',
+  id: '',
+  equipmentId: '',
+  equipmentName: '',
+  name: '',
+  createTime: '',
+  startTime: '',
+  endTime: '',
+  reason: '',
+  status: '',
 }]);
 
 const title = ref('');
@@ -55,11 +55,19 @@ const eachTotal = ref([0, 0, 0, 0, 0]);
 
 const onSizeChange = (size) => {
   pageSize.value = size;
+  bookPageList();
 };
 
 const onCurrentChange = (page) => {
   pageNum.value = page;
+  bookPageList();
 };
+
+// 格式化时间
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  return new Date(dateString).toLocaleString('zh-CN', options).replace(/\//g, '-');
+}
 
 // 根据当前标签页获取对应的数据
 const bookPageList = async () => {
@@ -73,13 +81,19 @@ const bookPageList = async () => {
   total.value = result.data.total;
   eachTotal.value = result.data.eachTotal;
   currentContent.value = result.data.items;
+  currentContent.value.forEach(item => {
+    item.createTime = formatDate(item.createTime);
+    item.startTime = formatDate(item.startTime);
+    item.endTime = formatDate(item.endTime);
+  });
 }
 
 bookPageList();
 
-watch(() => currentTab, (newVal, oldVal) => {
-  bookPageList(newVal);
-}, { deep: true });
+watch(currentTab, () => {
+    // 当 currentTab 变化时，调用 bookPageList
+    bookPageList();
+  });
 </script>
 
 <template>
