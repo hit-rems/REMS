@@ -19,10 +19,24 @@ const equipments = ref([
     {},
 ])
 
+//添加表单数据模型
+const equipmentModel = ref({
+  id: 0,
+  type: '',
+  name: '',
+  department: '',
+  discard: '',
+  brand: '',
+  createTime: '',
+  updateTime: '',
+  file: null,
+  url: '',
+})
+
 //分页条数据模型
 const pageNum = ref(1)//当前页
 const total = ref(20)//总条数
-const pageSize = ref(3)//每页条数
+const pageSize = ref(5)//每页条数
 
 //当每页条数发生了变化，调用此函数
 const onSizeChange = (size) => {
@@ -35,7 +49,6 @@ const onCurrentChange = (num) => {
     equipmentList()
 }
 
-
 //回显科研设备分类
 import { equipmentCategoryListService,
   equipmentListService,
@@ -43,6 +56,7 @@ import { equipmentCategoryListService,
   equipmentDeleteService,
   equipmentUpdateService
 } from '@/api/equipment.js'
+
 
 const equipmentCategoryList = async () => {
     let result = await equipmentCategoryListService();
@@ -66,7 +80,6 @@ const equipmentList = async () => {
 
 }
 
-
 equipmentCategoryList()
 equipmentList();
 
@@ -75,19 +88,6 @@ equipmentList();
 import { Plus } from '@element-plus/icons-vue'
 //控制抽屉是否显示
 const visibleDrawer = ref(false)
-//添加表单数据模型
-const equipmentModel = ref({
-    id: 0,
-    type: '',
-    name: '',
-    department: '',
-    discard: '',
-    brand: '',
-    createTime: '',
-    updateTime: '',
-    file: null,
-    url: '',
-})
 
 const addRules = {
   id: [
@@ -105,23 +105,13 @@ const addRules = {
   ],
   department: [
     { required: true, message: '请选择所属单位', trigger: 'change' }
-  ]
+  ],
+  file: [
+    {required:true, message:'请上传图片'}
+  ],
 }
 
-const clearEquipmentModel = ()=>{
-  equipmentModel.value={
-    id: 0,
-    type: '',
-    name: '',
-    department: '',
-    discard: '',
-    brand: '',
-    createTime: '',
-    updateTime: '',
-    file: null,
-    url: '',
-  }
-}
+const title = ref('')
 
 //导入token
 import { useTokenStore } from '@/stores/token.js';
@@ -131,27 +121,21 @@ const tokenStore = useTokenStore();
 const uploadSuccess = (result)=>{
     equipmentModel.value.url = result.data;
     console.log(result.data);
-    // fetchImageWithHeaders(equipmentModel.value.url)
 }
 
+
 const addEquipmentForm = ref(null)
-
-// const params = new URLSearchParams()
-
 //添加设备
 import {ElMessage, ElMessageBox} from 'element-plus'
 const addEquipment = async ()=>{
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
-    console.log("in function")
+    console.log("valid:")
     console.log(valid)
     if (valid) {
-      // if (equipmentModel.value.file) {
-
-        // for(let key in equipmentModel.value){
-        //   params.append(key,equipmentModel.value[key]);
-        // }
-
+      console.log("have file:")
+      console.log(equipmentModel.value.file)
+      if (equipmentModel.value.file) {
         const formData = new FormData()
         // 遍历 equipmentModel.value 并添加到 formData 中
         for (const key in equipmentModel.value) {
@@ -182,37 +166,17 @@ const addEquipment = async ()=>{
         equipmentList();
         //清除添加设备页面的原数据
         clearEquipmentModel();
-
-        // // 调用接口
-        // let result = await equipmentAddService(equipmentModel.value);
-        // ElMessage.success('添加成功');
-        // // 让抽屉消失
-        // visibleDrawer.value = false;
-        // // 刷新当前列表
-        // equipmentList();
-        // //清除添加设备页面的原数据
-        // clearEquipmentModel();
-
-      // }else{
-      //   ElMessage.error('未检测到图片')
-      // }
+      }else{
+        ElMessage.error('未检测到图片')
+      }
     }
     else {
       ElMessage.error('添加设备失败，请检查输入项');
     }
   })
-
-    // console.log(equipmentModel.value)
-    // //调用接口
-    // let result = await equipmentAddService(equipmentModel.value);
-    //
-    // ElMessage.success('添加成功');
-    // //让抽屉消失
-    // visibleDrawer.value = false;
-    // //刷新当前列表
-    // equipmentList()
 }
 
+// 上传图片的事件
 const imageData = ref(null)
 const onFileChange = (e) => {
   const file = e.target.files[0]; // 获取图片资源
@@ -235,6 +199,28 @@ const onFileChange = (e) => {
     console.log(imageData.value)
   };
 
+}
+
+//展示编辑弹窗
+const showDrawer = (row) => {
+  visibleDrawer.value = true;
+  //数据拷贝
+  equipmentModel.value.id = row.id;
+  equipmentModel.value.name = row.name;
+  equipmentModel.value.type = row.type;
+  equipmentModel.value.brand = row.brand;
+  equipmentModel.value.department = row.department;
+  equipmentModel.value.discard = row.discard;
+  equipmentModel.value.url = row.url
+  // equipmentModel.value.file = row.file
+}
+
+// TODO:修改设备信息的表单验证
+const updateEquipment = async () => {
+  let result = await equipmentUpdateService(equipmentModel.value);
+  ElMessage.success('修改成功')
+  equipmentList();
+  visibleDrawer.value = false;
 }
 
 const deleteEquipment = (row) => {
@@ -262,34 +248,22 @@ const deleteEquipment = (row) => {
       })
 }
 
-const title = ref('')
 
-//展示编辑弹窗
-const showDrawer = (row) => {
-  visibleDrawer.value = true;
-  //数据拷贝
-  equipmentModel.value.id = row.id;
-  equipmentModel.value.name = row.name;
-  equipmentModel.value.id = row.id;
-  equipmentModel.value.type = row.type;
-  equipmentModel.value.brand = row.brand;
-  equipmentModel.value.department = row.department;
-  equipmentModel.value.discard = row.discard;
+const clearEquipmentModel = ()=>{
+  equipmentModel.value={
+    id: 0,
+    type: '',
+    name: '',
+    department: '',
+    discard: '',
+    brand: '',
+    createTime: '',
+    updateTime: '',
+    file: null,
+    url: '',
+  }
+  imageData.value = null;
 }
-
-// TODO:修改设备信息的表单验证
-const updateEquipment = async () => {
-  let result = await equipmentUpdateService(equipmentModel.value);
-  ElMessage.success('修改成功')
-
-  equipmentList();
-  visibleDrawer.value = false;
-}
-
-const headerHandler = () => {
-  return {'Authorization':tokenStore.token}
-}
-
 
 </script>
 
@@ -378,51 +352,36 @@ const headerHandler = () => {
                   </el-select>
                 </el-form-item>
 
-              <el-form-item label="设备图片">
+              <el-form-item label="设备图片" prop="file">
                 <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
                 <label for="img_input"></label>
-                <div class="preview_box">
-                  <img v-if="imageData" class="preview" :src="imageData" width="50%" height="50%" alt="preview"/>
+                <div v-if="imageData || equipmentModel.url" class="preview_box">
+                  <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%" alt="avatar"/>
+                  <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar">
                 </div>
               </el-form-item>
 
-<!--              </el-form-item>-->
 <!--                <el-form-item label="设备图片">-->
-                    <!-- 
+                    <!--
                         auto-upload:设置是否自动上传
                         action:设置服务器接口路径
                         name:设置上传的文件字段名
                         headers:设置上传的请求头
                         on-success:设置上传成功的回调函数
                      -->
-<!--                  <div>{{imageSrc}}</div>-->
-<!--                  <br>-->
-<!--                  <div>{{equipmentModel.url}}</div>-->
-
 <!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
 <!--                    :headers="{'Authorization':tokenStore.token}"-->
 <!--                    action="/api/equipment/upload"-->
 <!--                    name="file"-->
-<!--                    :on-success="uploadSuccess"-->
-<!--                    >-->
+<!--                    :on-success="uploadSuccess">-->
 
-<!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
-<!--                             :headers="headerHandler"-->
-<!--                             action="/api/equipment/upload"-->
-<!--                             name="file"-->
-<!--                             :on-success="uploadSuccess"-->
-<!--                  >-->
-
-                  <!--                  <el-upload class="avatar-uploader" :auto-upload="false" :show-file-list="true"-->
-<!--                             name="file"-->
-<!--                             :before-upload="(file) => equipmentModel.file = file"-->
-<!--                      <img src="http://localhost:8080/file/3745cb6e60014a259ae5cebc650a8beb.png" :header="{'Authorization':tokenStore.token}">-->
 <!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
 <!--                        <el-icon v-else class="avatar-uploader-icon">-->
 <!--                            <Plus />-->
 <!--                        </el-icon>-->
 <!--                    </el-upload>-->
 <!--                </el-form-item>-->
+
                 <!--添加设备按钮-->
                 <el-form-item>
 <!--                    <el-button type="primary" @click="addEquipment()">添加设备</el-button>-->
