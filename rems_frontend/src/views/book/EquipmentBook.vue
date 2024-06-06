@@ -1,45 +1,55 @@
 <template>
   <div class="equipment-book">
-    <el-table :data="equipmentList" style="width: 100%">
-      <el-table-column>
-        <template #default="{ row }">
-          <EquipmentCard :equipmentModel="row" />
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-row :gutter="16">
+      <el-col :span="6" v-for="(item, index) in cardsThisPage" :key="index">
+        <EquipmentCard :equipmentModel="item" />
+      </el-col>
+    </el-row>
+    <Pager :pageNum="pageNum" :pageSize="pageSize" :total="total"
+           @size-change="onSizeChange" @current-change="onCurrentChange"/>
   </div>
 </template>
 
-<script>
+<script setup>
 import EquipmentCard from '@/components/EquipmentCard.vue';
+import Pager from "@/components/Pager.vue";
+import { ref, onMounted } from 'vue'
+import { equipmentListService } from "@/api/equipment.js";
 
-export default {
-  name: 'EquipmentBook',
-  components: {
-    EquipmentCard,
-  },
-  data() {
-    return {
-      equipmentList: [],
-    };
-  },
-  methods: {
-    async fetchEquipmentList() {
-      // Replace with your actual API call
-      const response = await fetch('https://api.example.com/equipment');
-      this.equipmentList = await response.json();
-    },
-  },
-  created() {
-    this.fetchEquipmentList();
-  },
-};
+const pageNum = ref(1)
+const total = ref(20)
+const pageSize = ref(10)
+const cardsThisPage = ref([])
+
+const fetchCardsPageList = async () => {
+  try {
+    const params = {
+      pageNum: pageNum.value,
+      pageSize: pageSize.value
+    }
+    const result = await equipmentListService(params)
+    total.value = result.data.total
+    cardsThisPage.value = result.data.items
+  } catch (error) {
+    console.error("Error fetching equipment list:", error)
+  }
+}
+
+onMounted(fetchCardsPageList)
+
+const onSizeChange = (size) => {
+  pageSize.value = size
+  fetchCardsPageList()
+}
+
+const onCurrentChange = (num) => {
+  pageNum.value = num
+  fetchCardsPageList()
+}
 </script>
 
 <style scoped>
 .equipment-book {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  padding: 16px;
 }
 </style>
