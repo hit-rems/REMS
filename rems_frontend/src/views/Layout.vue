@@ -171,9 +171,9 @@ const handleCommand = (command)=>{
             <!-- 中间区域 -->
             <el-main>
                 <router-view></router-view>
+                <el-footer>科研设备管理平台 ©2024 Created by&nbsp;<a href="http://github.com/hit-rems" target="_blank">HIT-REMS team</a></el-footer>
             </el-main>
             <!-- 底部区域 -->
-            <el-footer>科研设备管理平台 ©2024 Created by&nbsp;<a href="http://github.com/hit-rems" target="_blank">HIT-REMS team</a></el-footer>
         </el-container>
     </el-container>
 </template>
