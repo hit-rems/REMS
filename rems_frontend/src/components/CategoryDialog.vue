@@ -1,7 +1,8 @@
 <template>
   <el-dialog :model-value="dialogVisible" @update:model-value="$emit('update:dialogVisible', $event)" :title="title"
              width="30%">
-    <el-form :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px">
+    <el-form :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px"
+             @submit.native.prevent="title === '添加分类' ? addCategory() : updateCategory()">
       <el-form-item label="分类名称" prop="name">
         <el-input v-model="categoryModel.name" minlength="1" maxlength="10"></el-input>
       </el-form-item>
