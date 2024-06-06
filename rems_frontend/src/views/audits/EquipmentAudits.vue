@@ -1,5 +1,6 @@
 <script setup>
 import Tabs from '@/components/Tabs.vue';
+import CategoryTable from "@/components/CategoryTable.vue";
 
 // 假设您有以下标签页数据
 const tabs = [
@@ -14,6 +15,8 @@ const tabs = [
 
 <template>
   <Tabs :tabs="tabs" />
+  <CategoryTable :categoriesThisPage="categoriesThisPage" :showDialog="showDialog" :deleteCategory="deleteCategory"
+                 :title.sync="title" @update:title="title = $event" :columns="columns"/>
 </template>
 
 <style scoped lang="scss">

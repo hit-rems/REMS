@@ -57,11 +57,34 @@ const updateUserInfo = async ()=>{
                             <el-option label="物理学院" value="物理学院"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="updateUserInfo">提交修改</el-button>
-                    </el-form-item>
                 </el-form>
             </el-col>
+
+            <el-col :span="12">
+              <div class="avatar-container">
+                <img :src="userInfo.userPic" alt="User Avatar" class="user-avatar">
+              </div>
+            </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-button type="primary" @click="updateUserInfo">提交修改</el-button>
+          </el-col>
         </el-row>
     </el-card>
 </template>
+
+<style scoped>
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.user-avatar {
+  max-width: 100%;
+  height: auto;
+}
+</style>
