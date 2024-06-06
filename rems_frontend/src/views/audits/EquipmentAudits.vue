@@ -90,7 +90,8 @@ const bookPageList = async () => {
   }
   let result = await bookPageListService(params);
   total.value = result.data.total;
-  eachTotal.value = result.data.eachTotal;
+  let counts = Object.values(result.data.countStatus);
+  eachTotal.value = counts;
   currentContent.value = result.data.items;
   currentContent.value.forEach(item => {
     item.createTime = formatDate(item.createTime);
@@ -168,7 +169,7 @@ watch(currentTab, () => {
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total">
+  <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
     <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
   </Tabs>
   <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
