@@ -23,25 +23,13 @@ const routes = [
       component: LayoutVue,
       redirect:'/equipment/manage',
       children: [
-          { path: '/equipment/category', component: EquipmentCategoryVue},
-          { path: '/equipment/manage', component: EquipmentManageVue},
+          { path: '/category', component: EquipmentCategoryVue},
+          { path: '/equipment', component: EquipmentManageVue},
           { path: '/user/info', component: UserInfoVue },
           { path: '/user/avatar', component: UserAvatarVue },
           { path: '/user/resetPassword', component: UserResetPasswordVue }
       ]
     }
-    // {
-    //   path: '/',
-    //   component: LayoutVue,
-    //   redirect:'/article/manage',
-    //   children: [
-    //     { path: '/article/category', component: ArticleCategoryVue },
-    //     { path: '/article/manage', component: ArticleManageVue },
-    //     { path: '/user/info', component: UserInfoVue },
-    //     { path: '/user/avatar', component: UserAvatarVue },
-    //     { path: '/user/resetPassword', component: UserResetPasswordVue }
-    //   ]
-    // }
 ]
 
 
