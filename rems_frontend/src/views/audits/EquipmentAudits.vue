@@ -91,6 +91,7 @@ const bookPageList = async () => {
 bookPageList();
 
 watch(currentTab, () => {
+  pageNum.value = 1;
   // 仅当 currentTab 变化之后，调用 bookPageList，避免 currentTab 更新太慢导致数据错误
   bookPageList();
 });
