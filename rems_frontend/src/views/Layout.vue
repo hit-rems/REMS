@@ -1,5 +1,6 @@
 <script setup>
 import {
+    PieChart,
     Management,
     Promotion,
     Stamp,
@@ -92,7 +93,7 @@ const handleCommand = (command)=>{
                 router>
                 <el-menu-item index="/category">
                     <el-icon>
-                        <Management />
+                        <PieChart />
                     </el-icon>
                     <span>科研设备分类</span>
                 </el-menu-item>
@@ -172,24 +173,30 @@ const handleCommand = (command)=>{
                 <router-view></router-view>
             </el-main>
             <!-- 底部区域 -->
-            <el-footer>科研设备管理平台 ©2024 Created by HIT team</el-footer>
+            <el-footer>科研设备管理平台 ©2024 Created by&nbsp;<a href="http://github.com/hit-rems" target="_blank">HIT-REMS team</a></el-footer>
         </el-container>
     </el-container>
 </template>
 
 <style lang="scss" scoped>
 .layout-container {
-    height: 100vh;
+    height: 98vh;
 
     .el-aside {
+        margin-top: -10px;
+        margin-left: -10px;
+        margin-bottom: -10px;
+
         background-color: #232323;
 
         &__logo {
+            margin-top: 20px;
             height: 120px;
             background: url('@/assets/logo2.png') no-repeat center / 120px auto;
         }
 
         .el-menu {
+            margin-top: 20px;
             border-right: none;
         }
     }
