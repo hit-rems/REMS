@@ -1,6 +1,6 @@
 <template>
-  <el-card class="equipment-card" shadow="hover">
-    <el-descriptions :title="equipmentModel.name" :column="1">
+  <el-card class="equipment-card" shadow="hover" @click="openDialog">
+    <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
       <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
       <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
       <el-descriptions-item label="品牌">{{ equipmentModel.brand }}</el-descriptions-item>
@@ -8,6 +8,12 @@
     <div class="equipment-image">
       <img :src="equipmentModel.url" :alt="equipmentModel.name" />
     </div>
+
+    <!-- <el-button class="hover-button" v-show="isHovering" @click.stop="handleButtonClick">Hover Button</el-button>
+
+    <el-dialog :visible.sync="isDialogVisible" title="Hello world">
+      <p>Some contents...</p>
+    </el-dialog> -->
   </el-card>
 </template>
 
@@ -37,5 +43,11 @@ export default {
   justify-content: center;
   width: 100%;
   height: 150px;
+}
+
+::v-deep .descriptions .el-descriptions__title {
+  white-space: nowrap; /* Prevents the text from wrapping */
+  overflow: hidden; /* Hides the text that overflows the container */
+  text-overflow: ellipsis; /* Displays an ellipsis (...) when the text overflows */
 }
 </style>

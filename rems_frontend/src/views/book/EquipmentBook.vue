@@ -1,7 +1,7 @@
 <template>
   <div class="equipment-book">
-    <el-row :gutter="16">
-      <el-col :span="6" v-for="(item, index) in cardsThisPage" :key="index">
+    <el-row :gutter="30">
+      <el-col :span="4.8" v-for="(item, index) in cardsThisPage" :key="index" class="equipment-col">
         <EquipmentCard :equipmentModel="item" />
       </el-col>
     </el-row>
@@ -9,8 +9,6 @@
            @size-change="onSizeChange" @current-change="onCurrentChange"/>
   </div>
 </template>
-
-
 
 <script setup>
 import EquipmentCard from '@/components/EquipmentCard.vue';
@@ -53,5 +51,10 @@ const onCurrentChange = (num) => {
 <style scoped>
 .equipment-book {
   padding: 16px;
+}
+.equipment-col {
+  width: calc(20%);
+  padding: 10px 10px;
+  box-sizing: border-box;
 }
 </style>

@@ -3,16 +3,16 @@ import { ref, watch } from 'vue';
 import Tabs from '@/components/Tabs.vue';
 import Table from "@/components/Table.vue";
 import Pager from '@/components/Pager.vue';
-import { bookPageListService } from '@/api/book';
+import { bookPageListService } from '@/api/audit';
 import { Edit, Delete } from '@element-plus/icons-vue'
 
 // 假设您有以下标签页数据
 const tabs = [
-  { name: '1', label: '全部' },
-  { name: '2', label: '待审核' },
-  { name: '3', label: '待使用' },
-  { name: '4', label: '已通过' },
-  { name: '5', label: '未通过' },
+  { name: '全部', label: '全部', total: 0 },
+  { name: '待审核', label: '待审核', total: 0 },
+  { name: '待使用', label: '待使用', total: 0 },
+  { name: '已通过', label: '已通过', total: 0 },
+  { name: '未通过', label: '未通过', total: 0 },
 ];
 
 const currentTab = ref(tabs[0].name);
@@ -50,20 +50,20 @@ const columns = ref([
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
+// 五个页面各自的条目数量
+const eachTotal = ref([0, 0, 0, 0, 0]);
 
 const onSizeChange = (size) => {
   pageSize.value = size;
-  console.log('pageSize', size);
 };
 
 const onCurrentChange = (page) => {
   pageNum.value = page;
-  console.log('pageNum', page);
 };
 
 // 根据当前标签页获取对应的数据
 const bookPageList = async () => {
-  console.log('currentTab', currentTab.value);
+  // console.log('currentTab', currentTab.value);
   let params = {
     queryType: currentTab.value,
     pageNum: pageNum.value,
@@ -71,18 +71,19 @@ const bookPageList = async () => {
   }
   let result = await bookPageListService(params);
   total.value = result.data.total;
+  eachTotal.value = result.data.eachTotal;
   currentContent.value = result.data.items;
 }
 
 bookPageList();
-// 当标签页改变时重新获取数据
-watch(currentTab, () => {
-  bookPageList();
-});
+
+watch(() => currentTab, (newVal, oldVal) => {
+  bookPageList(newVal);
+}, { deep: true });
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" />
+  <Tabs :tabs="tabs" v-model="currentTab" :total="total" @tab-click="bookPageList"/>
   <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
   <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
            :on-current-change="onCurrentChange"/>

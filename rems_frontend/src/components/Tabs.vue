@@ -1,7 +1,7 @@
 <script>
-
 export default {
   props: {
+    total: Number,
     tabs: {
       type: Array,
       required: true
@@ -15,7 +15,7 @@ export default {
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name;
-      console.log(tab, event);
+      console.log(tab.label, event);
     }
   }
 };
