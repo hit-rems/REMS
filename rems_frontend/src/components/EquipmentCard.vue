@@ -24,17 +24,18 @@ export default {
 </script>
 
 <style scoped>
+
 .equipment-card {
   max-width: 300px;
+  width: 240px;
+  height: 340px;
+  margin-bottom: 10px;
 }
 
 .equipment-image {
   display: flex;
   justify-content: center;
-}
-
-.equipment-image img {
-  max-width: 100%;
+  width: 100%;
   height: 150px;
 }
 </style>

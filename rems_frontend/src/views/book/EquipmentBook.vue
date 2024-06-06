@@ -10,6 +10,8 @@
   </div>
 </template>
 
+
+
 <script setup>
 import EquipmentCard from '@/components/EquipmentCard.vue';
 import Pager from "@/components/Pager.vue";
