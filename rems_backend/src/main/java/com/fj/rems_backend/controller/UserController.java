@@ -94,6 +94,6 @@ public class UserController {
     public Result updateAvatar(MultipartFile file){
         String url = fileUploadService.uploadFile(file);
         userService.updateAvatar(url);
-        return Result.success();
+        return Result.success(url);
     }
 }

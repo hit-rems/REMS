@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -85,6 +86,7 @@ public class EquipmentController {
     //修改设备信息
     @PutMapping("/update")
     public Result update(@RequestBody Map<String,Object> map){
+        map.put("updateTime", LocalDateTime.now());
         equipmentService.update(map);
         return Result.success();
     }

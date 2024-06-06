@@ -56,7 +56,7 @@
             <if test="map.brand!=null">
                 brand=#{map.brand},
             </if>
-            update_time=#{map.update_time},
+            update_time=#{map.updateTime},
         </set>
         where id=#{map.id}
     </update>
