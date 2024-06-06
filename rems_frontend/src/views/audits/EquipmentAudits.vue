@@ -1,6 +1,10 @@
 <script setup>
+import { ref, watch } from 'vue';
 import Tabs from '@/components/Tabs.vue';
 import Table from "@/components/Table.vue";
+import Pager from '@/components/Pager.vue';
+import { bookPageListService } from '@/api/book';
+import { Edit, Delete } from '@element-plus/icons-vue'
 
 // 假设您有以下标签页数据
 const tabs = [
@@ -9,13 +13,79 @@ const tabs = [
   { name: '3', label: '待使用' },
   { name: '4', label: '已通过' },
   { name: '5', label: '未通过' },
-
 ];
+
+const currentTab = ref(tabs[0].name);
+
+const currentContent = ref([{
+  id: '1',
+  equipmentId: '1',
+  equipmentName: '设备1',
+  name: '张三 (zhangsan)',
+  createTime: '2021-09-01 12:00:00',
+  startTime: '2021-09-01 12:00:00',
+  endTime: '2021-09-01 12:00:00',
+  reason: '实验',
+  status: '待审核',
+}]);
+
+const title = ref('');
+const columns = ref([
+  { label: '申请单号', prop: 'id', width: '100', align: 'center' },
+  { label: '设备编号', prop: 'equipmentId', width: '100', align: 'center' },
+  { label: '设备名称', prop: 'equipmentName', width: '200', align: 'center' },
+  { label: '申请人', prop: 'name', width: '120', align: 'center' },
+  { label: '申请时间', prop: 'createTime', width: '120', align: 'center' },
+  { label: '预约开始时间', prop: 'startTime', width: '120', align: 'center' },
+  { label: '预约结束时间', prop: 'endTime', width: '120', align: 'center' },
+  { label: '用途', prop: 'reason', width: '120', align: 'center' },
+  { label: '审核状态', prop: 'status', width: '120', align: 'center' },
+  { label: '操作', prop: 'action', width: '120', align: 'center', slot: [
+    { icon: Edit, type: 'primary', action: row => console.log(row) },
+    { icon: Delete, type: 'danger', action: row => console.log(row) }
+  ] }
+]);
+
+// 分页相关
+const pageNum = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+
+const onSizeChange = (size) => {
+  pageSize.value = size;
+  console.log('pageSize', size);
+};
+
+const onCurrentChange = (page) => {
+  pageNum.value = page;
+  console.log('pageNum', page);
+};
+
+// 根据当前标签页获取对应的数据
+const bookPageList = async () => {
+  console.log('currentTab', currentTab.value);
+  let params = {
+    queryType: currentTab.value,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value
+  }
+  let result = await bookPageListService(params);
+  total.value = result.data.total;
+  currentContent.value = result.data.items;
+}
+
+bookPageList();
+// 当标签页改变时重新获取数据
+watch(currentTab, () => {
+  bookPageList();
+});
 </script>
 
 <template>
-  <Tabs :tabs="tabs" />
-  <Table :content="categoriesThisPage" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+  <Tabs :tabs="tabs" v-model="currentTab" />
+  <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+  <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+           :on-current-change="onCurrentChange"/>
 </template>
 
 <style scoped lang="scss">
