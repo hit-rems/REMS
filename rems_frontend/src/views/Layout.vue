@@ -1,5 +1,6 @@
 <script setup>
 import {
+    PieChart,
     Management,
     Promotion,
     Stamp,
@@ -85,7 +86,7 @@ const handleCommand = (command)=>{
                 router>
                 <el-menu-item index="/category">
                     <el-icon>
-                        <Management />
+                        <PieChart />
                     </el-icon>
                     <span>科研设备分类</span>
                 </el-menu-item>
