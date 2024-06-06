@@ -185,7 +185,8 @@ const deleteCategory = (row) => {
     </el-table>
 
     <!-- 分页条 -->
-    <Pager v-model:pageNum="pageNum" v-model:pageSize="pageSize" :total="total" />
+    <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+           :on-current-change="onCurrentChange"/>
 
     <!-- 添加分类弹窗 -->
     <el-dialog v-model="dialogVisible" :title="title" width="30%">

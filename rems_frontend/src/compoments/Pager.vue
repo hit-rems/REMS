@@ -1,8 +1,8 @@
 <template>
-  <el-pagination current-page="currentPage" page-size="currentPageSize" :page-sizes="[3, 5, 10, 15]"
+  <el-pagination current-page="pageNum" page-size="pageSize" :page-sizes="[3, 5, 10, 15]"
                  layout="jumper, total, sizes, prev, pager, next" background :total="total"
-                 @size-change="handleSizeChange"
-                 @current-change="handleCurrentChange" style="margin-top: 20px; justify-content: flex-end"/>
+                 @size-change="onSizeChange"
+                 @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end"/>
 </template>
 
 <script>
@@ -14,35 +14,21 @@ export default {
     },
     pageSize: {
       type: Number,
-      default: 5
+      default: 10
     },
     total: {
       type: Number,
       default: 0
-    }
-  },
-  data() {
-    return {
-      currentPage: this.pageNum,
-      currentPageSize: this.pageSize
-    };
-  },
-  methods: {
-    handleSizeChange(newSize) {
-      this.currentPageSize = newSize;
-      this.$emit('update:pageSize', newSize);
     },
-    handleCurrentChange(newPageNum) {
-      this.currentPage = newPageNum;
-      this.$emit('update:pageNum', newPageNum);
-    }
-  },
-  watch: {
-    pageNum(newPageNum) {
-      this.currentPage = newPageNum;
+    onSizeChange: {
+      type: Function,
+      default: () => {
+      }
     },
-    pageSize(newPageSize) {
-      this.currentPageSize = newPageSize;
+    onCurrentChange: {
+      type: Function,
+      default: () => {
+      }
     }
   }
 }
