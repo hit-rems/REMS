@@ -23,7 +23,7 @@ const routes = [
     {
       path: '/',
       component: LayoutVue,
-      redirect:'/equipment/manage',
+      redirect:'/equipment',
       children: [
           { path: '/category', component: EquipmentCategoryVue},
           { path: '/equipment', component: EquipmentManageVue},
