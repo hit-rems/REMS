@@ -192,24 +192,15 @@ const deleteCategory = (row) => {
            :on-current-change="onCurrentChange"/>
 
     <!-- 添加分类弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="title" width="30%">
-      <el-form :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px">
-        <el-form-item label="分类名称" prop="name">
-          <el-input v-model="categoryModel.name" minlength="1" maxlength="10"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary"
-                               @click="title === '添加分类' ? addCategory() : updateCategory()"> 确认 </el-button>
-                </span>
-      </template>
-    </el-dialog>
+    <CategoryDialog :dialogVisible.sync="dialogVisible" :title="title" :categoryModel.sync="categoryModel"
+                    :rules="rules" :addCategory="addCategory" :updateCategory="updateCategory"
+                    @update:dialogVisible="dialogVisible = $event"/>
+
     <!-- 饼图容器 -->
     <div style="display: flex; justify-content: center; align-items: center;">
       <EquipmentCategoryPieChart :chartData="chartData"/>
     </div>
+
   </el-card>
 </template>
 
