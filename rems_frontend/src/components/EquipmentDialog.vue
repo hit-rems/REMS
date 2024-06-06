@@ -7,6 +7,7 @@
       <el-form-item>
         <h3>选择多张图片</h3>
         <el-upload
+          ref="uploadRef"
           v-model:file-list="fileList"
           class="upload-demo"
           action="/equipment/uploadlist"
@@ -30,7 +31,7 @@
     </el-form>
     <template #footer>
         <span class="dialog-footer">
-          <el-button @click="$emit('update:dialogVisible', false)">取消</el-button>
+          <el-button @click="handleCancel()">取消</el-button>
           <el-button type="primary"
                      @click="batchAddEquipment(fileList)"> 确认 </el-button>
         </span>
@@ -51,6 +52,10 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
+    },
+    handleCancel() {
+      this.$refs.uploadRef.clearFiles();
+      this.$emit('update:dialogVisible', false);
     }
   }
 }
