@@ -22,14 +22,14 @@ import Tabs from '@/components/Tabs.vue'
 import Table from '@/components/Table.vue'
 export default {
   props: {
+    equipmentModel: {
+      type: Object,
+      required: true
+    },
     currentContent: {
       type: Array,
       required: true
     },
-    equipmentModel: {
-      type: Object,
-      required: true
-    }
   }
 }
 const tabs = [
