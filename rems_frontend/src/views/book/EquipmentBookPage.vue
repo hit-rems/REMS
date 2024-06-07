@@ -114,7 +114,7 @@ getEquipmentBookStatus();
 // 监视Tab的变化，并实时更新dateCount
 watch(currentTab, () => {
   dateCount = calculateDateDifference(currentTab.value);
-  console.log(dateCount);
+  // console.log(dateCount);
   getEquipmentBookStatus();
 });
 
@@ -139,8 +139,8 @@ const handleTableSelectionChange = (selectedRows) => {
     bookArray[timeMapping[row.startTime]] = true;
     selectedTimeCount++;
   })
-  console.log("bookArray:");
-  console.log(bookArray);
+  // console.log("bookArray:");
+  // console.log(bookArray);
 }
 
 // 绑定预约按钮的函数
@@ -169,8 +169,23 @@ const bookAdd = async () => {
     .catch(() => {
       ElMessage({type: 'info', message: '用户取消了操作'});
     })
-
 }
+
+
+const tableRowClassName = (row) => {
+  // console.log(row.row.status);
+  if (row.row.status === '不可约') {
+    return 'warning-row'
+  } else {
+    return 'success-row'
+  }
+  return ''
+}
+
+const isRowSelectable = (row) => {
+  return row.status === '可预约';
+}
+
 
 </script>
 
@@ -195,7 +210,10 @@ const bookAdd = async () => {
       <Tabs v-model="currentTab" :tabs="tabs">
         <div class="table-container">
           <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
-                 :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"/>
+                 :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
+                 :row-class-name="tableRowClassName"
+                 :isRowSelectable="isRowSelectable"
+          />
         </div>
       </Tabs>
     </div>

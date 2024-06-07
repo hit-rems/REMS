@@ -1,6 +1,9 @@
 <template>
-  <el-table :data="content" @selection-change="handleSelectionChange" fit>
-    <el-table-column v-if="showSelectionColumn" type="selection" ></el-table-column>
+  <el-table :data="content" @selection-change="handleSelectionChange"
+            :row-class-name="tableRowClassName"
+            fit>
+    <el-table-column v-if="showSelectionColumn"
+                     :selectable="isRowSelectable" type="selection" ></el-table-column>
     <el-table-column v-for="(column, index) in columns" :key="index"
                      :label="column.label" :prop="column.prop" :width="column.width" :align="column.align" :type="column.type" :sortable="column.sortable">
       <template v-if="Array.isArray(column.slot)" #default="{ row }">
@@ -28,6 +31,12 @@ export default {
     showSelectionColumn: {
       type: Boolean,
       default: false // 设置默认值为false
+    },
+    tableRowClassName: {
+      type: Function
+    },
+    isRowSelectable: {
+      type: Function
     }
   },
   methods: {
@@ -37,3 +46,12 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-table .warning-row {
+    --el-table-tr-bg-color: var(--el-color-danger-light-5);
+  }
+  .el-table .success-row {
+    --el-table-tr-bg-color: var(--el-color-success-light-5);
+  }
+</style>
