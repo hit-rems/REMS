@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -25,5 +27,32 @@ public class BookServiceImpl implements BookService {
         book.setCreateTime(LocalDateTime.now());
         book.setUpdateTime(LocalDateTime.now());
         bookMapper.add(book);
+    }
+
+    @Override
+    public List<Boolean> query(Map<String, Object> map) {
+        int id = (int) map.get("id");
+        //取出时间
+        int time = (int) map.get("time");
+        //查询该设备号的当天之后预约的时间
+        LocalDateTime localDateTime = LocalDateTime.now();
+        localDateTime = localDateTime.plusDays(time);
+        //将当天的时间设置为0
+        localDateTime = localDateTime.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        List<Book> books = bookMapper.query(id, localDateTime);
+        //将一天分成6个时间段，返回一个boolean数组
+        List<Boolean> list = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            //如books的开始时间与当天时间加i*4小时相等，则返回true
+            boolean flag = false;
+            for (Book book : books) {
+                if (book.getStartTime().equals(localDateTime.plusHours(i * 4))) {
+                    flag = true;
+                    break;
+                }
+            }
+            list.add(flag);
+        }
+        return list;
     }
 }

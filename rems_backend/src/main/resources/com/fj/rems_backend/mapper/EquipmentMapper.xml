@@ -18,7 +18,7 @@
                 and type=#{map.type}
             </if>
             <if test="map.name!=null">
-                and name=#{map.name}
+                and name LIKE CONCAT('%', #{map.name}, '%')
             </if>
             <if test="map.department!=null">
                 and department=#{map.department}
