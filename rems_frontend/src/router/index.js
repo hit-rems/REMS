@@ -4,9 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginVue from '@/views/Login.vue'
 import LayoutVue from '@/views/Layout.vue'
 
-// import ArticleCategoryVue from '@/views/article/ArticleCategory.vue'
-// import ArticleManageVue from '@/views/article/ArticleManage.vue'
-
 import EquipmentCategoryVue from '@/views/equipment/EquipmentCategory.vue'
 import EquipmentManageVue from '@/views/equipment/EquipmentManage.vue'
 
