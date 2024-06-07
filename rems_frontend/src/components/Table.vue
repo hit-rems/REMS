@@ -1,6 +1,6 @@
 <template>
   <el-table :data="content" style="width: 100%">
-    <!-- <el-table-column type="selection"></el-table-column> -->
+    <el-table-column v-if="showSelectionColumn" type="selection"></el-table-column>
     <el-table-column v-for="(column, index) in columns" :key="index"
                      :label="column.label" :prop="column.prop" :width="column.width" :align="column.align" :type="column.type" :sortable="column.sortable">
       <template v-if="Array.isArray(column.slot)" #default="{ row }">
@@ -25,6 +25,10 @@ export default {
     columns: {
       type: Array,
       required: true
+    },
+    showSelectionColumn: {
+      type: Boolean,
+      default: false // 设置默认值为false
     }
   }
 }

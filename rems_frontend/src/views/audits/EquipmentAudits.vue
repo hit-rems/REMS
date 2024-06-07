@@ -169,11 +169,12 @@ watch(currentTab, () => {
 
 <template>
   <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
-    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'"/>
   </Tabs>
   <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
            :on-current-change="onCurrentChange"/>
 </template>
+
 
 <style scoped lang="scss">
 </style>
