@@ -59,4 +59,11 @@ public class AuditServiceImpl implements AuditService {
         String status = (String) map.get("status");
         auditMapper.update(id,status);
     }
+
+    @Override
+    public void updatelist(Map<String, Object> map) {
+        List<Integer> idList= (List<Integer>) map.get("idList");
+        String status = (String) map.get("status");
+        auditMapper.updatelist(idList,status);
+    }
 }
