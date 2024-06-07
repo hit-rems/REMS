@@ -34,14 +34,9 @@ const routes = [
           { path: '/user/resetPassword', component: UserResetPasswordVue },
           { path: '/book', component: EquipmentBook},
           { path: '/audits', component: EquipmentAudits},
-          { path: 'bookpage', component: EquipmentBookPage},
+          { path: 'bookpage/:id', name: 'equipmentbookpage',component: EquipmentBookPage},
       ]
     },
-    {
-        path: '/bookpage/:id',
-        name: 'equipmentbookpage',
-        component: EquipmentBookPage
-    }
 ]
 
 
