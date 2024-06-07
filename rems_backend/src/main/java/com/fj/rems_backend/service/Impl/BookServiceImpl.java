@@ -20,10 +20,22 @@ public class BookServiceImpl implements BookService {
     private BookMapper bookMapper;
 
     @Override
-    public void add(Book book) {
-        Map<String, Object> map = ThreadLocalUtil.get();
-        book.setUserId((Integer) map.get("id"));
+    public void add(Map<String, Object> map) {
+        Book book = new Book();
+        Map<String, Object> mapInfo = ThreadLocalUtil.get();
+        book.setUserId((Integer) mapInfo.get("id"));
+        book.setEquipmentId((Integer) map.get("id"));
+        //取出时间
+        LocalDateTime startTime = LocalDateTime.now();
+        int day = (int) map.get("day");
+        startTime = startTime.plusDays(day);
+        startTime = startTime.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        int time = (int) map.get("time");
+        startTime = startTime.plusHours(time * 4);
+        book.setStartTime(startTime);
+        book.setEndTime(startTime.plusHours(4));
         book.setStatus("待审核");
+        book.setReason((String) map.get("reason"));
         book.setCreateTime(LocalDateTime.now());
         book.setUpdateTime(LocalDateTime.now());
         bookMapper.add(book);

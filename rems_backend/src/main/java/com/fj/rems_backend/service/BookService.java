@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BookService {
-    void add(Book book);
+    void add(Map<String, Object> map);
 
     List<Boolean> query(Map<String, Object> map);
 }
