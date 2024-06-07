@@ -1,5 +1,5 @@
 <template>
-  <el-card class="equipment-card" shadow="hover" @click="openDialog">
+  <el-card class="equipment-card" shadow="hover" @click="handleCardClick()">
     <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
       <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
       <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import {useRouter} from 'vue-router'
+
 export default {
   name: 'EquipmentCard',
   props: {
@@ -26,7 +28,15 @@ export default {
       required: true,
     },
   },
+  methods: {
+    handleCardClick() {
+      const router = useRouter();
+      console.log("hahahello");
+      router.push('/bookpage');
+    }
+  }
 };
+
 </script>
 
 <style scoped>

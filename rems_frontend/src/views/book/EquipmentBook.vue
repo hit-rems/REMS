@@ -20,7 +20,7 @@
   <div class="equipment-book">
     <el-row :gutter="30">
       <el-col :span="4.8" v-for="(item, index) in cardsThisPage" :key="index" class="equipment-col">
-        <EquipmentCard :equipmentModel="item" />
+        <EquipmentCard :equipmentModel="item"/>
       </el-col>
     </el-row>
 
@@ -92,6 +92,8 @@ const onCurrentChange = (num) => {
   pageNum.value = num
   fetchCardsPageList()
 }
+
+
 </script>
 
 <style scoped>
