@@ -1,10 +1,33 @@
 <template>
+  <!-- 搜索表单 -->
+  <el-form inline>
+    <el-form-item label="设备类型：">
+      <el-select placeholder="请选择" v-model="type" style="width: 120px;">
+        <el-option v-for="c in categories" :key="c.name" :label="c.name" :value="c.name">
+        </el-option>
+      </el-select>
+    </el-form-item>
+
+    <el-form-item label="设备名称：">
+      <el-input v-model="name" placeholder="请输入设备名称"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="fetchCardsPageList">搜索</el-button>
+      <el-button @click="type = ''; name = ''">重置</el-button>
+    </el-form-item>
+  </el-form>
+  
   <div class="equipment-book">
     <el-row :gutter="30">
       <el-col :span="4.8" v-for="(item, index) in cardsThisPage" :key="index" class="equipment-col">
         <EquipmentCard :equipmentModel="item" />
       </el-col>
     </el-row>
+
+    <template v-if="!cardsThisPage || cardsThisPage.length === 0" >
+      <el-empty description="没有数据"/>
+    </template>
+
     <Pager :pageNum="pageNum" :pageSize="pageSize" :total="total"
            @size-change="onSizeChange" @current-change="onCurrentChange"/>
   </div>
@@ -14,7 +37,24 @@
 import EquipmentCard from '@/components/EquipmentCard.vue';
 import Pager from "@/components/Pager.vue";
 import { ref, onMounted } from 'vue'
-import { equipmentListService } from "@/api/equipment.js";
+import { equipmentCategoryListService, equipmentListService } from "@/api/equipment.js";
+
+//设备分类数据模型
+const categories = ref([])
+
+//用户搜索时下拉框选中的设备类型
+const type = ref('')
+
+//用户搜索时输入的设备名称
+const name = ref('')
+
+//回显科研设备分类
+const equipmentCategoryList = async () => {
+  let result = await equipmentCategoryListService();
+  categories.value = result.data;
+}
+
+equipmentCategoryList()
 
 const pageNum = ref(1)
 const total = ref(20)
@@ -23,9 +63,15 @@ const cardsThisPage = ref([])
 
 const fetchCardsPageList = async () => {
   try {
-    const params = {
+    let params = {
       pageNum: pageNum.value,
-      pageSize: pageSize.value
+      pageSize: pageSize.value      
+    }
+    if (type.value) {
+      params.type = type.value;
+    }
+    if (name.value) {
+      params.name = name.value;
     }
     const result = await equipmentListService(params)
     total.value = result.data.total
