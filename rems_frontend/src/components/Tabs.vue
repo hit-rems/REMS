@@ -18,7 +18,7 @@ export default {
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name;
-      console.log(tab.label, event);
+      // console.log(tab.label, event);
     }
   }
 };
@@ -34,7 +34,7 @@ export default {
     >
       <template #label>
         {{ tab.label }}
-        <el-badge :value="eachTotal[tab.label]" class="item" type="info" color="red"></el-badge>
+        <el-badge v-if="eachTotal" :value="eachTotal[tab.label]" class="item" type="info" color="red"></el-badge>
       </template>
       <!-- 插槽 -->
       <slot></slot>
