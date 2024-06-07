@@ -84,7 +84,7 @@ const submitUpload = async () => {
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>基本资料</span>
+        <h1>基本资料</h1>
       </div>
     </template>
     <el-row>

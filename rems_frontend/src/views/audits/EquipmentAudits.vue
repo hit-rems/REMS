@@ -63,6 +63,7 @@ const pageSize = ref(10);
 const total = ref(0);
 // 五个页面各自的条目数量
 const eachTotal = ref([0, 0, 0, 0, 0]);
+const idList = ref([]);
 
 const onSizeChange = (size) => {
   pageSize.value = size;
@@ -164,28 +165,34 @@ const onClickButton = (row, type) => {
 }
 
 //批量处理
+const handleTableSelectionChange = (selectedRows) => {
+  // 处理选中行的数据
+  idList.value = selectedRows.map(row => row.id);
+  console.log(selectedRows);
+}
 const BatchPasses = async (idList) => {
-  // 遍历 idList
-  for (let id of idList) {
-    // 调用 updateStatus 方法，将状态更新为 "已通过"
-    await updateStatus({ id }, '已通过');
+  //判断是否有数据
+  if (idList.length === 0) {
+    ElMessage({type: 'warning', message: '请先选择要操作的数据'});
+    return;
   }
-  // 重新获取数据
-  await bookPageList();
+  await updateStatusBatch(idList, '已通过');
   // 显示操作成功的消息
   ElMessage({type: 'success', message: '批量操作成功'});
+  // 重新获取数据
+  await bookPageList();
 }
 
 const BatchFailure = async (idList) => {
-  // 遍历 idList
-  for (let id of idList) {
-    // 调用 updateStatus 方法，将状态更新为 "已通过"
-    await updateStatus({ id }, '已通过');
+  if (idList.length === 0) {
+    ElMessage({type: 'warning', message: '请先选择要操作的数据'});
+    return;
   }
-  // 重新获取数据
-  await bookPageList();
+  await updateStatusBatch(idList, '未通过');
   // 显示操作成功的消息
   ElMessage({type: 'success', message: '批量操作成功'});
+  // 重新获取数据
+  await bookPageList();
 }
 
 bookPageList();
@@ -199,7 +206,7 @@ watch(currentTab, () => {
 
 <template>
   <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
-    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'"/>
+    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
   </Tabs>
   <el-row type="flex" justify="space-between" align="middle">
     <el-col v-if="currentTab === '待审核'" :span="2">
@@ -208,7 +215,7 @@ watch(currentTab, () => {
       </el-button>
     </el-col>
     <el-col v-if="currentTab === '待审核'" :span="2">
-      <el-button type="primary" size="small" @click="BatchFailure(idLIst)">
+      <el-button type="primary" size="small" @click="BatchFailure(idList)">
         批量不通过
       </el-button>
     </el-col>

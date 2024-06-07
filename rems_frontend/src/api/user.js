@@ -35,3 +35,8 @@ export const userInfoUpdateService = (userInfoData)=>{
 export const userAvatarUpdateService = (file)=>{
    return request.post('/user/updateAvatar',file)
 }
+
+//重置密码
+export const userResetPasswordService = (passwordData)=>{
+    return request.patch('/user/updatePwd',passwordData)
+}
