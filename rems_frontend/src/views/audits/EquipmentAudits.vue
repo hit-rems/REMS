@@ -169,6 +169,7 @@ const handleTableSelectionChange = (selectedRows) => {
   // 处理选中行的数据
   idList.value = selectedRows.map(row => row.id);
   console.log(selectedRows);
+  console.log(idList.value);
 }
 const BatchPasses = async (idList) => {
   //判断是否有数据

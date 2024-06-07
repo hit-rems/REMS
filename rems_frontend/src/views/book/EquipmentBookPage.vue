@@ -3,7 +3,8 @@ import { ref, watch } from 'vue';
 // import BookPage from "@/components/BookPage.vue";
 
 import {equipmentQueryService} from '@/api/equipment.js'
-import {bookQueryService} from '@/api/book.js'
+import {bookQueryService, bookAddService} from '@/api/book.js'
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const equipmentModel = ref({
   id: 0,
@@ -30,7 +31,7 @@ const currentContent = ref([
 const columns = ref([
   { label: '预约开始时间', prop: 'startTime', width: '120', align: 'center' },
   { label: '预约结束时间', prop: 'endTime', width: '120', align: 'center' },
-  { label: '状态', prop: 'status', width: '100', align: 'center' },
+  { label: '状态', prop: 'status', width: '100', align: 'center'},
 ]);
 
 let id = 2;
@@ -101,7 +102,6 @@ const calculateDateDifference = (dateString) => {
   return differenceInDays;
 };
 
-
 const dates = generateDateArray();
 // Creating the tabs array with dates as name and label
 const tabs = dates.map(date => ({ name: date, label: date }));
@@ -111,37 +111,112 @@ const currentTab = ref(tabs[0].name);
 getEquipmentInfo();
 getEquipmentBookStatus();
 
+// 监视Tab的变化，并实时更新dateCount
 watch(currentTab, () => {
   dateCount = calculateDateDifference(currentTab.value);
   console.log(dateCount);
   getEquipmentBookStatus();
 });
 
+
+const timeMapping = {
+  "00:00": 0,
+  "04:00": 1,
+  "08:00": 2,
+  "12:00": 3,
+  "16:00": 4,
+  "20:00": 5
+};
+
+let selectedTimeCount = 0;
+let bookArray = new Array(6);
+
+// 处理选中的行的预约
+const handleTableSelectionChange = (selectedRows) => {
+  selectedTimeCount = 0;
+  bookArray.fill(false);
+  selectedRows.forEach(row => {
+    bookArray[timeMapping[row.startTime]] = true;
+    selectedTimeCount++;
+  })
+  console.log("bookArray:");
+  console.log(bookArray);
+}
+
+// 绑定预约按钮的函数
+const bookAdd = async () => {
+  const params = ref({
+    id: id,
+    day: dateCount,
+    timelist: bookArray,
+    reason: '',
+  })
+  console.log(params.value);
+
+  ElMessageBox.confirm(
+      '请确认预约（共' + selectedTimeCount + '个时间段）',
+      '温馨提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(async () => {
+    await bookAddService(params.value);
+    ElMessage({type: 'success', message: '预约成功'});
+    getEquipmentBookStatus();
+  })
+    .catch(() => {
+      ElMessage({type: 'info', message: '用户取消了操作'});
+    })
+
+}
+
 </script>
 
 <template>
   <el-row>
-    <el-col :span="8">
-      <img :src="equipmentModel.url" :alt="equipmentModel.name" />
-    </el-col>
-    <el-col :span="4">
-    </el-col>
     <el-col :span="12">
+      <img :src="equipmentModel.url" :alt="equipmentModel.name" height="80%" width="80%"/>
+    </el-col>
+    <el-col :span="2"></el-col>
+    <el-col :span="10">
       <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
         <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
         <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
         <el-descriptions-item label="品牌">{{ equipmentModel.brand }}</el-descriptions-item>
         <el-descriptions-item label="所属单位">{{ equipmentModel.department }}</el-descriptions-item>
       </el-descriptions>
+
     </el-col>
-
-    <Tabs v-model="currentTab" :tabs="tabs">
-      <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
-    </Tabs>
-
   </el-row>
+  <el-row>
+    <div class="tabs-container">
+      <Tabs v-model="currentTab" :tabs="tabs">
+        <div class="table-container">
+          <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
+                 :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"/>
+        </div>
+      </Tabs>
+    </div>
+  </el-row>
+    <el-button type="primary" @click="bookAdd()">预约</el-button>
 
 
-<!--    <BookPage :equipmentModel="equipmentModel" :currentContent="currentContent">-->
-<!--    </BookPage>-->
 </template>
+
+<style scoped>
+.tabs-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Adjust the spacing between Tabs and Table */
+}
+
+.table-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+</style>

@@ -5,3 +5,7 @@ import request from '@/utils/request.js'
 export const bookQueryService = (params) => {
     return request.post('book/query', params)
 }
+
+export const bookAddService = (params) => {
+    return request.post('book/add', params)
+}
