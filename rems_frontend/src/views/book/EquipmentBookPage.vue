@@ -1,10 +1,16 @@
 <script setup>
 import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router'
 // import BookPage from "@/components/BookPage.vue";
 
 import {equipmentQueryService} from '@/api/equipment.js'
 import {bookQueryService, bookAddService} from '@/api/book.js'
 import {ElMessage, ElMessageBox} from "element-plus";
+
+// 从路由接收参数
+const route = useRoute()
+let id = parseInt(route.params.id);
+// let id = 2;
 
 const equipmentModel = ref({
   id: 0,
@@ -34,7 +40,7 @@ const columns = ref([
   { label: '状态', prop: 'status', width: '100', align: 'center'},
 ]);
 
-let id = 2;
+
 // 距离当前日期的天数 0 - 6
 let dateCount = 0;
 const title = ref('');
@@ -61,8 +67,8 @@ const getEquipmentBookStatus = async () => {
       currentContent.value[i].status = '可预约';
     }
   }
-  console.log(result.data);
-  console.log(currentContent.value);
+  // console.log(result.data);
+  // console.log(currentContent.value);
 }
 
 const getFormattedDate = (date) => {

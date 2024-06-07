@@ -1,5 +1,5 @@
 <template>
-  <el-card class="equipment-card" shadow="hover" @click="handleCardClick()">
+  <el-card class="equipment-card" shadow="hover" @click="handleCardClick(equipmentModel.id)">
     <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
       <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
       <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
@@ -17,25 +17,38 @@
   </el-card>
 </template>
 
-<script>
-import {useRouter} from 'vue-router'
+<script setup>
+import {useRouter} from 'vue-router';
+import { defineProps } from 'vue';
 
-export default {
-  name: 'EquipmentCard',
-  props: {
-    equipmentModel: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  equipmentModel: {
+    type: Object,
+    required: true,
   },
-  methods: {
-    handleCardClick() {
-      const router = useRouter();
-      console.log("hahahello");
-      router.push('/bookpage');
-    }
-  }
+});
+
+// 点击卡片实现路由跳转
+const router = useRouter();
+const handleCardClick = (id) => {
+  router.push({ name: 'equipmentbookpage', params: { id: id }});
 };
+
+// export default {
+//   name: 'EquipmentCard',
+//   props: {
+//     equipmentModel: {
+//       type: Object,
+//       required: true,
+//     },
+//   },
+//   methods: {
+//     handleCardClick() {
+//       console.log("hahahello");
+//       router.push('/');
+//     }
+//   }
+// };
 
 </script>
 

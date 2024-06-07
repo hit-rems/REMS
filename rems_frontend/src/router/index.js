@@ -36,6 +36,11 @@ const routes = [
           { path: '/audits', component: EquipmentAudits},
           { path: 'bookpage', component: EquipmentBookPage},
       ]
+    },
+    {
+        path: '/bookpage/:id',
+        name: 'equipmentbookpage',
+        component: EquipmentBookPage
     }
 ]
 
