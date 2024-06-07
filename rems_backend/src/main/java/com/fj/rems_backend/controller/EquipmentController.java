@@ -83,6 +83,12 @@ public class EquipmentController {
         return Result.success(equipmentPageBean);
     }
 
+    @GetMapping("/query")
+    public Result query(Integer id){
+        Equipment equipment = equipmentService.findByEquipmentNo(id);
+        return Result.success(equipment);
+    }
+
     //修改设备信息
     @PutMapping("/update")
     public Result update(@RequestBody Map<String,Object> map){
