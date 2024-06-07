@@ -196,37 +196,51 @@ const isRowSelectable = (row) => {
 </script>
 
 <template>
-  <el-row>
-    <el-col :span="12">
-      <img :src="equipmentModel.url" :alt="equipmentModel.name" height="80%" width="80%"/>
-    </el-col>
-    <el-col :span="2"></el-col>
-    <el-col :span="10">
-      <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
-        <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
-        <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
-        <el-descriptions-item label="品牌">{{ equipmentModel.brand }}</el-descriptions-item>
-        <el-descriptions-item label="所属单位">{{ equipmentModel.department }}</el-descriptions-item>
-      </el-descriptions>
-
-    </el-col>
-  </el-row>
-  <el-row>
-    <div class="tabs-container">
-      <Tabs v-model="currentTab" :tabs="tabs">
-        <div class="table-container" align="center">
-          <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
-                 :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
-                 :row-class-name="tableRowClassName"
-                 :isRowSelectable="isRowSelectable"
-          />
+  <el-card>
+    <el-row :gutter="20">
+      <el-col :span="7">
+        <el-card>
+          <el-col :span="5">
+          </el-col>
+          <el-col>
+            <el-row>
+              <img :src="equipmentModel.url" :alt="equipmentModel.name" height="80%" width="80%"/>
+            </el-row>
+            <br>
+            <el-row>
+              <el-col>
+                <el-descriptions :title="equipmentModel.name" :column="1" class="descriptions">
+                  <el-descriptions-item label="编号">{{ equipmentModel.id }}</el-descriptions-item>
+                  <el-descriptions-item label="类别">{{ equipmentModel.type }}</el-descriptions-item>
+                  <el-descriptions-item label="品牌">{{ equipmentModel.brand }}</el-descriptions-item>
+                  <el-descriptions-item label="所属单位">{{ equipmentModel.department }}</el-descriptions-item>
+                </el-descriptions>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-card>
+      </el-col>
+            
+      <el-col :span="17">
+        <div class="tabs-container">
+          <Tabs v-model="currentTab" :tabs="tabs">
+            <div class="table-container" align="center">
+              <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
+                    :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
+                    :row-class-name="tableRowClassName"
+                    :isRowSelectable="isRowSelectable"
+              />
+            </div>
+          </Tabs>
         </div>
-      </Tabs>
-    </div>
-  </el-row>
-    <el-button type="primary" @click="bookAdd()">预约</el-button>
-
-
+        <el-row>
+          <el-col :span="23" align="right">
+            <el-button type="primary" @click="bookAdd()">预约</el-button>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 
 <style scoped>
@@ -241,6 +255,10 @@ const isRowSelectable = (row) => {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.flex-row {
+  display: flex;
 }
 
 </style>
