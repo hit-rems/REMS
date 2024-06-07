@@ -37,10 +37,17 @@ const updateUserInfo = async () => {
 
 // 选择的文件
 const file = ref(null)
+const imageToUpload = ref(null)
 
 // 在文件选择后保存文件
 const handleFileChange = (fileToUpload) => {
   file.value = fileToUpload.raw
+
+  const reader = new FileReader();
+  reader.readAsDataURL(fileToUpload.raw);
+  reader.onload = (arg)=> {
+    imageToUpload.value = arg.target.result;
+  }
 }
 
 // 触发上传
@@ -56,6 +63,9 @@ const submitUpload = async () => {
   let result = await userAvatarUpdateService(formData)
   //输出result
   console.log(result)
+
+  imageToUpload.value = null
+
   if (result.code === 0) {
     //修改pinia中的数据
     userInfo.value.url = result.data
@@ -102,8 +112,8 @@ const submitUpload = async () => {
       </el-col>
       <el-col :span="4">
       </el-col>
-      <el-col :span="10">
-        <img :src="userInfo.url" class="user-avatar">
+      <el-col :span="6">
+        <img :src="userInfo.url" class="user-avatar" :span="4">
         <el-upload
             class="avatar-uploader"
             :show-file-list="false"
@@ -118,13 +128,17 @@ const submitUpload = async () => {
           </el-button>
         </el-upload>
       </el-col>
+      <el-col v-if="imageToUpload" :span="4">
+        <img :src="imageToUpload" class="user-avatar">
+        <div style="color: gray">待上传的新头像</div>
+      </el-col>
     </el-row>
   </el-card>
 </template>
 
 <style scoped>
 .user-avatar {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
 }
 </style>
