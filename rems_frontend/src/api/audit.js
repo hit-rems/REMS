@@ -9,3 +9,7 @@ export const bookPageListService = (params)=>{
 export const updateStatusService = (params)=>{
     return request.post('/audit/update', params)
 }
+
+export const updateStatusBatchService = (params)=>{
+    return request.post('/audit/updatelist', params)
+}

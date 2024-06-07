@@ -10,4 +10,6 @@ public interface AuditService {
     PageBeanAudit<Audit> pagelist(Map<String, Object> map);
 
     void update(Map<String, Object> map);
+
+    void updatelist(Map<String, Object> map);
 }

@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import Tabs from '@/components/Tabs.vue';
 import Table from "@/components/Table.vue";
 import Pager from '@/components/Pager.vue';
-import { bookPageListService, updateStatusService } from '@/api/audit';
+import {bookPageListService, updateStatusBatchService, updateStatusService} from '@/api/audit';
 import { Select, CloseBold } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus';
 
@@ -106,9 +106,14 @@ const updateStatus = async (row, status) => {
     status: status
   }
   let result = await updateStatusService(params);
-  if (result.code === 200) {
-    bookPageList();
+}
+
+const updateStatusBatch = async (idList,status) => {
+  let params = {
+    idList: idList,
+    status: status
   }
+  let result = await updateStatusBatchService(params);
 }
 
 // 点击通过或拒绝
@@ -158,6 +163,31 @@ const onClickButton = (row, type) => {
   }
 }
 
+//批量处理
+const BatchPasses = async (idList) => {
+  // 遍历 idList
+  for (let id of idList) {
+    // 调用 updateStatus 方法，将状态更新为 "已通过"
+    await updateStatus({ id }, '已通过');
+  }
+  // 重新获取数据
+  await bookPageList();
+  // 显示操作成功的消息
+  ElMessage({type: 'success', message: '批量操作成功'});
+}
+
+const BatchFailure = async (idList) => {
+  // 遍历 idList
+  for (let id of idList) {
+    // 调用 updateStatus 方法，将状态更新为 "已通过"
+    await updateStatus({ id }, '已通过');
+  }
+  // 重新获取数据
+  await bookPageList();
+  // 显示操作成功的消息
+  ElMessage({type: 'success', message: '批量操作成功'});
+}
+
 bookPageList();
 
 watch(currentTab, () => {
@@ -171,10 +201,30 @@ watch(currentTab, () => {
   <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
     <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'"/>
   </Tabs>
-  <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
-           :on-current-change="onCurrentChange"/>
+  <el-row type="flex" justify="space-between" align="middle">
+    <el-col v-if="currentTab === '待审核'" :span="2">
+      <el-button type="primary" size="small" @click="BatchPasses(idList)">
+        批量通过
+      </el-button>
+    </el-col>
+    <el-col v-if="currentTab === '待审核'" :span="2">
+      <el-button type="primary" size="small" @click="BatchFailure(idLIst)">
+        批量不通过
+      </el-button>
+    </el-col>
+    <el-col :span="currentTab === '待审核' ? 20 : 24">
+      <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+             :on-current-change="onCurrentChange"/>
+    </el-col>
+  </el-row>
 </template>
 
 
 <style scoped lang="scss">
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 </style>
+

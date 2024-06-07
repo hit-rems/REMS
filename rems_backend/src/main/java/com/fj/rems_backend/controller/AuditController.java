@@ -29,4 +29,10 @@ public class AuditController {
         auditService.update(map);
         return Result.success();
     }
+
+    @PostMapping("/updatelist")
+    public Result updatelist(@RequestBody Map<String,Object> map){
+        auditService.updatelist(map);
+        return Result.success();
+    }
 }
