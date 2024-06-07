@@ -50,3 +50,8 @@ export const equipmentDeleteService = (id)=>{
 export const equipmentUpdateService = (equipmentData)=>{
     return request.put('/equipment/update', equipmentData)
 }
+
+//科研设备查询
+export const equipmentQueryService = (id)=>{
+    return request.get('/equipment/query', id)
+}
