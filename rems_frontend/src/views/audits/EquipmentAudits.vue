@@ -127,7 +127,7 @@ const onClickButton = (row, type) => {
   //提示用户  确认框
   if (type === '通过') {
     ElMessageBox.confirm(
-      '你确认要通过该申请单吗?',
+      '你确认要通过该申请单吗？',
       '温馨提示',
       {
         confirmButtonText: '确认',
@@ -145,7 +145,7 @@ const onClickButton = (row, type) => {
     })
   } else {
     ElMessageBox.confirm(
-      '你确认要拒绝该申请单吗?',
+      '你确认要拒绝该申请单吗？',
       '温馨提示',
       {
         confirmButtonText: '确认',
@@ -176,23 +176,50 @@ const BatchPasses = async (idList) => {
     ElMessage({type: 'warning', message: '请先选择要操作的数据'});
     return;
   }
-  await updateStatusBatch(idList, '已通过');
-  // 显示操作成功的消息
-  ElMessage({type: 'success', message: '批量操作成功'});
-  // 重新获取数据
-  await bookPageList();
+  ElMessageBox.confirm(
+      '你确认要通过这些申请单吗？（共' + idList.length + '条）',
+      '温馨提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(async () => {
+    await updateStatusBatch(idList, '已通过');
+    // 显示操作成功的消息
+    ElMessage({type: 'success', message: '批量操作成功'});
+    // 重新获取数据
+    await bookPageList();
+  })
+  .catch(() => {
+    ElMessage({type: 'info', message: '用户取消了操作'});
+  })
 }
+
 
 const BatchFailure = async (idList) => {
   if (idList.length === 0) {
     ElMessage({type: 'warning', message: '请先选择要操作的数据'});
     return;
   }
-  await updateStatusBatch(idList, '未通过');
-  // 显示操作成功的消息
-  ElMessage({type: 'success', message: '批量操作成功'});
-  // 重新获取数据
-  await bookPageList();
+  ElMessageBox.confirm(
+      '你确认要拒绝这些申请单吗？（共' + idList.length + '条）',
+      '温馨提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(async () => {
+    await updateStatusBatch(idList, '未通过');
+    // 显示操作成功的消息
+    ElMessage({type: 'success', message: '批量操作成功'});
+    // 重新获取数据
+    await bookPageList();
+  })
+  .catch(() => {
+    ElMessage({type: 'info', message: '用户取消了操作'});
+  })
 }
 
 bookPageList();
@@ -208,7 +235,7 @@ watch(currentTab, () => {
   <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
     <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
   </Tabs>
-  <el-row type="flex" justify="space-between" align="middle">
+  <el-row type="flex" justify="space-between" align="bottom">
     <el-col v-if="currentTab === '待审核'" :span="2">
       <el-button type="primary" size="small" @click="BatchPasses(idList)">
         批量通过
@@ -216,7 +243,7 @@ watch(currentTab, () => {
     </el-col>
     <el-col v-if="currentTab === '待审核'" :span="2">
       <el-button type="primary" size="small" @click="BatchFailure(idList)">
-        批量不通过
+        批量拒绝
       </el-button>
     </el-col>
     <el-col :span="currentTab === '待审核' ? 20 : 24">
