@@ -25,20 +25,23 @@ public class BookServiceImpl implements BookService {
         Map<String, Object> mapInfo = ThreadLocalUtil.get();
         book.setUserId((Integer) mapInfo.get("id"));
         book.setEquipmentId((Integer) map.get("id"));
+        book.setStatus("待审核");
+        book.setReason((String) map.get("reason"));
+        book.setCreateTime(LocalDateTime.now());
+        book.setUpdateTime(LocalDateTime.now());
         //取出时间
         LocalDateTime startTime = LocalDateTime.now();
         int day = (int) map.get("day");
         startTime = startTime.plusDays(day);
         startTime = startTime.withHour(0).withMinute(0).withSecond(0).withNano(0);
-        int time = (int) map.get("time");
-        startTime = startTime.plusHours(time * 4);
-        book.setStartTime(startTime);
-        book.setEndTime(startTime.plusHours(4));
-        book.setStatus("待审核");
-        book.setReason((String) map.get("reason"));
-        book.setCreateTime(LocalDateTime.now());
-        book.setUpdateTime(LocalDateTime.now());
-        bookMapper.add(book);
+        List<Boolean> timelist = (List<Boolean>) map.get("timelist");
+        for (int i = 0; i < 6; i++) {
+            if (timelist.get(i)) {
+                book.setStartTime(startTime.plusHours(i * 4));
+                book.setEndTime(startTime.plusHours(i * 4 + 4));
+                bookMapper.add(book);
+            }
+        }
     }
 
     @Override
