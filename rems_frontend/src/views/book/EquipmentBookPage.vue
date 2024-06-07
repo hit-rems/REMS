@@ -214,7 +214,7 @@ const isRowSelectable = (row) => {
   <el-row>
     <div class="tabs-container">
       <Tabs v-model="currentTab" :tabs="tabs">
-        <div class="table-container">
+        <div class="table-container" align="center">
           <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
                  :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
                  :row-class-name="tableRowClassName"
