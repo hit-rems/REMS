@@ -106,9 +106,6 @@ const updateStatus = async (row, status) => {
     status: status
   }
   let result = await updateStatusService(params);
-  // if (result.data.code === 0) {
-  //   bookPageList();
-  // }
 }
 
 const updateStatusBatch = async (idList,status) => {
