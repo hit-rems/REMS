@@ -34,12 +34,12 @@ const title = ref('');
 const columns = ref([
   { label: '申请单号', prop: 'id', width: '120', align: 'center', sortable: true },
   { label: '设备编号', prop: 'equipmentId', width: '80', align: 'center' },
-  { label: '设备名称', prop: 'equipmentName', width: '220', align: 'center' },
-  { label: '申请人', prop: 'name', width: '120', align: 'center' },
+  { label: '设备名称', prop: 'equipmentName', width: '200', align: 'center' },
+  { label: '申请人', prop: 'name', align: 'center' },
   { label: '申请时间', prop: 'createTime', width: '120', align: 'center', sortable: true },
   { label: '预约开始时间', prop: 'startTime', width: '120', align: 'center' },
   { label: '预约结束时间', prop: 'endTime', width: '120', align: 'center' },
-  { label: '用途', prop: 'reason', width: '80', align: 'center' },
+  { label: '用途', prop: 'reason', align: 'center' },
   { label: '审核状态', prop: 'status', width: '100', align: 'center' },
   { label: '操作', prop: 'action', width: '120', align: 'center',
     slot: [

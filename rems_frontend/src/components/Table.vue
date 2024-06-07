@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="content" style="width: 100%" @selection-change="handleSelectionChange">
+  <el-table :data="content" @selection-change="handleSelectionChange" fit>
     <el-table-column v-if="showSelectionColumn" type="selection" ></el-table-column>
     <el-table-column v-for="(column, index) in columns" :key="index"
                      :label="column.label" :prop="column.prop" :width="column.width" :align="column.align" :type="column.type" :sortable="column.sortable">
