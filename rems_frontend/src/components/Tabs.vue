@@ -4,7 +4,6 @@ export default {
     total: Number,
     eachTotal:{
       type: Array,
-      required: true
     },
     tabs: {
       type: Array,
