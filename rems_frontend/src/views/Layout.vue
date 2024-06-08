@@ -91,13 +91,13 @@ const handleCommand = (command)=>{
             <!-- element-plus的菜单标签 -->
             <el-menu active-text-color="#ffd04b" background-color="#232323"  text-color="#fff"
                 router>
-                <el-menu-item index="/category">
+                <el-menu-item index="/category" v-if='userInfoStore.info.type!=="学生"'>
                     <el-icon>
                         <PieChart />
                     </el-icon>
                     <span>科研设备分类</span>
                 </el-menu-item>
-                <el-menu-item index="/equipment">
+                <el-menu-item index="/equipment" v-if='userInfoStore.info.type!=="学生"'>
                     <el-icon>
                         <Promotion />
                     </el-icon>
@@ -111,7 +111,7 @@ const handleCommand = (command)=>{
                   <span>科研设备预约</span>
                 </el-menu-item>
 
-                  <el-menu-item index="/audits">
+                  <el-menu-item index="/audits" v-if='userInfoStore.info.type!=="学生"'>
                   <el-icon><Stamp /></el-icon>
                   <span>设备预约审核</span>
                 </el-menu-item>
@@ -128,12 +128,12 @@ const handleCommand = (command)=>{
                         </el-icon>
                         <span>基本资料</span>
                     </el-menu-item>
-                    <el-menu-item index="/user/avatar">
+<!--                    <el-menu-item index="/user/avatar">
                         <el-icon>
                             <Crop />
                         </el-icon>
                         <span>更换头像</span>
-                    </el-menu-item>
+                    </el-menu-item>-->
                     <el-menu-item index="/user/resetPassword">
                         <el-icon>
                             <EditPen />
@@ -161,7 +161,7 @@ const handleCommand = (command)=>{
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item command="info" :icon="User">基本资料</el-dropdown-item>
-                            <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>
+<!--                            <el-dropdown-item command="avatar" :icon="Crop">更换头像</el-dropdown-item>-->
                             <el-dropdown-item command="resetPassword" :icon="EditPen">重置密码</el-dropdown-item>
                             <el-dropdown-item command="logout" :icon="SwitchButton">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
