@@ -1,11 +1,12 @@
 <template>
   <el-table :data="content" @selection-change="handleSelectionChange"
             :row-class-name="tableRowClassName"
-            fit>
+            fit="true"
+            style="width: 100%">
     <el-table-column v-if="showSelectionColumn"
                      :selectable="isRowSelectable" type="selection" ></el-table-column>
     <el-table-column v-for="(column, index) in columns" :key="index"
-                     :label="column.label" :prop="column.prop" :width="column.width" :align="column.align" :type="column.type" :sortable="column.sortable">
+                     :label="column.label" :prop="column.prop" v-bind="{ width: column.width || undefined }" :align="column.align" :type="column.type" :sortable="column.sortable">
       <template v-if="Array.isArray(column.slot)" #default="{ row }">
         <el-button v-for="(slot, slotIndex) in column.slot" :key="slotIndex"
                    :icon="slot.icon" circle plain :type="typeof slot.type === 'function' ? slot.type(row) : slot.type"
