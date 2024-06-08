@@ -35,9 +35,9 @@ const currentContent = ref([
 ]);
 
 const columns = ref([
-  { label: '预约开始时间', prop: 'startTime', width: '120', align: 'center' },
-  { label: '预约结束时间', prop: 'endTime', width: '120', align: 'center' },
-  { label: '状态', prop: 'status', width: '100', align: 'center'},
+  { label: '预约开始时间', prop: 'startTime', align: 'center' },
+  { label: '预约结束时间', prop: 'endTime',  align: 'center' },
+  { label: '状态', prop: 'status',  align: 'center'},
 ]);
 
 
@@ -222,13 +222,14 @@ const isRowSelectable = (row) => {
       </el-col>
             
       <el-col :span="17">
-        <div class="tabs-container">
-          <Tabs v-model="currentTab" :tabs="tabs">
+        <div class="tabs-container" style="width: 100%">
+          <Tabs v-model="currentTab" :tabs="tabs" style="width: 100%">
             <div class="table-container" align="center">
               <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
                     :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
                     :row-class-name="tableRowClassName"
                     :isRowSelectable="isRowSelectable"
+                     style="width: 100%"
               />
             </div>
           </Tabs>
@@ -260,5 +261,6 @@ const isRowSelectable = (row) => {
 .flex-row {
   display: flex;
 }
+
 
 </style>
