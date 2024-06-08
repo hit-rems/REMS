@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router'
-// import BookPage from "@/components/BookPage.vue";
+import Table from '@/components/Table.vue';
+import Tabs from '@/components/Tabs.vue';
 
 import {equipmentQueryService} from '@/api/equipment.js'
 import {bookQueryService, bookAddService} from '@/api/book.js'
@@ -192,6 +193,12 @@ const isRowSelectable = (row) => {
   return row.status === '可预约';
 }
 
+// TODO:切换tab时需要清除所有选择的行
+// const clearSelectedRow = () => {
+//   // console.log("haha");
+//   bookArray.fill(false);
+//   this.$refs.myTable.clearSelection();
+// }
 
 </script>
 
@@ -213,7 +220,7 @@ const isRowSelectable = (row) => {
   </el-row>
   <el-row>
     <div class="tabs-container">
-      <Tabs v-model="currentTab" :tabs="tabs">
+      <Tabs v-model="currentTab" :tabs="tabs" @click="clearSelectedRow()">
         <div class="table-container" align="center">
           <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
                  :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
