@@ -116,6 +116,9 @@ const addRules = {
   department: [
     {required: true, message: '请选择所属单位', trigger: 'change'}
   ],
+  discard: [
+    {required: true, message: '请选择设备状态', trigger: 'change'}
+  ],
   file: [
     {required: true, message: '请上传图片'}
   ],
@@ -415,7 +418,12 @@ const showDialog = () => {
             <el-option label="物理学院" value="物理学院"></el-option>
           </el-select>
         </el-form-item>
-
+        <el-form-item label="状态" prop="discard">
+          <el-select placeholder="请选择" v-model="equipmentModel.discard">
+            <el-option label="正常" value="正常"></el-option>
+            <el-option label="报废" value="报废"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="设备图片" prop="file">
           <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
           <label for="img_input"></label>
