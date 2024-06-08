@@ -60,6 +60,7 @@ const handleCardClick = (id) => {
   height: 340px;
   margin-bottom: 10px;
   position: relative;
+  cursor: pointer;
 }
 
 .equipment-image {
