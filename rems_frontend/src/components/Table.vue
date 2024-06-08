@@ -2,6 +2,7 @@
   <el-table :data="content" @selection-change="handleSelectionChange"
             :row-class-name="tableRowClassName"
             fit="true"
+            ref="childTable"
             style="width: 100%">
     <el-table-column v-if="showSelectionColumn"
                      :selectable="isRowSelectable" type="selection" ></el-table-column>
@@ -43,9 +44,37 @@ export default {
   methods: {
     handleSelectionChange(selectedRows) {
       this.$emit('selection-change', selectedRows);
-    }
+    },
+    handleClearSelection() {
+      if (this.$refs.childTable) {
+        this.$refs.childTable.clearSelection();
+      }
+    },
   }
 }
+</script>
+
+<script setup>
+// import {ref} from 'vue';
+// import {getCurrentInstance} from 'vue';
+// import {toRefs} from '@vue/reactivity';
+//
+// // const instance = getCurrentInstance();
+// const childTable = ref(null);
+// const row = ref(null);
+//
+// const clear = () => {
+//   console.log("i am in");
+  // var childTableInstance = toRefs(instance.refs.childTable);
+  // childTableInstance.clearSelection.value();
+  // childTable.value.clearSelection.value();
+  // childTable.value.clearSelection();
+  // childTable.value.toggleAllSelection(row, false);
+// };
+//
+// defineExpose({
+//   clear
+// });
 </script>
 
 <style>

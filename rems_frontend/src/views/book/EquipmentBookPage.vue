@@ -118,11 +118,18 @@ const currentTab = ref(tabs[0].name);
 getEquipmentInfo();
 getEquipmentBookStatus();
 
+
+let selectedTimeCount = 0;
+let bookArray = new Array(6);
+
 // 监视Tab的变化，并实时更新dateCount
 watch(currentTab, () => {
   dateCount = calculateDateDifference(currentTab.value);
-  // console.log(dateCount);
   getEquipmentBookStatus();
+  console.log("dateCount");
+  console.log(dateCount);
+  console.log("bookArray:");
+  console.log(bookArray);
 });
 
 const timeMapping = {
@@ -134,9 +141,6 @@ const timeMapping = {
   "20:00": 5
 };
 
-let selectedTimeCount = 0;
-let bookArray = new Array(6);
-
 // 处理选中的行的预约
 const handleTableSelectionChange = (selectedRows) => {
   selectedTimeCount = 0;
@@ -145,8 +149,10 @@ const handleTableSelectionChange = (selectedRows) => {
     bookArray[timeMapping[row.startTime]] = true;
     selectedTimeCount++;
   })
-  // console.log("bookArray:");
-  // console.log(bookArray);
+  console.log("dateCount");
+  console.log(dateCount);
+  console.log("bookArray:");
+  console.log(bookArray);
 }
 
 // 绑定预约按钮的函数
@@ -192,6 +198,15 @@ const isRowSelectable = (row) => {
   return row.status === '可预约';
 }
 
+let myTable = ref(null);
+
+//TODO:
+const clearSelectedRows = () => {
+  console.log(myTable.value);
+  myTable.value.handleClearSelection();
+  // myTable.clear();
+}
+
 </script>
 
 <template>
@@ -222,12 +237,13 @@ const isRowSelectable = (row) => {
             
       <el-col :span="17">
         <div class="tabs-container" style="width: 100%">
-          <Tabs v-model="currentTab" :tabs="tabs" style="width: 100%">
+          <Tabs v-model="currentTab" :tabs="tabs" @click="clearSelectedRows()" style="width: 100%">
             <div class="table-container" align="center">
               <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
                     :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"
                     :row-class-name="tableRowClassName"
                     :isRowSelectable="isRowSelectable"
+                     ref="myTable"
                      style="width: 100%"
               />
             </div>
