@@ -125,7 +125,6 @@ watch(currentTab, () => {
   getEquipmentBookStatus();
 });
 
-
 const timeMapping = {
   "00:00": 0,
   "04:00": 1,
@@ -192,13 +191,6 @@ const tableRowClassName = (row) => {
 const isRowSelectable = (row) => {
   return row.status === '可预约';
 }
-
-// TODO:切换tab时需要清除所有选择的行
-// const clearSelectedRow = () => {
-//   // console.log("haha");
-//   bookArray.fill(false);
-//   this.$refs.myTable.clearSelection();
-// }
 
 </script>
 
