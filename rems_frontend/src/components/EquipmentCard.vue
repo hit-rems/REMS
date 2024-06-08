@@ -59,6 +59,7 @@ const handleCardClick = (id) => {
   width: 240px;
   height: 340px;
   margin-bottom: 10px;
+  position: relative;
 }
 
 .equipment-image {
@@ -73,4 +74,17 @@ const handleCardClick = (id) => {
   overflow: hidden; /* Hides the text that overflows the container */
   text-overflow: ellipsis; /* Displays an ellipsis (...) when the text overflows */
 }
+
+.equipment-card:hover::after {
+  content: "点击预约";
+  position: absolute;
+  bottom: 0px; /* 调整提示的位置，这里是相对于卡片底部向上偏移30像素 */
+  left: 0;
+  width: 100%;
+  background-color: rgba(246, 40, 63, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 8px 0;
+}
+
 </style>
