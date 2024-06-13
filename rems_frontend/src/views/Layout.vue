@@ -111,7 +111,7 @@ const handleCommand = (command)=>{
                   <span>科研设备预约</span>
                 </el-menu-item>
 
-                <el-menu-item index="/personalbook" v-if='userInfoStore.info.type==="学生"'>
+                <el-menu-item index="/approvals" v-if='userInfoStore.info.type==="学生"'>
                   <el-icon>
                     <Management />
                   </el-icon>
