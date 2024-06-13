@@ -1,5 +1,5 @@
 <script setup>
-import { User, Lock } from '@element-plus/icons-vue'
+import { Message, User, Lock } from '@element-plus/icons-vue'
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import CryptoJS from 'crypto-js';
@@ -12,7 +12,8 @@ const registerData = ref({
     rePassword: '',
     nickname: '',
     department: '',
-    type: ''
+    type: '',
+    email: ''
 })
 
 const loginData = ref({
@@ -63,6 +64,10 @@ const rules = {
     ],
     type: [
       { required: true, message: '请选择类型', trigger: 'change' }
+    ],
+    email: [
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
     ]
 }
 
@@ -130,7 +135,8 @@ const clearRegisterData = ()=>{
         rePassword:'',
         nickname: '',
         department: '',
-        type: ''
+        type: '',
+        email: ''
     }
 }
 
@@ -166,6 +172,9 @@ let registerValid = true
             <el-form ref="registerForm" size="large" autocomplete="off" v-if="isRegister" :model="registerData" :rules="rules">
                 <el-form-item>
                     <h1>注册</h1>
+                </el-form-item>
+                <el-form-item prop="email">
+                    <el-input :prefix-icon="Message" placeholder="请输入邮箱" v-model="registerData.email"></el-input>
                 </el-form-item>
                 <el-form-item prop="username">
                     <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
