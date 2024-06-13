@@ -14,7 +14,7 @@ import UserResetPasswordVue from '@/views/user/UserResetPassword.vue'
 import EquipmentBook from '@/views/book/EquipmentBook.vue'
 import EquipmentAudits from "@/views/audits/EquipmentAudits.vue";
 import EquipmentBookPage from '@/views/book/EquipmentBookPage.vue';
-import PersonalBook from '@/views/PersonalBook.vue';
+import Approvals from '@/views/approvals/Approvals.vue';
 
 
 //定义路由关系
@@ -34,7 +34,7 @@ const routes = [
           { path: '/book', component: EquipmentBook},
           { path: '/audits', component: EquipmentAudits},
           { path: 'bookpage/:id', name: 'equipmentbookpage',component: EquipmentBookPage},
-          { path: '/personalBook', component: PersonalBook}
+          { path: '/approvals', component: Approvals}
       ]
     },
 ]
