@@ -85,7 +85,7 @@ const register = async () => {
   if(registerValid){
     //registerData是一个响应式对象,如果要获取值,需要.value
     let result = await userRegisterService(registerData.value);
-    ElMessage.success('注册成功')
+    ElMessage.success('注册成功，请查看邮件激活账户');
     isRegister.value = false
     clearRegisterData()
   }

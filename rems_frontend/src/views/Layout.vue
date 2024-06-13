@@ -65,7 +65,7 @@ const handleCommand = (command)=>{
             router.push('/login')
             ElMessage({
                 type: 'success',
-                message: '退出登录成功',
+                message: '已退出登录',
             })
             
         })
