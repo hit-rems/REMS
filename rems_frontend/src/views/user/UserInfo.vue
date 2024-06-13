@@ -20,12 +20,14 @@ const rules = {
   ]
 }
 
-const userInfoForm = ref(null)
+const userInfoForm = ref([
+  { nickname: '', department: '' }
+])
 
 // 修改个人信息
 let userInfoValid = false
 const updateUserInfo = async () => {
-  const form = userInfo.value
+  const form = userInfoForm.value
   form.validate(async (valid) => {
     userInfoValid = valid
   })
