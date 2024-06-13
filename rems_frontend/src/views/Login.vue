@@ -37,15 +37,23 @@ const checkRePassword = (rule, value, callback) => {
 const rules = {
     username: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
-        { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+        { min: 4, max: 16, message: '长度为 4~16', trigger: 'blur' },
+        { validator: (rule, value, callback) => {
+            const reg = /^[a-zA-Z0-9_]{4,16}$/
+            if (!reg.test(value)) {
+                callback(new Error('用户名只能包含字母、数字和下划线'))
+            } else {
+                callback()
+            }
+        }, trigger: 'blur'}
     ],
     nickname: [
       { required: true, message: '请输入昵称', trigger: 'blur' },
-      { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+      { min: 1, max: 16, message: '长度为 1~16', trigger: 'blur' }
     ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+        { min: 1, max: 16, message: '长度不超过16位非空字符', trigger: 'blur' }
     ],
     rePassword: [
         { validator: checkRePassword, trigger: 'blur' }
