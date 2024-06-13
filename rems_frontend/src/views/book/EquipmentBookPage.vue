@@ -176,6 +176,7 @@ const bookAdd = async () => {
   ).then(async () => {
     await bookAddService(params.value);
     ElMessage({type: 'success', message: '预约成功'});
+    bookArray.fill(false);
     getEquipmentBookStatus();
   })
     .catch(() => {
@@ -200,11 +201,25 @@ const isRowSelectable = (row) => {
 
 let myTable = ref(null);
 
-//TODO:
-const clearSelectedRows = () => {
-  console.log(myTable.value);
-  myTable.value.handleClearSelection();
-  // myTable.clear();
+// //TODO:
+// const clearSelectedRows = () => {
+//   console.log(myTable.value);
+//   myTable.value.handleClearSelection();
+//   // myTable.clear();
+// }
+
+// Tabs切换前的回调函数
+// 如果当前页面存在未提交的预约选项则禁止Tabs切换
+const beforeLeave = () => {
+  let haveBook = false;
+  for (let i = 0; i < bookArray.length; i++) {
+    haveBook = haveBook || bookArray[i];
+  }
+  console.log("!haveBook = ", !haveBook);
+  if(!haveBook == false){
+    ElMessage.error("请取消或提交当前页面的预约选项，再查看其他日期。");
+  }
+  return !haveBook;
 }
 
 </script>
@@ -237,7 +252,9 @@ const clearSelectedRows = () => {
             
       <el-col :span="17">
         <div class="tabs-container" style="width: 100%">
-          <Tabs v-model="currentTab" :tabs="tabs" @click="clearSelectedRows()" style="width: 100%">
+          <Tabs v-model="currentTab" :tabs="tabs"
+                :beforeLeave="beforeLeave"
+                style="width: 100%">
             <div class="table-container" align="center">
               <Table :content="currentContent" :title.sync="title" @update:title="title = $event"
                     :columns="columns" :showSelectionColumn="true" @selection-change="handleTableSelectionChange"

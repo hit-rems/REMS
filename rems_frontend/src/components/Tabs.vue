@@ -8,6 +8,9 @@ export default {
     tabs: {
       type: Array,
       required: true
+    },
+    beforeLeave: {
+      type: Function,
     }
   },
   data() {
@@ -25,7 +28,7 @@ export default {
 </script>
 
 <template>
-  <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+  <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" :before-leave="beforeLeave">
     <el-tab-pane
       v-for="(tab, index) in tabs"
       :key="tab.name"
