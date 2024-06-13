@@ -1,10 +1,8 @@
 package com.fj.rems_backend.service.Impl;
 
 import com.fj.rems_backend.mapper.AuditMapper;
-import com.fj.rems_backend.pojo.Audit;
-import com.fj.rems_backend.pojo.Category;
-import com.fj.rems_backend.pojo.PageBean;
-import com.fj.rems_backend.pojo.PageBeanAudit;
+import com.fj.rems_backend.mapper.UserMapper;
+import com.fj.rems_backend.pojo.*;
 import com.fj.rems_backend.service.AuditService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -19,8 +17,13 @@ import java.util.Map;
 public class AuditServiceImpl implements AuditService {
     @Autowired
     private AuditMapper auditMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Override
-    public PageBeanAudit<Audit> pagelist(Map<String, Object> map) {
+    public PageBeanAudit<Audit> pagelist(Map<String, Object> map, int id) {
+        //获取用户角色
+        User user = userMapper.findByUserId(id);
+        String role = user.getType();
         //1.创建PageBean对象
         PageBeanAudit<Audit> pb = new PageBeanAudit<>();
         Integer pageNum = (Integer) map.get("pageNum");
@@ -32,7 +35,7 @@ public class AuditServiceImpl implements AuditService {
         if (type.equals("全部")) {
             type = null;
         }
-        List<Audit> as = auditMapper.list(type);
+        List<Audit> as = auditMapper.list(type,id,role);
         //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
         Page<Audit> p = (Page<Audit>) as;
         //把数据填充到PageBean对象中
@@ -40,7 +43,7 @@ public class AuditServiceImpl implements AuditService {
         pb.setItems(p.getResult());
         //查询各状态的数量
         Map<String, Long> mapNum = new HashMap<>();
-        List<Map<String, Object>> countStatus = auditMapper.countStatus();
+        List<Map<String, Object>> countStatus = auditMapper.countStatus(id,role);
         //统计总数量
         Long total = 0L;
         for (Map<String, Object> map1 : countStatus) {
@@ -48,6 +51,12 @@ public class AuditServiceImpl implements AuditService {
             total += num;
             mapNum.put((String)map1.get("status"),num);
         }
+        mapNum.put("待审核",mapNum.getOrDefault("待审核",0L));
+        mapNum.put("已通过",mapNum.getOrDefault("已通过",0L));
+        mapNum.put("未通过",mapNum.getOrDefault("未通过",0L));
+        //统计待使用的数量
+        int num = auditMapper.countWaitToUse(id,role);
+        mapNum.put("待使用",(long)num);
         mapNum.put("全部",total);
         pb.setCountStatus(mapNum);
         return pb;

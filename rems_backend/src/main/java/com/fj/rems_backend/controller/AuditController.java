@@ -2,6 +2,7 @@ package com.fj.rems_backend.controller;
 
 import com.fj.rems_backend.pojo.*;
 import com.fj.rems_backend.service.AuditService;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class AuditController {
 
     @PostMapping("/pagelist")
     public Result<PageBeanAudit<Audit>> list(@RequestBody Map<String,Object> map){
-        return Result.success(auditService.pagelist(map));
+        Map<String, Object> mapInfo = ThreadLocalUtil.get();
+        int id = (int) mapInfo.get("id");
+        return Result.success(auditService.pagelist(map, id));
     }
 
     @PostMapping("/update")

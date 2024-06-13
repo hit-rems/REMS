@@ -1,7 +1,10 @@
 package com.fj.rems_backend.controller;
 
 import com.fj.rems_backend.pojo.Audit;
+import com.fj.rems_backend.pojo.PageBeanAudit;
 import com.fj.rems_backend.pojo.Result;
+import com.fj.rems_backend.service.AuditService;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fj.rems_backend.service.BookService;
@@ -14,6 +17,8 @@ import java.util.Map;
 public class BookController {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private AuditService auditService;
 
     @PostMapping("/add")
     public Result add(@RequestBody Map<String, Object> map) {
@@ -26,9 +31,11 @@ public class BookController {
         return Result.success(bookService.query(map));
     }
 
-    @GetMapping("userInfo")
-    public Result<List<Audit>> userInfo() {
-        return Result.success(bookService.userInfo());
+    @PostMapping("userInfo")
+    public Result<PageBeanAudit<Audit>> userInfo(@RequestBody Map<String,Object> map) {
+        Map<String, Object> mapInfo = ThreadLocalUtil.get();
+        int id = (int) mapInfo.get("id");
+        return Result.success(auditService.pagelist(map, id));
     }
 
 }

@@ -7,7 +7,7 @@ import com.fj.rems_backend.pojo.PageBeanAudit;
 import java.util.Map;
 
 public interface AuditService {
-    PageBeanAudit<Audit> pagelist(Map<String, Object> map);
+    PageBeanAudit<Audit> pagelist(Map<String, Object> map, int id);
 
     void update(Map<String, Object> map);
 

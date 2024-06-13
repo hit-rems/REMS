@@ -11,8 +11,15 @@
                             ON book.user_id = user.id
                  INNER JOIN equipment
                             ON book.equipment_id = equipment.id
-        <if test="type != null">
+
+        <if test="type != null and !type.equals('待使用')">
             WHERE book.status = #{type}
+        </if>
+        <if test="type != null and type.equals('待使用')">
+            WHERE book.status = '已通过' AND book.end_time > now()
+        </if>
+        <if test="role.equals('学生')">
+            AND user_id = #{id}
         </if>
         ORDER BY book.id ASC
     </select>
