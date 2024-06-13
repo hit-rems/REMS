@@ -14,4 +14,6 @@ public class User {
     private String department;//部门
     private String type;//类型
     private String url;//头像
+    private String email;//邮箱
+    private String code;//激活码
 }

@@ -1,6 +1,7 @@
 package com.fj.rems_backend.service.Impl;
 
 import com.fj.rems_backend.mapper.BookMapper;
+import com.fj.rems_backend.pojo.Audit;
 import com.fj.rems_backend.pojo.Book;
 import com.fj.rems_backend.service.BookService;
 import com.fj.rems_backend.service.EquipmentService;
@@ -69,5 +70,13 @@ public class BookServiceImpl implements BookService {
             list.add(flag);
         }
         return list;
+    }
+
+    @Override
+    public List<Audit> userInfo() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        int id = (int) map.get("id");
+        List<Audit> audits = bookMapper.userInfo(id);
+        return audits;
     }
 }

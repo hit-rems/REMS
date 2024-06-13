@@ -1,12 +1,9 @@
 package com.fj.rems_backend.controller;
 
-import com.fj.rems_backend.pojo.Book;
+import com.fj.rems_backend.pojo.Audit;
 import com.fj.rems_backend.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.fj.rems_backend.service.BookService;
 
 import java.util.List;
@@ -27,6 +24,11 @@ public class BookController {
     @PostMapping("query")
     public Result<List<Boolean>> query(@RequestBody Map<String, Object> map) {
         return Result.success(bookService.query(map));
+    }
+
+    @GetMapping("userInfo")
+    public Result<List<Audit>> userInfo() {
+        return Result.success(bookService.userInfo());
     }
 
 }

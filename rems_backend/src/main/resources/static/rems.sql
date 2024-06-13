@@ -25,7 +25,9 @@ create table user (
                       nickname varchar(128)  default '' comment '昵称',
                       department varchar(128) default '' comment '所属单位',
                       type varchar(128) default '' comment '账号类型 [管理员] 或者 [普通用户]',
-                      url varchar(128) default '' comment '头像'
+                      url varchar(128) default '' comment '头像',
+                      email varchar(128) default '' comment '邮箱',
+                      code varchar(128) default '' comment '验证码'
 --                       constraint fk_department_user foreign key (department) references department(id)-- 外键约束
 ) comment '用户表';
 

@@ -14,6 +14,8 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @Override
     public User findByUserName(String username) {
@@ -33,8 +35,10 @@ public class UserServiceImpl implements UserService {
         String md5String = Md5Util.getMD5String(user.getPassword());
         user.setPassword(md5String);
         user.setUrl("https://tse4-mm.cn.bing.net/th/id/OIP-C.NooTQCp-Aowgc_oFC7FsiQAAAA?rs=1&pid=ImgDetMain");
-        //insert
+        user.setCode("0");//代表未激活
         userMapper.add(user);
+        //发送邮件
+        emailService.emailVerify(user.getEmail(),user.getUsername());
     }
 
     @Override
@@ -54,5 +58,15 @@ public class UserServiceImpl implements UserService {
         Map<String,Object> map = ThreadLocalUtil.get();
         Integer id = (Integer) map.get("id");
         userMapper.updatePwd(Md5Util.getMD5String(new_pwd),id);
+    }
+
+    @Override
+    public void findPassword() {
+        emailService.findPassword();
+    }
+
+    @Override
+    public void active(String username) {
+        userMapper.active(username);
     }
 }

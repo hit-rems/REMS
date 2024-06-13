@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fj.rems_backend.mapper.BookMapper">
+    <!--动态sql-->
+    <select id="userInfo" resultType="com.fj.rems_backend.pojo.Audit">
+        SELECT book.id, equipment.id as equipmentId, equipment.name as equipmentName, CONCAT(user.nickname," ","(",user.username,")") as name, book.create_time as createTime, book.start_time as startTime, book.update_time as updateTime, book.end_time as endTime, book.reason, book.status
+        FROM book
+                 INNER JOIN user
+                            ON book.user_id = user.id
+                 INNER JOIN equipment
+                            ON book.equipment_id = equipment.id
+        WHERE user.id = #{id}
+        ORDER BY book.id ASC
+    </select>
+
+</mapper>

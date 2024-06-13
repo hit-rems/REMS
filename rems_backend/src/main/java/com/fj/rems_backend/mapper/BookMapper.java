@@ -1,5 +1,6 @@
 package com.fj.rems_backend.mapper;
 
+import com.fj.rems_backend.pojo.Audit;
 import com.fj.rems_backend.pojo.Book;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,4 +18,6 @@ public interface BookMapper {
 
     @Select("select * from book where equipment_id=#{id} and start_time >= #{localDateTime}")
     List<Book> query(int id, LocalDateTime localDateTime);
+
+    List<Audit> userInfo(int id);
 }

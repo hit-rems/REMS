@@ -2,20 +2,24 @@ package com.fj.rems_backend.controller;
 
 import com.fj.rems_backend.pojo.Result;
 import com.fj.rems_backend.pojo.User;
+import com.fj.rems_backend.service.EmailService;
 import com.fj.rems_backend.service.FileUploadService;
 import com.fj.rems_backend.service.UserService;
 import com.fj.rems_backend.utils.JwtUtil;
 import com.fj.rems_backend.utils.Md5Util;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +32,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private FileUploadService fileUploadService;
+    @Autowired
+    private EmailService emailService;
+    @Value("${frontend.frontendAccessPath}")
+    private String frontendAccessPath;
 
     @PostMapping("/register")
     public Result register(User user){
@@ -37,8 +45,11 @@ public class UserController {
             //注册
             userService.register(user);
             return Result.success();
-        }else {
+        } else if (u.getCode().equals("1")){
             return Result.error("用户名已经被占用");
+        } else {
+            emailService.emailVerify(user.getEmail(),user.getUsername());
+            return Result.success();
         }
     }
 
@@ -47,12 +58,15 @@ public class UserController {
         User u=userService.findByUserName(username);
         if (u==null){
             return Result.error("用户名错误");
-        }else {
+        }else if (u.getCode().equals("0")){
+            return Result.error("用户未激活");
+        } else {
             //判断密码
             if (Md5Util.getMD5String(password).equals(u.getPassword())){
                 HashMap<String, Object> clians = new HashMap<>();
                 clians.put("id",u.getId());
                 clians.put("username",username);
+
                 String jwt = JwtUtil.genToken(clians);
                 return Result.success(jwt);
             }else {
@@ -61,10 +75,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/active")
+    public void verify(String username, HttpServletResponse response) throws IOException {
+        userService.active(username);
+        //跳转到登录页面
+        response.sendRedirect(frontendAccessPath+"/login");
+    }
+
     @GetMapping("/userInfo")
     public  Result<User> userinfo(){
         Map<String,Object> clians = ThreadLocalUtil.get();
-        User user = userService.findByUserName((String) clians.get("username"));
+        User user = userService.findByUserId((Integer) clians.get("id"));
         return Result.success(user);
     }
 
@@ -96,4 +117,11 @@ public class UserController {
         userService.updateAvatar(url);
         return Result.success(url);
     }
+
+    @GetMapping("/findPassword")
+    public Result findPassword(){
+        userService.findPassword();
+        return Result.success();
+    }
+
 }
