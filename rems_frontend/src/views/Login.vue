@@ -1,6 +1,6 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
@@ -80,7 +80,7 @@ import {useTokenStore} from '@/stores/token.js'
 import {useRouter} from 'vue-router'
 const router = useRouter()
 const tokenStore = useTokenStore();
-const login =async ()=>{
+const login = async () => {
   const form = loginForm.value
   form.validate(async (valid) => {
     loginValid = valid
@@ -93,6 +93,13 @@ const login =async ()=>{
     tokenStore.setToken(result.data)
     //跳转到首页 路由完成跳转
     router.push('/')
+    if (rememberMe.value) {
+      localStorage.setItem('username', registerData.value.username)
+      localStorage.setItem('password', registerData.value.password)
+    } else {
+      localStorage.removeItem('username')
+      localStorage.removeItem('password')
+    }
   }
   else {
     ElMessage.error('请确保所有字段都填写正确!')
@@ -114,6 +121,7 @@ const clearRegisterData = ()=>{
 //表单引用
 const registerForm = ref(null)
 const loginForm = ref(null)
+const rememberMe = ref(false)
 
 let loginValid = true
 let registerValid = true
@@ -184,7 +192,7 @@ let registerValid = true
                 </el-form-item>
                 <el-form-item class="flex">
                     <div class="flex">
-                        <el-checkbox>记住我</el-checkbox>
+                        <el-checkbox v-model="rememberMe">记住密码</el-checkbox>
                         <el-link type="primary" :underline="false">忘记密码？</el-link>
                     </div>
                 </el-form-item>
