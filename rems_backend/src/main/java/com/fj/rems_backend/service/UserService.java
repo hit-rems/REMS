@@ -17,7 +17,9 @@ public interface UserService {
 
     void updatePwd(String new_pwd);
 
-    void findPassword();
+    void findPassword(String username);
 
     void active(String username);
+
+    void resetPwd(String username);
 }

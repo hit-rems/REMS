@@ -120,9 +120,24 @@ public class UserController {
     }
 
     @GetMapping("/findPassword")
-    public Result findPassword(){
-        userService.findPassword();
-        return Result.success();
+    public Result findPassword(String username){
+        User u = userService.findByUserName(username);
+        if (u==null){
+            return Result.error("用户名不存在");
+        } else if (u.getCode().equals("0")){
+            return Result.error("用户未激活");
+        } else {
+            userService.findPassword(username);
+            return Result.success();
+        }
     }
+
+    @GetMapping("/resetPwd")
+    public void resetPwd(String username,HttpServletResponse response) throws IOException {
+        userService.resetPwd(username);
+        //跳转到登录页面
+        response.sendRedirect(frontendAccessPath+"/login");
+    }
+
 
 }

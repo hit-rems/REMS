@@ -28,4 +28,7 @@ public interface UserMapper {
 
     @Update("update user set code='1' where username=#{username}")
     void active(String username);
+
+    @Update("update user set password='123456' where username=#{username}")
+    void resetPwd(String username);
 }

@@ -43,4 +43,14 @@ public class EmailServiceImpl implements EmailService {
                     + "激活链接</a>";
         send(email, subject, text);
     }
+
+    @Async
+    @Override
+    public void initPassword(String email, String username) {
+        String subject = "重置密码";
+        String text = "<p>点击以下链接重置密码：</p>"
+                    + "<a href='http://localhost:8080/user/resetPwd?username=" + username + "'>"
+                    + "重置密码链接</a>";
+        send(email, subject, text);
+    }
 }
