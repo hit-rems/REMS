@@ -1,7 +1,8 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import CryptoJS from 'crypto-js';
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 //定义数据模型
@@ -13,6 +14,13 @@ const registerData = ref({
     department: '',
     type: ''
 })
+
+const loginData = ref({
+    username: '',
+    password: ''
+})
+
+const rememberMe = ref(false)
 
 //校验密码的函数
 const checkRePassword = (rule, value, callback) => {
@@ -29,15 +37,23 @@ const checkRePassword = (rule, value, callback) => {
 const rules = {
     username: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
-        { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+        { min: 4, max: 16, message: '长度为 4~16', trigger: 'blur' },
+        { validator: (rule, value, callback) => {
+            const reg = /^[a-zA-Z0-9_]{4,16}$/
+            if (!reg.test(value)) {
+                callback(new Error('用户名只能包含字母、数字和下划线'))
+            } else {
+                callback()
+            }
+        }, trigger: 'blur'}
     ],
     nickname: [
       { required: true, message: '请输入昵称', trigger: 'blur' },
-      { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+      { min: 1, max: 16, message: '长度为 1~16', trigger: 'blur' }
     ],
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 5, max: 16, message: '长度为5~16位非空字符', trigger: 'blur' }
+        { min: 1, max: 16, message: '长度不超过16位非空字符', trigger: 'blur' }
     ],
     rePassword: [
         { validator: checkRePassword, trigger: 'blur' }
@@ -80,19 +96,26 @@ import {useTokenStore} from '@/stores/token.js'
 import {useRouter} from 'vue-router'
 const router = useRouter()
 const tokenStore = useTokenStore();
-const login =async ()=>{
+const login = async () => {
   const form = loginForm.value
   form.validate(async (valid) => {
     loginValid = valid
   })
   if(loginValid){
     //调用接口,完成登录
-    let result =  await userLoginService(registerData.value);
+    let result =  await userLoginService(loginData.value);
     ElMessage.success('登录成功')
     //把得到的token存储到pinia中
     tokenStore.setToken(result.data)
     //跳转到首页 路由完成跳转
     router.push('/')
+    if (rememberMe.value) {
+      localStorage.setItem('username', loginData.value.username)
+      localStorage.setItem('password', CryptoJS.AES.encrypt(loginData.value.password, 'secret key 123').toString())
+    } else {
+      localStorage.removeItem('username')
+      localStorage.removeItem('password')
+    }
   }
   else {
     ElMessage.error('请确保所有字段都填写正确!')
@@ -109,6 +132,21 @@ const clearRegisterData = ()=>{
         department: '',
         type: ''
     }
+}
+
+const clearLoginData = ()=>{
+    loginData.value={
+        username:'',
+        password:''
+    }
+}
+
+clearLoginData()
+// 页面加载时,判断是否有记住密码
+if (localStorage.getItem('username') && localStorage.getItem('password')) {
+    loginData.value.username = localStorage.getItem('username')
+    loginData.value.password = CryptoJS.AES.decrypt(localStorage.getItem('password'), 'secret key 123').toString(CryptoJS.enc.Utf8)
+    rememberMe.value = true
 }
 
 //表单引用
@@ -172,19 +210,19 @@ let registerValid = true
                 </el-form-item>
             </el-form>
             <!-- 登录表单 -->
-            <el-form ref="loginForm" size="large" autocomplete="off" v-else :model="registerData" :rules="rules">
+            <el-form ref="loginForm" size="large" autocomplete="off" v-else :model="loginData" :rules="rules">
                 <el-form-item>
                     <h1>登录</h1>
                 </el-form-item>
                 <el-form-item prop="username">
-                    <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
+                    <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="loginData.username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password" show-password></el-input>
+                    <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="loginData.password" show-password></el-input>
                 </el-form-item>
                 <el-form-item class="flex">
                     <div class="flex">
-                        <el-checkbox>记住我</el-checkbox>
+                        <el-checkbox v-model="rememberMe">记住我</el-checkbox>
                         <el-link type="primary" :underline="false">忘记密码？</el-link>
                     </div>
                 </el-form-item>
@@ -193,7 +231,7 @@ let registerValid = true
                     <el-button class="button" type="primary" auto-insert-space @click="login">登录</el-button>
                 </el-form-item>
                 <el-form-item class="flex">
-                    <el-link type="info" :underline="false" @click="isRegister = true;clearRegisterData()">
+                    <el-link type="info" :underline="false" @click="isRegister = true;clearLoginData()">
                         注册 →
                     </el-link>
                 </el-form-item>

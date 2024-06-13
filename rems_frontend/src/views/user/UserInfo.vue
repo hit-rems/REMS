@@ -10,8 +10,8 @@ const rules = {
   nickname: [
     { required: true, message: '请输入用户昵称', trigger: 'blur' },
     {
-      pattern: /^\S{2,10}$/,
-      message: '昵称必须是2-10位的非空字符串',
+      pattern: /^\S{1,16}$/,
+      message: '昵称必须是1-16位的非空字符串',
       trigger: 'blur'
     }
   ],
@@ -20,19 +20,32 @@ const rules = {
   ]
 }
 
+const userInfoForm = ref([
+  { nickname: '', department: '' }
+])
+
 // 修改个人信息
+let userInfoValid = false
 const updateUserInfo = async () => {
-  let params = {
-    nickname: userInfo.value.nickname,
-    department: userInfo.value.department
+  const form = userInfoForm.value
+  form.validate(async (valid) => {
+    userInfoValid = valid
+  })
+  if(userInfoValid){
+    let params = {
+      nickname: userInfo.value.nickname,
+      department: userInfo.value.department
+    }
+    // 调用接口
+    let result = await userInfoUpdateService(params);
+    ElMessage.success(result.message ? result.message : '修改成功');
+    // 修改 pinia 中的个人信息
+    //创建一个新的对象，避免直接修改userInfo.value
+    userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
+    // userInfoStore.setInfo(userInfo.value)
+  } else {
+    ElMessage.error('请确保所有字段都填写正确!')
   }
-  // 调用接口
-  let result = await userInfoUpdateService(params);
-  ElMessage.success(result.message ? result.message : '修改成功');
-  // 修改 pinia 中的个人信息
-  //创建一个新的对象，避免直接修改userInfo.value
-  userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
-  // userInfoStore.setInfo(userInfo.value)
 }
 
 // 选择的文件
@@ -89,7 +102,7 @@ const submitUpload = async () => {
     </template>
     <el-row>
       <el-col :span="10">
-        <el-form :model="userInfo" :rules="rules" label-width="100px" size="large">
+        <el-form ref="userInfoForm" :model="userInfo" :rules="rules" label-width="100px" size="large">
           <el-form-item label="用户名">
             <el-input v-model="userInfo.username" disabled></el-input>
           </el-form-item>

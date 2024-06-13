@@ -111,6 +111,14 @@ const handleCommand = (command)=>{
                   <span>科研设备预约</span>
                 </el-menu-item>
 
+                <el-menu-item index="/approvals" v-if='userInfoStore.info.type==="学生"'>
+                  <el-icon>
+                    <Management />
+                  </el-icon>
+                  <span>个人预约详情</span>
+                </el-menu-item>
+
+
                   <el-menu-item index="/audits" v-if='userInfoStore.info.type!=="学生"'>
                   <el-icon><Stamp /></el-icon>
                   <span>设备预约审核</span>
