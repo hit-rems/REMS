@@ -15,6 +15,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     private String staticAccessPath;
     @Value("${file.uploadFolder}")
     private String uploadFolder;
+    @Value("${file.virtualPath}")
+    private String virtualPath;
 
     @Override
     public String uploadFile(MultipartFile file) {
@@ -36,7 +38,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             e.printStackTrace();
         }
         //返回外部访问地址，http...
-        String url="http://localhost:8080"+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName;
+        String url=virtualPath+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName;
         return url;
     }
 }

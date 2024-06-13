@@ -13,3 +13,5 @@ file:
   staticAccessPath: /api/file/**
   ###静态资源实际存储路径
   uploadFolder: D:/remsFile/
+  ###虚拟路径
+  virtualPath: http://localhost:8080

@@ -37,6 +37,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     private String staticAccessPath;
     @Value("${file.uploadFolder}")
     private String uploadFolder;
+    @Value("${file.virtualPath}")
+    private String virtualPath;
 
     @Override
     public Equipment findByEquipmentNo(Integer id) {
@@ -101,7 +103,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
             try {
                 file.transferTo(new java.io.File(uploadFolder + newFileName));
-                equipment.setUrl("http://localhost:8080"+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName);
+                equipment.setUrl(virtualPath+staticAccessPath.substring(0, staticAccessPath.length() - 2)+ newFileName);
                 categoryMapper.addnum(equipment.getType(),1);
                 equipmentMapper.add(equipment);
             } catch (IOException e) {

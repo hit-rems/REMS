@@ -13,6 +13,9 @@ import java.util.Map;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(request.getMethod().equalsIgnoreCase("OPTIONS")){
+            return true;
+        }
         String token = request.getHeader("Authorization");
         //验证jwt
         try {
@@ -29,6 +32,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        if(request.getMethod().equalsIgnoreCase("OPTIONS")){
+            return;
+        }
         //清除threadlocal
         ThreadLocalUtil.remove();
     }
