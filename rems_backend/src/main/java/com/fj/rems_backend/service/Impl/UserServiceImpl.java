@@ -2,6 +2,7 @@ package com.fj.rems_backend.service.Impl;
 
 import com.fj.rems_backend.mapper.UserMapper;
 import com.fj.rems_backend.pojo.User;
+import com.fj.rems_backend.service.EmailService;
 import com.fj.rems_backend.service.UserService;
 import com.fj.rems_backend.utils.Md5Util;
 import com.fj.rems_backend.utils.ThreadLocalUtil;
@@ -15,7 +16,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private EmailServiceImpl emailService;
+    private EmailService emailService;
 
     @Override
     public User findByUserName(String username) {
