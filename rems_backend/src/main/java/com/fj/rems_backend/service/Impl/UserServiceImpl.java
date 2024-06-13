@@ -62,7 +62,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void findPassword() {
-        emailService.findPassword();
+//        Map<String,Object> map = ThreadLocalUtil.get();
+//        Integer id = (Integer) map.get("id");
+//        User u = userMapper.findByUserId(id);
+//        //解密
+//        emailService.send(u.getEmail(),"找回密码","您的密码是："+u.getPassword());
     }
 
     @Override

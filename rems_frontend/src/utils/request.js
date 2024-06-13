@@ -5,8 +5,9 @@ import axios from 'axios';
 
 import { ElMessage } from 'element-plus'
 //定义一个变量,记录公共的前缀  ,  baseURL
-//const baseURL = 'http://localhost:8080';
-const baseURL = '/api';
+// const baseURL = 'http://60.204.143.98:8088/';
+const baseURL = 'http://localhost:8080/';
+// const baseURL = '/api';
 const instance = axios.create({ baseURL })
 
 import {useTokenStore} from '@/stores/token.js'
