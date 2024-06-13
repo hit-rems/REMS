@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPwd(String username) {
-        userMapper.resetPwd(username);
+        String md5String = Md5Util.getMD5String("123456");
+        userMapper.resetPwd(username,md5String);
     }
 }

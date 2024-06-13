@@ -1,6 +1,7 @@
 package com.fj.rems_backend.service.Impl;
 
 import com.fj.rems_backend.service.EmailService;
+import com.fj.rems_backend.utils.Md5Util;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void initPassword(String email, String username) {
         String subject = "重置密码";
-        String text = "<p>点击以下链接重置密码：</p>"
+        String text = "<p>点击以下链接重置密码为123456：</p>"
                     + "<a href='http://localhost:8080/user/resetPwd?username=" + username + "'>"
                     + "重置密码链接</a>";
         send(email, subject, text);
