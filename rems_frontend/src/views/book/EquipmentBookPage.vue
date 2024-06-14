@@ -121,6 +121,7 @@ getEquipmentBookStatus();
 
 let selectedTimeCount = 0;
 let bookArray = new Array(6);
+const reason = ref('');
 
 // 监视Tab的变化，并实时更新dateCount
 watch(currentTab, () => {
@@ -161,7 +162,7 @@ const bookAdd = async () => {
     id: id,
     day: dateCount,
     timelist: bookArray,
-    reason: '',
+    reason: reason.value,
   })
   console.log(params.value);
 
@@ -177,6 +178,7 @@ const bookAdd = async () => {
     await bookAddService(params.value);
     ElMessage({type: 'success', message: '预约成功'});
     bookArray.fill(false);
+    reason.value = '';
     getEquipmentBookStatus();
   })
     .catch(() => {
@@ -266,6 +268,16 @@ const beforeLeave = () => {
             </div>
           </Tabs>
         </div>
+        <el-row>
+          <el-input
+              v-model="reason"
+              maxlength="100"
+              style="width: 500px"
+              placeholder="请填写预约理由"
+              show-word-limit
+              type="textarea"
+          />
+        </el-row>
         <el-row>
           <el-col :span="23" align="right">
             <el-button type="primary" @click="bookAdd()">预约</el-button>
