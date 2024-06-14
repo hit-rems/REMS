@@ -40,3 +40,9 @@ export const userAvatarUpdateService = (file)=>{
 export const userResetPasswordService = (passwordData)=>{
     return request.patch('/user/updatePwd',passwordData)
 }
+
+//忘记密码，发送用户名，接收邮件
+export const findPasswordService = (username) => {
+    console.log("haha", username);
+    return request.get('/user/findPassword?username=' + username)
+}

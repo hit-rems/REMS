@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 //导入组件
 import LoginVue from '@/views/Login.vue'
 import LayoutVue from '@/views/Layout.vue'
+import ForgetPasswordVue from '@/views/ForgetPassword.vue'
 
 import EquipmentCategoryVue from '@/views/equipment/EquipmentCategory.vue'
 import EquipmentManageVue from '@/views/equipment/EquipmentManage.vue'
@@ -20,6 +21,7 @@ import Approvals from '@/views/approvals/Approvals.vue';
 //定义路由关系
 const routes = [
     { path: '/login', component: LoginVue},
+    { path: '/forgetPassword', component: ForgetPasswordVue},
     // { path: '/', component: LayoutVue},
     {
       path: '/',
