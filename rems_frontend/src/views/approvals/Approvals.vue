@@ -48,12 +48,12 @@ const idList = ref([]);
 
 const onSizeChange = (size) => {
   pageSize.value = size;
-  // todo
+  approvalPageList();
 };
 
 const onCurrentChange = (page) => {
   pageNum.value = page;
-  // todo
+  approvalPageList();
 };
 
 // 格式化时间
@@ -62,9 +62,28 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString('zh-CN', options).replace(/\//g, '-');
 }
 
+
+import { approvalPageListService} from "@/api/approval.js";
+
 // 根据当前标签页获取对应的数据
-const approvalPageList = () => {
-  // todo
+const approvalPageList = async () => {
+  // console.log('currentTab', currentTab.value);
+  let params = {
+    queryType: currentTab.value,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value
+  }
+  console.log(params);
+  let result = await approvalPageListService(params);
+  console.log(result);
+  total.value = result.data.total;
+  eachTotal.value = result.data.countStatus;
+  currentContent.value = result.data.items;
+  currentContent.value.forEach(item => {
+    item.createTime = formatDate(item.createTime);
+    item.startTime = formatDate(item.startTime);
+    item.endTime = formatDate(item.endTime);
+  });
 };
 
 approvalPageList()
