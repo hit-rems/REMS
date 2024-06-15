@@ -4,6 +4,7 @@ import {
     Management,
     Promotion,
     Stamp,
+    List,
     UserFilled,
     User,
     Crop,
@@ -113,7 +114,7 @@ const handleCommand = (command)=>{
 
                 <el-menu-item index="/approvals" v-if='userInfoStore.info.type==="学生"'>
                   <el-icon>
-                    <Management />
+                    <List />
                   </el-icon>
                   <span>个人预约详情</span>
                 </el-menu-item>
