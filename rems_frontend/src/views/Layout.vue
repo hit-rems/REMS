@@ -91,7 +91,7 @@ const handleCommand = (command)=>{
         <el-aside width="200px">
             <div class="el-aside__logo"></div>
             <!-- element-plus的菜单标签 -->
-            <el-menu active-text-color="#ffd04b" background-color="#232323"  text-color="#fff"
+            <el-menu active-text-color="#ffd04b" background-color="#014561"  text-color="#fff"
                 router>
                 <el-menu-item index="/category" v-if='userInfoStore.info.type!=="学生"'>
                     <el-icon><PieChart /></el-icon>
@@ -192,7 +192,9 @@ const handleCommand = (command)=>{
         margin-left: -10px;
         margin-bottom: -10px;
 
-        background-color: #232323;
+        //background-color: #232323;
+        background-color: #005375;
+
 
         &__logo {
             margin-top: 20px;
