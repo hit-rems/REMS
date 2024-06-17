@@ -49,7 +49,7 @@ public class UserController {
         } else if (u.getCode().equals("1")){
             return Result.error("用户名已经被占用");
         } else {
-            emailService.emailVerify(user.getEmail(),user.getUsername());
+            emailService.emailVerify(user.getEmail(),user.getUsername(),user.getType());
             return Result.success();
         }
     }
@@ -81,6 +81,13 @@ public class UserController {
     @GetMapping("/active")
     public void verify(String username, HttpServletResponse response) throws IOException {
         userService.active(username);
+        //跳转到登录页面
+        response.sendRedirect(frontendAccessPath+"/login");
+    }
+
+    @GetMapping("/admin/active")
+    public void adminverify(String username, HttpServletResponse response) throws IOException {
+        userService.adminactive(username);
         //跳转到登录页面
         response.sendRedirect(frontendAccessPath+"/login");
     }

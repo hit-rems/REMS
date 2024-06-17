@@ -22,4 +22,6 @@ public interface UserService {
     void active(String username);
 
     void resetPwd(String username);
+
+    void adminactive(String username);
 }
