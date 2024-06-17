@@ -25,11 +25,12 @@ public interface AuditMapper {
 
     @Select("<script>"
             + "select count(*) from book"
-            + " where status='已通过' AND end_time > now() AND (user_id=#{id} OR !#{role}.equals('学生')"
+            + " where status='已通过' AND end_time > now() AND (user_id=#{id} OR #{role} != '学生')"
             + "<if test='department != null'>"
             + " AND department=#{department}"
             + "</if>"
             + "</script>")
-    int countWaitToUse(int id,String role,String department);
+    int countWaitToUse(int id, String role, String department);
+
 
 }

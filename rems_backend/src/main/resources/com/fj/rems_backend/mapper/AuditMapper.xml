@@ -43,6 +43,4 @@
         GROUP BY status
     </select>
 
-
-
 </mapper>
