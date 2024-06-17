@@ -43,4 +43,20 @@
         GROUP BY status
     </select>
 
+    <select id="countWaitToUse" resultType="int">
+        SELECT COUNT(*)
+        FROM book
+            INNER JOIN user
+                ON book.user_id = user.id
+            INNER JOIN equipment
+                ON book.equipment_id = equipment.id
+        where status='已通过' AND end_time > now()
+        <if test="role.equals('学生')">
+            AND user_id = #{id}
+        </if>
+        <if test="role.equals('管理员')">
+            AND equipment.department = #{department}
+        </if>
+    </select>
+
 </mapper>
