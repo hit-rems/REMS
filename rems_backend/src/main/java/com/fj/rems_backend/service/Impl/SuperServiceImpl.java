@@ -1,6 +1,7 @@
 package com.fj.rems_backend.service.Impl;
 
 import com.fj.rems_backend.mapper.SuperMapper;
+import com.fj.rems_backend.mapper.UserMapper;
 import com.fj.rems_backend.pojo.*;
 import com.fj.rems_backend.service.SuperService;
 import com.github.pagehelper.Page;
@@ -16,6 +17,8 @@ import java.util.Map;
 public class SuperServiceImpl implements SuperService {
     @Autowired
     private SuperMapper superMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public PageBeanAudit<Admin> pagelist(Map<String, Object> map) {
@@ -58,6 +61,9 @@ public class SuperServiceImpl implements SuperService {
     public void update(Map<String, Object> map) {
         int id = (int) map.get("id");
         String status = (String) map.get("status");
+        if (status.equals("已通过")) {
+            userMapper.activeById(id);
+        }
         superMapper.update(id,status);
     }
 }
