@@ -73,3 +73,16 @@ create table category(
                          num int unsigned not null comment '设备数量'
 ) comment '设备类型表';
 
+-- 删除表（存在则删除authorization）
+drop table if exists authorization;
+-- 授权表
+create table authorization(
+                            id int unsigned primary key auto_increment comment 'ID',
+                            username varchar(20) not null comment '用户名',
+                            nickname varchar(128) not null comment '昵称',
+                            department varchar(128) not null comment '授权单位',
+                            email varchar(128) not null comment '邮箱',
+                            status varchar(10) not null comment '状态：只能是[待审核] 或者 [已通过] 或者 [未通过]',
+                            create_time datetime not null comment '申请时间'
+) comment '授权表';
+
