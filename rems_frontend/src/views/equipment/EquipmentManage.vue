@@ -1,13 +1,16 @@
 <script setup>
 import {
   Edit,
-  Delete
+  Delete,
+  Plus
 } from '@element-plus/icons-vue'
 
 import {ref} from 'vue'
 import Table from '@/components/Table.vue'
 import Pager from '@/components/Pager.vue'
 import EquipmentDialog from '@/components/EquipmentDialog.vue'
+import {ElMessage, ElMessageBox} from 'element-plus'
+
 
 //设备分类数据模型
 const categories = ref([])
@@ -21,11 +24,11 @@ const equipments = ref([
   {},
 ])
 
+
 import useUserInfoStore from "@/stores/userInfo.js";
 const userInfoStore = useUserInfoStore();
 // 当前管理员所属的单位
 const adminDepartment = userInfoStore.info.department;
-
 
 //添加表单数据模型
 const equipmentModel = ref({
@@ -101,7 +104,6 @@ equipmentPageList();
 
 // import { QuillEditor } from '@vueup/vue-quill'
 // import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import {Plus} from '@element-plus/icons-vue'
 //控制抽屉是否显示
 const visibleDrawer = ref(false)
 
@@ -119,9 +121,9 @@ const addRules = {
   brand: [
     {required: true, message: '请输入设备品牌', trigger: 'blur'}
   ],
-  // department: [
-  //   {required: true, message: '请选择所属单位', trigger: 'change'}
-  // ],
+  department: [
+    {required: true, message: '请选择所属单位', trigger: 'change'}
+  ],
   discard: [
     {required: true, message: '请选择设备状态', trigger: 'change'}
   ],
@@ -134,10 +136,9 @@ const title = ref('')
 
 //导入token
 import {useTokenStore} from '@/stores/token.js';
-
 const tokenStore = useTokenStore();
 
-// 上传成功的回调函数
+// 图片上传成功的回调函数
 const uploadSuccess = (result) => {
   equipmentModel.value.url = result.data;
   console.log(result.data);
@@ -145,17 +146,13 @@ const uploadSuccess = (result) => {
 
 
 const addEquipmentForm = ref(null)
-//添加设备
-import {ElMessage, ElMessageBox} from 'element-plus'
 
+//添加设备
 const addEquipment = async () => {
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
-    console.log("valid:")
-    console.log(valid)
+    console.log("valid:", valid);
     if (valid) {
-      console.log("have file:")
-      console.log(equipmentModel.value.file)
       if (equipmentModel.value.file) {
         const formData = new FormData()
         // 遍历 equipmentModel.value 并添加到 formData 中
@@ -163,19 +160,11 @@ const addEquipment = async () => {
           if (key === 'file' && equipmentModel.value.file) {
             formData.append('file', equipmentModel.value.file)
           } else {
-            formData.append(key, equipmentModel.value[key])
+            console.log(key, equipmentModel.value[key]);
+            formData.append(key, equipmentModel.value[key]);
           }
         }
-        console.log("form")
-        console.log(formData)
 
-        // formData.append('file', equipmentModel.value.file)
-        // const uploadResult = await fetch('/api/equipment/upload', {
-        //       method: 'POST',
-        //       headers: {'Authorization': tokenStore.token},
-        //       body: formData
-        //     }
-        // )
         // 调用接口
         // let result = await equipmentAddService(equipmentModel.value);
         let result = await equipmentAddService(formData);
@@ -195,6 +184,7 @@ const addEquipment = async () => {
   })
 }
 
+// 通过图片批量上传设备
 const batchAddEquipment = async (files) => {
   // 如果没有选择文件
   if (!Array.isArray(files)) {
@@ -217,8 +207,6 @@ const batchAddEquipment = async (files) => {
 const imageData = ref(null)
 const onFileChange = (e) => {
   const file = e.target.files[0]; // 获取图片资源
-  console.log("file")
-  console.log(file)
   equipmentModel.value.file = file
   console.log("equipmentModel.file")
   console.log(equipmentModel.value.file)
@@ -246,8 +234,8 @@ const showDrawer = (row) => {
   equipmentModel.value.name = row.name;
   equipmentModel.value.type = row.type;
   equipmentModel.value.brand = row.brand;
-  // equipmentModel.value.department = row.department;
-  equipmentModel.value.department = adminDepartment.value;
+  equipmentModel.value.department = row.department;
+  // equipmentModel.value.department = adminDepartment.value;
   equipmentModel.value.discard = row.discard;
   equipmentModel.value.url = row.url
   // equipmentModel.value.file = row.file
@@ -418,13 +406,14 @@ const showDialog = () => {
         <el-form-item label="品牌" prop="brand">
           <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
         </el-form-item>
-<!--        <el-form-item label="所属单位" prop="department">-->
-<!--          <el-select placeholder="请选择" v-model="equipmentModel.department">-->
+        <el-form-item label="所属单位" prop="department">
+          <el-select placeholder="请选择" v-model="equipmentModel.department">
 <!--            <el-option label="计算学部" value="计算学部"></el-option>-->
 <!--            <el-option label="数学学院" value="数学学院"></el-option>-->
 <!--            <el-option label="物理学院" value="物理学院"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+            <el-option :label=adminDepartment :value=adminDepartment></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="状态" prop="discard">
           <el-select placeholder="请选择" v-model="equipmentModel.discard">
             <el-option label="正常" value="正常"></el-option>
