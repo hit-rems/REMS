@@ -10,7 +10,8 @@ import {
     Crop,
     EditPen,
     SwitchButton,
-    CaretBottom
+    CaretBottom,
+    Odometer
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
 
@@ -93,48 +94,41 @@ const handleCommand = (command)=>{
             <el-menu active-text-color="#ffd04b" background-color="#232323"  text-color="#fff"
                 router>
                 <el-menu-item index="/category" v-if='userInfoStore.info.type!=="学生"'>
-                    <el-icon>
-                        <PieChart />
-                    </el-icon>
+                    <el-icon><PieChart /></el-icon>
                     <span>科研设备分类</span>
                 </el-menu-item>
                 <el-menu-item index="/equipment" v-if='userInfoStore.info.type!=="学生"'>
-                    <el-icon>
-                        <Promotion />
-                    </el-icon>
+                    <el-icon><Promotion /></el-icon>
                     <span>科研设备管理</span>
                 </el-menu-item>
 
                 <el-menu-item index="/book">
-                  <el-icon>
-                    <Management />
-                  </el-icon>
+                  <el-icon><Management /></el-icon>
                   <span>科研设备预约</span>
                 </el-menu-item>
 
                 <el-menu-item index="/approvals">
-                  <el-icon>
-                    <List />
-                  </el-icon>
+                  <el-icon><List /></el-icon>
                   <span>个人预约详情</span>
                 </el-menu-item>
 
+                <el-menu-item index="/superadmin" v-if='userInfoStore.info.type==="超级管理员"'>
+                    <el-icon><Odometer /></el-icon>
+                    <span>用户管理</span>
+                </el-menu-item>
 
-                  <el-menu-item index="/audits" v-if='userInfoStore.info.type!=="学生"'>
+
+                <el-menu-item index="/audits" v-if='userInfoStore.info.type!=="学生"'>
                   <el-icon><Stamp /></el-icon>
                   <span>设备预约审核</span>
                 </el-menu-item>
                 <el-sub-menu >
                     <template #title>
-                        <el-icon>
-                            <UserFilled />
-                        </el-icon>
+                        <el-icon><UserFilled /></el-icon>
                         <span>个人中心</span>
                     </template>
                     <el-menu-item index="/user/info">
-                        <el-icon>
-                            <User />
-                        </el-icon>
+                        <el-icon><User /></el-icon>
                         <span>基本资料</span>
                     </el-menu-item>
 <!--                    <el-menu-item index="/user/avatar">
@@ -144,9 +138,7 @@ const handleCommand = (command)=>{
                         <span>更换头像</span>
                     </el-menu-item>-->
                     <el-menu-item index="/user/resetPassword">
-                        <el-icon>
-                            <EditPen />
-                        </el-icon>
+                        <el-icon><EditPen /></el-icon>
                         <span>重置密码</span>
                     </el-menu-item>
                 </el-sub-menu>
