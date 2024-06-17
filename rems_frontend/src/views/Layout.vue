@@ -149,7 +149,10 @@ const handleCommand = (command)=>{
         <el-container>
             <!-- 头部区域 -->
             <el-header>
-                <div>{{userInfoStore.info.type}}：<strong>{{ userInfoStore.info ? userInfoStore.info.nickname : '' }}</strong></div>
+                <div>
+                    <p>欢迎来自 <strong>{{ userInfoStore.info ? userInfoStore.info.department : '' }}</strong> 的
+                        <strong>{{userInfoStore.info.type}}</strong>：<strong>{{ userInfoStore.info ? userInfoStore.info.nickname : '' }}</strong></p>
+                </div>
                 <!-- 下拉菜单 -->
                 <!-- command: 条目被点击后会触发,在事件函数上可以声明一个参数,接收条目对应的指令 -->
                 <el-dropdown placement="bottom-end" @command="handleCommand">
