@@ -10,6 +10,10 @@ import java.util.Map;
 
 @Mapper
 public interface SuperMapper {
+
+    @Select("select * from authorization where id=#{id}")
+    String findById(int id);
+
     @Select("<script>"
             + "select * from authorization"
             + "<if test='type != null'>"

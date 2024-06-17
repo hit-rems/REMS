@@ -60,9 +60,10 @@ public class SuperServiceImpl implements SuperService {
     @Override
     public void update(Map<String, Object> map) {
         int id = (int) map.get("id");
+        String username = superMapper.findById(id);
         String status = (String) map.get("status");
         if (status.equals("已通过")) {
-            userMapper.activeById(id);
+            userMapper.active(username);
         }
         superMapper.update(id,status);
     }
