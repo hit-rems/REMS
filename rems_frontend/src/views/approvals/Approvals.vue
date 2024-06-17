@@ -63,7 +63,7 @@ const formatDate = (dateString) => {
 }
 
 
-import { approvalPageListService} from "@/api/approval.js";
+import {approvalPageListService} from "@/api/approval.js";
 
 // 根据当前标签页获取对应的数据
 const approvalPageList = async () => {
