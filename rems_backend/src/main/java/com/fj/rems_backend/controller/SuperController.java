@@ -20,7 +20,7 @@ public class SuperController {
         return Result.success(AdminPageBean);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Result update(@RequestBody Map<String,Object> map){
         superService.update(map);
         return Result.success();
