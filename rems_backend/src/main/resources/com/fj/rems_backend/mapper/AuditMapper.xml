@@ -27,6 +27,22 @@
         ORDER BY book.id ASC
     </select>
 
+    <select id="countStatus" resultType="java.util.HashMap">
+        SELECT status, COUNT(*) as num
+        FROM book
+            INNER JOIN user
+                ON book.user_id = user.id
+            INNER JOIN equipment
+                ON book.equipment_id = equipment.id
+        <if test="role.equals('学生')">
+            WHERE user_id = #{id}
+        </if>
+        <if test="role.equals('管理员')">
+            WHERE equipment.department = user.department
+        </if>
+        GROUP BY status
+    </select>
+
 
 
 </mapper>
