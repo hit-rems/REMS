@@ -18,6 +18,8 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;
+    @Value("${file.virtualPath}")
+    private String virtualPath;
 
     @Override
     public void send(String to, String subject, String text) {
@@ -42,11 +44,11 @@ public class EmailServiceImpl implements EmailService {
         String text = "";
         if (type.equals("管理员")){
             text = "<p>点击以下链接请求超级管理员审核：</p>"
-                    + "<a href='http://localhost:8080/user/admin/active?username=" + username + "'>"
+                    + "<a href='"+virtualPath+"/user/admin/active?username=" + username + "'>"
                     + "激活链接</a>";
         }else{
             text = "<p>点击以下链接激活账户：</p>"
-                    + "<a href='http://localhost:8080/user/active?username=" + username + "'>"
+                    + "<a href='"+virtualPath+"/user/active?username=" + username + "'>"
                     + "激活链接</a>";
         }
         send(email, subject, text);
@@ -57,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
     public void initPassword(String email, String username) {
         String subject = "重置密码";
         String text = "<p>点击以下链接重置密码为123456：</p>"
-                    + "<a href='http://localhost:8080/user/resetPwd?username=" + username + "'>"
+                    + "<a href='"+virtualPath+"/user/resetPwd?username=" + username + "'>"
                     + "重置密码链接</a>";
         send(email, subject, text);
     }
