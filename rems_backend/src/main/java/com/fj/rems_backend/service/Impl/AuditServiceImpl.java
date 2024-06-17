@@ -24,6 +24,11 @@ public class AuditServiceImpl implements AuditService {
         //获取用户角色
         User user = userMapper.findByUserId(id);
         String role = user.getType();
+        //若map里有role则使用map里的role
+        if (map.containsKey("role")) {
+            role = (String) map.get("role");
+            user.setType(role);
+        }
         //1.创建PageBean对象
         PageBeanAudit<Audit> pb = new PageBeanAudit<>();
         Integer pageNum = (Integer) map.get("pageNum");

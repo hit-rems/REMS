@@ -35,6 +35,7 @@ public class BookController {
     public Result<PageBeanAudit<Audit>> userInfo(@RequestBody Map<String,Object> map) {
         Map<String, Object> mapInfo = ThreadLocalUtil.get();
         int id = (int) mapInfo.get("id");
+        map.put("role", "学生");
         return Result.success(auditService.pagelist(map, id));
     }
 
