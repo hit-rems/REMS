@@ -10,7 +10,20 @@ import Table from '@/components/Table.vue'
 import Pager from '@/components/Pager.vue'
 import EquipmentDialog from '@/components/EquipmentDialog.vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
+import {
+  equipmentCategoryListService,
+  equipmentListService,
+  equipmentAddService,
+  equipmentBatchAddService,
+  equipmentDeleteService,
+  equipmentUpdateService
+} from '@/api/equipment.js'
 
+
+import useUserInfoStore from "@/stores/userInfo.js";
+const userInfoStore = useUserInfoStore();
+// 当前管理员所属的单位
+const adminDepartment = userInfoStore.info.department;
 
 //设备分类数据模型
 const categories = ref([])
@@ -19,23 +32,17 @@ const categories = ref([])
 const type = ref('')
 const discard = ref('')
 
-//设备列表数据模型
+//分页查询设备列表的数据模型
 const equipments = ref([
   {},
 ])
-
-
-import useUserInfoStore from "@/stores/userInfo.js";
-const userInfoStore = useUserInfoStore();
-// 当前管理员所属的单位
-const adminDepartment = userInfoStore.info.department;
 
 //添加表单数据模型
 const equipmentModel = ref({
   id: 0,
   type: '',
   name: '',
-  department: '',
+  department: adminDepartment,
   discard: '',
   brand: '',
   createTime: '',
@@ -60,15 +67,6 @@ const onCurrentChange = (num) => {
   equipmentPageList()
 }
 
-
-import {
-  equipmentCategoryListService,
-  equipmentListService,
-  equipmentAddService,
-  equipmentBatchAddService,
-  equipmentDeleteService,
-  equipmentUpdateService
-} from '@/api/equipment.js'
 
 //回显科研设备分类
 const equipmentCategoryList = async () => {
@@ -121,9 +119,9 @@ const addRules = {
   brand: [
     {required: true, message: '请输入设备品牌', trigger: 'blur'}
   ],
-  department: [
-    {required: true, message: '请选择所属单位', trigger: 'change'}
-  ],
+  // department: [
+  //   {required: true, message: '请选择所属单位', trigger: 'change'}
+  // ],
   discard: [
     {required: true, message: '请选择设备状态', trigger: 'change'}
   ],
@@ -139,11 +137,10 @@ import {useTokenStore} from '@/stores/token.js';
 const tokenStore = useTokenStore();
 
 // 图片上传成功的回调函数
-const uploadSuccess = (result) => {
-  equipmentModel.value.url = result.data;
-  console.log(result.data);
-}
-
+// const uploadSuccess = (result) => {
+//   equipmentModel.value.url = result.data;
+//   console.log(result.data);
+// }
 
 const addEquipmentForm = ref(null)
 
@@ -235,13 +232,13 @@ const showDrawer = (row) => {
   equipmentModel.value.type = row.type;
   equipmentModel.value.brand = row.brand;
   equipmentModel.value.department = row.department;
-  // equipmentModel.value.department = adminDepartment.value;
+  // equipmentModel.value.department = adminDepartment;
   equipmentModel.value.discard = row.discard;
   equipmentModel.value.url = row.url
   // equipmentModel.value.file = row.file
 }
 
-// TODO:修改设备信息的表单验证
+
 const updateEquipment = async () => {
   let result = await equipmentUpdateService(equipmentModel.value);
   ElMessage.success('修改成功')
@@ -281,7 +278,7 @@ const clearEquipmentModel = () => {
     id: 0,
     type: '',
     name: '',
-    department: '',
+    department: adminDepartment,
     discard: '',
     brand: '',
     createTime: '',
@@ -406,14 +403,14 @@ const showDialog = () => {
         <el-form-item label="品牌" prop="brand">
           <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
         </el-form-item>
-        <el-form-item label="所属单位" prop="department">
-          <el-select placeholder="请选择" v-model="equipmentModel.department">
+<!--        <el-form-item label="所属单位" prop="department">-->
+<!--          <el-select placeholder="请选择" v-model="equipmentModel.department">-->
 <!--            <el-option label="计算学部" value="计算学部"></el-option>-->
 <!--            <el-option label="数学学院" value="数学学院"></el-option>-->
 <!--            <el-option label="物理学院" value="物理学院"></el-option>-->
-            <el-option :label=adminDepartment :value=adminDepartment></el-option>
-          </el-select>
-        </el-form-item>
+<!--            <el-option :label=adminDepartment :value=adminDepartment></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="状态" prop="discard">
           <el-select placeholder="请选择" v-model="equipmentModel.discard">
             <el-option label="正常" value="正常"></el-option>
