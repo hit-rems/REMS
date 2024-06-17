@@ -8,12 +8,20 @@
       </el-select>
     </el-form-item>
 
+    <el-form-item label="所属单位：">
+      <el-select placeholder="请选择" v-model="department" style="width: 120px;">
+        <el-option label="计算学部" value="计算学部"></el-option>
+        <el-option label="数学学院" value="数学学院"></el-option>
+        <el-option label="物理学院" value="物理学院"></el-option>
+      </el-select>
+    </el-form-item>
+
     <el-form-item label="设备名称：">
       <el-input v-model="name" placeholder="请输入设备名称"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="fetchCardsPageList">搜索</el-button>
-      <el-button @click="type = ''; name = ''">重置</el-button>
+      <el-button @click="type = ''; name = ''; department=''">重置</el-button>
     </el-form-item>
   </el-form>
   
@@ -48,6 +56,8 @@ const type = ref('')
 //用户搜索时输入的设备名称
 const name = ref('')
 
+const department = ref('')
+
 //回显科研设备分类
 const equipmentCategoryList = async () => {
   let result = await equipmentCategoryListService();
@@ -72,6 +82,9 @@ const fetchCardsPageList = async () => {
     }
     if (name.value) {
       params.name = name.value;
+    }
+    if (department.value) {
+      params.department = department.value;
     }
     const result = await equipmentListService(params)
     total.value = result.data.total
