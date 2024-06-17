@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 public interface SuperMapper {
 
-    @Select("select * from authorization where id=#{id}")
+    @Select("select username from authorization where id=#{id}")
     String findById(int id);
 
     @Select("<script>"
