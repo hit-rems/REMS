@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import com.fj.rems_backend.utils.ThreadLocalUtil;
 
 @RestController
 @RequestMapping("/equipment")
@@ -55,6 +56,15 @@ public class EquipmentController {
             if (categoryService.findByCategoryName(split[1]) == null) {
                 return Result.error(fileName+"文件的种类不存在");
             }
+            //若只是普通的管理员，只能上传自己的部门的设备
+            Map<String, Object> mapInfo = ThreadLocalUtil.get();
+            if (!mapInfo.get("type").equals("超级管理员")) {
+                if (!mapInfo.get("department").equals(split[3])) {
+                    return Result.error(fileName+"文件的部门不是你的部门");
+                }
+            }
+
+
         }
         equipmentService.uploadFileList(files);
         return Result.success();
