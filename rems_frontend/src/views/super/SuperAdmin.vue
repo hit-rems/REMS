@@ -29,12 +29,13 @@ const currentContent = ref([{
 
 const title = ref('');
 const columns = ref([
+  { label: '申请单号', prop: 'id', align: 'center', sortable: true},
   { label: '用户名', prop: 'username', align: 'center' },
   { label: '昵称', prop: 'nickname', align: 'center' },
   { label: '部门', prop: 'department', align: 'center' },
   { label: '邮箱', prop: 'email', align: 'center' },
   { label: '审核状态', prop: 'status', align: 'center' },
-  { label: '申请时间', prop: 'createTime', align: 'center' },
+  { label: '申请时间', prop: 'createTime', align: 'center', sortable: true},
   { label: '操作', prop: 'action', width: '120', align: 'center',
     slot: [
       { 
