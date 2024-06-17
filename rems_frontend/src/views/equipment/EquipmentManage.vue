@@ -223,6 +223,12 @@ const onFileChange = (e) => {
 
 }
 
+const imgInput = ref(null);
+// 点击按钮触发input type=file的事件
+const triggerFileInput = () => {
+  imgInput.value.click();
+}
+
 //展示编辑弹窗
 const showDrawer = (row) => {
   visibleDrawer.value = true;
@@ -418,8 +424,9 @@ const showDialog = () => {
           </el-select>
         </el-form-item>
         <el-form-item label="设备图片" prop="file">
-          <input id="img_input" type="file" accept="image/*" @change="onFileChange"/>
-          <label for="img_input"></label>
+          <el-button size="mini" @click="triggerFileInput">上传图片</el-button>
+          <input id="img_input" ref="imgInput" type="file" accept="image/*" @change="onFileChange" style="display: none;"/>
+<!--          <label for="img_input"></label>-->
           <div v-if="imageData || equipmentModel.url" class="preview_box">
             <img v-if="title ==='添加设备'&&imageData" class="preview" :src="imageData" width="50%" height="50%" style="margin-top: 10px;"
                  alt="avatar"/>
