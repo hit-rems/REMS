@@ -61,6 +61,11 @@ public class BookServiceImpl implements BookService {
         for (int i = 0; i < 6; i++) {
             //如books的开始时间与当天时间加i*4小时相等，则返回true
             boolean flag = false;
+            //如果预约结束时间已经大于当前时间，则不能预约
+            if (localDateTime.plusHours(i * 4+4).isBefore(LocalDateTime.now())) {
+                list.add(true);
+                continue;
+            }
             for (Book book : books) {
                 if (book.getStartTime().equals(localDateTime.plusHours(i * 4))) {
                     flag = true;
