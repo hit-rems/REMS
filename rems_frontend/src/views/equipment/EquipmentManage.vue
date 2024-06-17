@@ -21,6 +21,12 @@ const equipments = ref([
   {},
 ])
 
+import useUserInfoStore from "@/stores/userInfo.js";
+const userInfoStore = useUserInfoStore();
+// 当前管理员所属的单位
+const adminDepartment = userInfoStore.info.department;
+
+
 //添加表单数据模型
 const equipmentModel = ref({
   id: 0,
@@ -113,9 +119,9 @@ const addRules = {
   brand: [
     {required: true, message: '请输入设备品牌', trigger: 'blur'}
   ],
-  department: [
-    {required: true, message: '请选择所属单位', trigger: 'change'}
-  ],
+  // department: [
+  //   {required: true, message: '请选择所属单位', trigger: 'change'}
+  // ],
   discard: [
     {required: true, message: '请选择设备状态', trigger: 'change'}
   ],
@@ -240,7 +246,8 @@ const showDrawer = (row) => {
   equipmentModel.value.name = row.name;
   equipmentModel.value.type = row.type;
   equipmentModel.value.brand = row.brand;
-  equipmentModel.value.department = row.department;
+  // equipmentModel.value.department = row.department;
+  equipmentModel.value.department = adminDepartment.value;
   equipmentModel.value.discard = row.discard;
   equipmentModel.value.url = row.url
   // equipmentModel.value.file = row.file
@@ -411,13 +418,13 @@ const showDialog = () => {
         <el-form-item label="品牌" prop="brand">
           <el-input v-model="equipmentModel.brand" placeholder="请输入设备品牌"></el-input>
         </el-form-item>
-        <el-form-item label="所属单位" prop="department">
-          <el-select placeholder="请选择" v-model="equipmentModel.department">
-            <el-option label="计算学部" value="计算学部"></el-option>
-            <el-option label="数学学院" value="数学学院"></el-option>
-            <el-option label="物理学院" value="物理学院"></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="所属单位" prop="department">-->
+<!--          <el-select placeholder="请选择" v-model="equipmentModel.department">-->
+<!--            <el-option label="计算学部" value="计算学部"></el-option>-->
+<!--            <el-option label="数学学院" value="数学学院"></el-option>-->
+<!--            <el-option label="物理学院" value="物理学院"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="状态" prop="discard">
           <el-select placeholder="请选择" v-model="equipmentModel.discard">
             <el-option label="正常" value="正常"></el-option>
