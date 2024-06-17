@@ -21,6 +21,9 @@
         <if test="role.equals('学生')">
             AND user_id = #{id}
         </if>
+        <if test="role.equals('管理员')">
+            AND user_id = #{id}
+        </if>
         ORDER BY book.id ASC
     </select>
 
