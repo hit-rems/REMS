@@ -4,6 +4,7 @@ import com.fj.rems_backend.mapper.CategoryMapper;
 import com.fj.rems_backend.mapper.EquipmentMapper;
 import com.fj.rems_backend.pojo.Equipment;
 import com.fj.rems_backend.pojo.PageBean;
+import com.fj.rems_backend.pojo.User;
 import com.fj.rems_backend.service.CategoryService;
 import com.fj.rems_backend.service.EquipmentService;
 import com.fj.rems_backend.service.FileUploadService;
@@ -72,6 +73,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         Integer userId = (Integer) user.get("id");
 
         //3.调用mapper
+        if (!map.containsKey("department")&&user.get("type").equals("管理员")){
+            map.put("department",user.get("department"));
+        }
         List<Equipment> as = equipmentMapper.pagelist(map,userId);
         //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
         Page<Equipment> p = (Page<Equipment>) as;
