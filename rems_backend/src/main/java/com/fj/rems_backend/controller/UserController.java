@@ -67,6 +67,8 @@ public class UserController {
                 HashMap<String, Object> clians = new HashMap<>();
                 clians.put("id",u.getId());
                 clians.put("username",username);
+                clians.put("department",u.getDepartment());
+                clians.put("type",u.getType());
 
                 String jwt = JwtUtil.genToken(clians);
                 return Result.success(jwt);

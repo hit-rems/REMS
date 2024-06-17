@@ -1,6 +1,6 @@
 <script setup>
 import { Message, User, Lock } from '@element-plus/icons-vue'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import CryptoJS from 'crypto-js';
 //控制注册与登录表单的显示， 默认显示注册
@@ -75,10 +75,6 @@ const rules = {
 import { userRegisterService, userLoginService} from '@/api/user.js'
 const register = async () => {
   const form = registerForm.value
-
-  console.log("register")
-  console.log(registerForm.value)
-
   form.validate(async (valid) => {
     registerValid = valid
   })

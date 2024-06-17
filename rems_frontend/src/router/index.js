@@ -16,6 +16,7 @@ import EquipmentBook from '@/views/book/EquipmentBook.vue'
 import EquipmentAudits from "@/views/audits/EquipmentAudits.vue";
 import EquipmentBookPage from '@/views/book/EquipmentBookPage.vue';
 import Approvals from '@/views/approvals/Approvals.vue';
+import SuperAdmin from '@/views/super/SuperAdmin.vue';
 
 
 //定义路由关系
@@ -36,7 +37,8 @@ const routes = [
           { path: '/book', component: EquipmentBook},
           { path: '/audits', component: EquipmentAudits},
           { path: 'bookpage/:id', name: 'equipmentbookpage',component: EquipmentBookPage},
-          { path: '/approvals', component: Approvals}
+          { path: '/approvals', component: Approvals},
+          { path: '/superadmin', component: SuperAdmin},
       ]
     },
 ]

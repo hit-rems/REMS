@@ -24,6 +24,7 @@ public class AuditServiceImpl implements AuditService {
         //获取用户角色
         User user = userMapper.findByUserId(id);
         String role = user.getType();
+        String department = user.getDepartment();
         //若map里有role则使用map里的role
         if (map.containsKey("role")) {
             role = (String) map.get("role");
@@ -40,7 +41,10 @@ public class AuditServiceImpl implements AuditService {
         if (type.equals("全部")) {
             type = null;
         }
-        List<Audit> as = auditMapper.list(type,id,role);
+        if (role.equals("超级管理员")) {
+            department = null;
+        }
+        List<Audit> as = auditMapper.list(type,id,role,department);
         //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
         Page<Audit> p = (Page<Audit>) as;
         //把数据填充到PageBean对象中
