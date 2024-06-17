@@ -203,7 +203,6 @@ const isRowSelectable = (row) => {
 
 let myTable = ref(null);
 
-// //TODO:
 // const clearSelectedRows = () => {
 //   console.log(myTable.value);
 //   myTable.value.handleClearSelection();
