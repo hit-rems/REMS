@@ -112,16 +112,17 @@ const handleCommand = (command)=>{
                   <span>个人预约详情</span>
                 </el-menu-item>
 
-                <el-menu-item index="/superadmin" v-if='userInfoStore.info.type==="超级管理员"'>
-                    <el-icon><Odometer /></el-icon>
-                    <span>用户管理</span>
-                </el-menu-item>
-
 
                 <el-menu-item index="/audits" v-if='userInfoStore.info.type!=="学生"'>
                   <el-icon><Stamp /></el-icon>
                   <span>设备预约审核</span>
                 </el-menu-item>
+
+                <el-menu-item index="/superadmin" v-if='userInfoStore.info.type==="超级管理员"'>
+                  <el-icon><Odometer /></el-icon>
+                  <span>用户管理</span>
+                </el-menu-item>
+
                 <el-sub-menu >
                     <template #title>
                         <el-icon><UserFilled /></el-icon>
