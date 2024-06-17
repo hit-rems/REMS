@@ -13,7 +13,6 @@ public interface AuditMapper {
     List<Audit> list(String type, int id,String role,String department);
 
     //查询不同状态的申请单数量
-    @Select("select status,count(*) as num from book where user_id=#{id} OR #{role} <> '学生' group by status")
     List<Map<String,Object>> countStatus(int id,String role);
 
     @Update("update book set status=#{status} where id=#{id}")
