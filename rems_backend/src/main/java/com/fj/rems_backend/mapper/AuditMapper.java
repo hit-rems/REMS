@@ -13,7 +13,7 @@ public interface AuditMapper {
     List<Audit> list(String type, int id,String role,String department);
 
     //查询不同状态的申请单数量
-    List<Map<String,Object>> countStatus(int id,String role);
+    List<Map<String,Object>> countStatus(int id,String role,String department);
 
     @Update("update book set status=#{status} where id=#{id}")
     void update(int id, String status);
@@ -21,7 +21,13 @@ public interface AuditMapper {
     @Update("<script>update book set status=#{status} where id in <foreach collection='idList' item='id' open='(' separator=',' close=')'>#{id}</foreach></script>")
     void updatelist(List<Integer> idList, String status);
 
-    @Select("select count(*) from book where status='已通过' AND end_time > now() AND (user_id=#{id} OR #{role} <> '学生')")
-    int countWaitToUse(int id,String role);
+    @Select("<script>"
+            + "select count(*) from book"
+            + " where status='已通过' AND end_time > now() AND (user_id=#{id} OR #{role} <> '学生')"
+            + "<if test='department != null'>"
+            + " AND department=#{department}"
+            + "</if>"
+            + "</script>")
+    int countWaitToUse(int id,String role,String department);
 
 }

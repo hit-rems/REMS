@@ -38,7 +38,7 @@
             WHERE user_id = #{id}
         </if>
         <if test="role.equals('管理员')">
-            WHERE equipment.department = user.department
+            WHERE equipment.department = #{department}
         </if>
         GROUP BY status
     </select>

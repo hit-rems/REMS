@@ -52,7 +52,7 @@ public class AuditServiceImpl implements AuditService {
         pb.setItems(p.getResult());
         //查询各状态的数量
         Map<String, Long> mapNum = new HashMap<>();
-        List<Map<String, Object>> countStatus = auditMapper.countStatus(id,role);
+        List<Map<String, Object>> countStatus = auditMapper.countStatus(id,role,department);
         //统计总数量
         Long total = 0L;
         for (Map<String, Object> map1 : countStatus) {
@@ -64,7 +64,7 @@ public class AuditServiceImpl implements AuditService {
         mapNum.put("已通过",mapNum.getOrDefault("已通过",0L));
         mapNum.put("未通过",mapNum.getOrDefault("未通过",0L));
         //统计待使用的数量
-        int num = auditMapper.countWaitToUse(id,role);
+        int num = auditMapper.countWaitToUse(id,role,department);
         mapNum.put("待使用",(long)num);
         mapNum.put("全部",total);
         pb.setCountStatus(mapNum);
