@@ -31,4 +31,7 @@ public interface UserMapper {
 
     @Update("update user set password=#{password} where username=#{username}")
     void resetPwd(String username, String password);
+
+    @Insert("insert into authorization(username,nickname,department,email,status,create_time) values(#{username},#{nickname},#{department},#{email},'待审核',now())")
+    void adminActive(User user);
 }

@@ -37,11 +37,18 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void emailVerify(String email,String username) {
+    public void emailVerify(String email,String username,String type) {
         String subject = "激活邮件";
-        String text = "<p>点击以下链接激活账户：</p>"
+        String text = "";
+        if (type.equals("管理员")){
+            text = "<p>点击以下链接请求超级管理员审核：</p>"
+                    + "<a href='http://localhost:8080/user/admin/active?username=" + username + "'>"
+                    + "激活链接</a>";
+        }else{
+            text = "<p>点击以下链接激活账户：</p>"
                     + "<a href='http://localhost:8080/user/active?username=" + username + "'>"
                     + "激活链接</a>";
+        }
         send(email, subject, text);
     }
 

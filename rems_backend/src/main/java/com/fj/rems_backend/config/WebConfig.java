@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/login","/user/register","/api/file/**","/user/active","/user/findPassword","/user/resetPwd");
+        registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/login","/user/register","/api/file/**","/user/active","/user/admin/active","/user/findPassword","/user/resetPwd");
     }
 }

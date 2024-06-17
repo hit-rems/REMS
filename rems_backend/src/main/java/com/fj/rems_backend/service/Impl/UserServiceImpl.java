@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setCode("0");//代表未激活
         userMapper.add(user);
         //发送邮件
-        emailService.emailVerify(user.getEmail(),user.getUsername());
+        emailService.emailVerify(user.getEmail(),user.getUsername(),user.getType());
     }
 
     @Override
@@ -76,5 +76,11 @@ public class UserServiceImpl implements UserService {
     public void resetPwd(String username) {
         String md5String = Md5Util.getMD5String("123456");
         userMapper.resetPwd(username,md5String);
+    }
+
+    @Override
+    public void adminactive(String username) {
+        User user = userMapper.findByUserName(username);
+        userMapper.adminActive(user);
     }
 }
