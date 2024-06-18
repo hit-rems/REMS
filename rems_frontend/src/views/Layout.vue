@@ -11,14 +11,15 @@ import {
     EditPen,
     SwitchButton,
     CaretBottom,
-    Odometer
+    Odometer,
+    Fold
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
 
 import {userInfoService} from '@/api/user.js'
 import useUserInfoStore from '@/stores/userInfo.js'
 import {useTokenStore} from '@/stores/token.js'
-import {ref,watch} from 'vue'
+import {ref, watch, inject} from 'vue'
 import { nextTick } from 'vue'
 import { computed } from 'vue'
 const tokenStore = useTokenStore();
@@ -82,16 +83,30 @@ const handleCommand = (command)=>{
         router.push('/user/'+command)
     }
 }
+
+
+// 设置菜单栏可折叠
+const isCollapse = ref(false);
+const handleOpen = (key, keyPath) => {
+  isCollapse.value = false;
+};
+
+const collapseNavigator = () =>{
+  isCollapse.value = !isCollapse.value;
+}
 </script>
 
 <template>
     <!-- element-plus中的容器 -->
     <el-container class="layout-container">
         <!-- 左侧菜单 -->
-        <el-aside width="200px">
+        <el-aside width="collapse">
             <div class="el-aside__logo"></div>
             <!-- element-plus的菜单标签 -->
-            <el-menu active-text-color="#ffd04b" background-color="#014561"  text-color="#fff"
+            <el-menu
+                active-text-color="#ffd04b" background-color="#014561"  text-color="#fff"
+                class="el-menu-vertical-demo"
+                :collapse="isCollapse" @open="handleOpen"
                 router>
                 <el-menu-item index="/category" v-if='userInfoStore.info.type!=="学生"'>
                     <el-icon><PieChart /></el-icon>
@@ -150,6 +165,11 @@ const handleCommand = (command)=>{
         <el-container>
             <!-- 头部区域 -->
             <el-header>
+                <div class="collapse-btn" @click="collapseNavigator">
+                  <el-icon>
+                    <Fold />
+                  </el-icon>
+                </div>
                 <div>
                     <p>欢迎来自 <strong>{{ userInfoStore.info ? userInfoStore.info.department : '' }}</strong> 的
                         <strong>{{userInfoStore.info.type}}</strong>：<strong>{{ userInfoStore.info ? userInfoStore.info.nickname : '' }}</strong></p>
@@ -206,6 +226,10 @@ const handleCommand = (command)=>{
             margin-top: 20px;
             border-right: none;
         }
+
+        .el-menu-vertical-demo:not(.el-menu--collapse) {
+          width: 190px;
+        }
     }
 
     .el-header {
@@ -213,6 +237,13 @@ const handleCommand = (command)=>{
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .collapse-btn {
+          font-size: 24px;
+          margin-right: 10px;
+          color: #545c64;
+          padding-top: 6px;
+        }
 
         .el-dropdown__box {
             display: flex;
@@ -238,4 +269,6 @@ const handleCommand = (command)=>{
         color: #666;
     }
 }
+
+
 </style>
