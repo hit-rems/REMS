@@ -12,7 +12,8 @@ import {
     SwitchButton,
     CaretBottom,
     Odometer,
-    Fold
+    Fold,
+    Expand
 } from '@element-plus/icons-vue'
 import avatar from '@/assets/default.png'
 
@@ -168,7 +169,10 @@ const collapseNavigator = () =>{
                 </el-sub-menu>
             </el-menu>
             <div class="collapse-btn" @click="collapseNavigator">
-              <el-icon>
+              <el-icon v-if="isCollapse">
+                <Expand />
+              </el-icon>
+              <el-icon v-else>
                 <Fold />
               </el-icon>
             </div>
