@@ -91,8 +91,16 @@ const handleOpen = (key, keyPath) => {
   isCollapse.value = false;
 };
 
+const logoClass = ref('el-aside__logo_big')
+
 const collapseNavigator = () =>{
   isCollapse.value = !isCollapse.value;
+  // 动态改变logo的大小
+  if(isCollapse.value){
+    logoClass.value = 'el-aside__logo_small';
+  } else {
+    logoClass.value = 'el-aside__logo_big';
+  }
 }
 </script>
 
@@ -101,7 +109,7 @@ const collapseNavigator = () =>{
     <el-container class="layout-container">
         <!-- 左侧菜单 -->
         <el-aside width="collapse">
-            <div class="el-aside__logo"></div>
+            <div :class="logoClass"></div>
             <!-- element-plus的菜单标签 -->
             <el-menu
                 active-text-color="#ffd04b" background-color="#014561"  text-color="#fff"
@@ -211,15 +219,18 @@ const collapseNavigator = () =>{
         margin-top: -10px;
         margin-left: -10px;
         margin-bottom: -10px;
-
-        //background-color: #232323;
         background-color: #005375;
 
-
-        &__logo {
+        &__logo_big {
             margin-top: 20px;
             height: 120px;
             background: url('@/assets/logo2.png') no-repeat center / 120px auto;
+        }
+
+        &__logo_small {
+          margin-top: 20px;
+          height: 120px;
+          background: url('@/assets/logo2.png') no-repeat center / 60px auto;
         }
 
         .el-menu {
