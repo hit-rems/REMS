@@ -136,15 +136,37 @@ const title = ref('')
 import {useTokenStore} from '@/stores/token.js';
 const tokenStore = useTokenStore();
 
-// 图片上传成功的回调函数
-// const uploadSuccess = (result) => {
-//   equipmentModel.value.url = result.data;
-//   console.log(result.data);
-// }
 
-const addEquipmentForm = ref(null)
+// 上传图片的事件
+const imageData = ref(null)
+const onFileChange = (e) => {
+  const file = e.target.files[0]; // 获取图片资源
+  equipmentModel.value.file = file
+  console.log("equipmentModel.file")
+  console.log(equipmentModel.value.file)
+  // 只选择图片文件
+  if (!file.type.match('image.*')) {
+    return false;
+  }
+  const reader = new FileReader();
+  reader.readAsDataURL(file); // 读取文件
+  // 渲染文件
+  reader.onload = (arg) => {
+    imageData.value = arg.target.result; // 将Data URL存储在imageData中
+    console.log("imageData")
+    console.log(imageData.value)
+  };
+}
+
+const imgInput = ref(null);
+// 点击按钮触发input type=file的事件
+const triggerFileInput = () => {
+  imgInput.value.click();
+}
+
 
 //添加设备
+const addEquipmentForm = ref(null)
 const addEquipment = async () => {
   const form = addEquipmentForm.value
   form.validate(async (valid) => {
@@ -200,34 +222,6 @@ const batchAddEquipment = async (files) => {
   dialogVisible.value = false;
 }
 
-// 上传图片的事件
-const imageData = ref(null)
-const onFileChange = (e) => {
-  const file = e.target.files[0]; // 获取图片资源
-  equipmentModel.value.file = file
-  console.log("equipmentModel.file")
-  console.log(equipmentModel.value.file)
-
-  // 只选择图片文件
-  if (!file.type.match('image.*')) {
-    return false;
-  }
-  const reader = new FileReader();
-  reader.readAsDataURL(file); // 读取文件
-  // 渲染文件
-  reader.onload = (arg) => {
-    imageData.value = arg.target.result; // 将Data URL存储在imageData中
-    console.log("imageData")
-    console.log(imageData.value)
-  };
-
-}
-
-const imgInput = ref(null);
-// 点击按钮触发input type=file的事件
-const triggerFileInput = () => {
-  imgInput.value.click();
-}
 
 //展示编辑弹窗
 const showDrawer = (row) => {
@@ -433,27 +427,6 @@ const showDialog = () => {
             <img v-else :src="equipmentModel.url" width="50%" height="50%" class="avatar" style="margin-top: 10px;">
           </div>
         </el-form-item>
-
-        <!--                <el-form-item label="设备图片">-->
-        <!--
-            auto-upload:设置是否自动上传
-            action:设置服务器接口路径
-            name:设置上传的文件字段名
-            headers:设置上传的请求头
-            on-success:设置上传成功的回调函数
-         -->
-        <!--                  <el-upload class="avatar-uploader" :auto-upload="true" :show-file-list="false"-->
-        <!--                    :headers="{'Authorization':tokenStore.token}"-->
-        <!--                    action="/api/equipment/upload"-->
-        <!--                    name="file"-->
-        <!--                    :on-success="uploadSuccess">-->
-
-        <!--                        <img v-if="equipmentModel.url" :src="equipmentModel.url" class="avatar" />-->
-        <!--                        <el-icon v-else class="avatar-uploader-icon">-->
-        <!--                            <Plus />-->
-        <!--                        </el-icon>-->
-        <!--                    </el-upload>-->
-        <!--                </el-form-item>-->
 
         <!--添加设备按钮-->
         <el-form-item>

@@ -25,11 +25,19 @@ const rules = {
 
 import { findPasswordService } from '@/api/user.js'
 
+const forgetPasswordForm = ref(null);
+
 // 点击按钮找回密码
 const forgetPassword = async () => {
-  console.log(registerData.value.username);
-  let result = await findPasswordService(registerData.value.username);
-  ElMessage.success('请查看邮件');
+  const form = forgetPasswordForm.value
+  form.validate(async (valid) => {
+    if(valid) {
+      let result = await findPasswordService(registerData.value.username);
+      ElMessage.success('请查看邮件，获取临时密码');
+    } else {
+      ElMessage.error('请输入正确的用户名');
+    }
+  })
 }
 
 </script>
@@ -38,7 +46,7 @@ const forgetPassword = async () => {
   <el-row class="login-page">
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
-      <el-form :model="registerData" :rules="rules">
+      <el-form ref='forgetPasswordForm' :model="registerData" :rules="rules">
         <el-form-item>
           <h1>忘记密码</h1>
         </el-form-item>
@@ -63,8 +71,9 @@ const forgetPassword = async () => {
   background-color: #fff;
 
   .bg {
-    background: url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
-    url('@/assets/hit2.jpg') no-repeat center / cover;
+    background:
+      //url('@/assets/logo2.png') no-repeat 60% center / 240px auto,
+      url('@/assets/hit2.jpg') no-repeat center / cover;
     border-radius: 0 20px 20px 0;
   }
 

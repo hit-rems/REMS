@@ -11,7 +11,6 @@ import {ElMessage, ElMessageBox} from "element-plus";
 // 从路由接收参数
 const route = useRoute()
 let id = parseInt(route.params.id);
-// let id = 2;
 
 const equipmentModel = ref({
   id: 0,
@@ -48,7 +47,6 @@ const title = ref('');
 
 // 获取指定id的设备信息
 const getEquipmentInfo = async () => {
-  // id = 1;
   let result = await equipmentQueryService(id);
   equipmentModel.value = result.data;
   // console.log(equipmentModel.value);
@@ -203,11 +201,6 @@ const isRowSelectable = (row) => {
 
 let myTable = ref(null);
 
-// const clearSelectedRows = () => {
-//   console.log(myTable.value);
-//   myTable.value.handleClearSelection();
-//   // myTable.clear();
-// }
 
 // Tabs切换前的回调函数
 // 如果当前页面存在未提交的预约选项则禁止Tabs切换
@@ -304,6 +297,4 @@ const beforeLeave = () => {
 .flex-row {
   display: flex;
 }
-
-
 </style>
