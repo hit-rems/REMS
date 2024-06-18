@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <span>科研设备分类</span>
+    <h1>科研设备分类</h1>
     <div class="extra">
       <el-button type="primary" @click="onClick">添加分类</el-button>
     </div>

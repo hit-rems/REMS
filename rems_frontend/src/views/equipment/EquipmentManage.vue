@@ -344,7 +344,7 @@ const showDialog = () => {
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>科研设备管理</span>
+        <h1>科研设备管理</h1>
         <div class="extra">
           <!--                    <el-button type="primary" @click="visibleDrawer = true">添加设备</el-button>-->
           <el-button type="primary" @click="showDialog();">批量添加设备

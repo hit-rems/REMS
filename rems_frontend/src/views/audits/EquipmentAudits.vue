@@ -237,7 +237,7 @@ watch(currentTab, () => {
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>设备预约审核</span>
+        <h1>设备预约审核</h1>
       </div>
     </template>
 

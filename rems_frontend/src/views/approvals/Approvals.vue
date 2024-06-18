@@ -100,7 +100,7 @@ watch (currentTab, () => {
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>个人预约详情</span>
+        <h1>个人预约详情</h1>
       </div>
     </template>
     <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">

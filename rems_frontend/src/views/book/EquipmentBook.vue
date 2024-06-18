@@ -2,7 +2,7 @@
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>科研设备预约</span>
+        <h1>科研设备预约</h1>
       </div>
     </template>
     <!-- 搜索表单 -->

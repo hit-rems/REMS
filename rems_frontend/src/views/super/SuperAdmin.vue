@@ -161,7 +161,7 @@ watch(currentTab, () => {
   <el-card class="page-container">
     <template #header>
       <div class="header">
-        <span>用户管理</span>
+        <h1>用户管理</h1>
       </div>
     </template>
 
