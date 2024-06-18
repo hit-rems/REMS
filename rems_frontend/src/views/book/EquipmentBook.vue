@@ -1,44 +1,52 @@
 <template>
-  <!-- 搜索表单 -->
-  <el-form inline>
-    <el-form-item label="设备类型：">
-      <el-select placeholder="请选择" v-model="type" style="width: 120px;">
-        <el-option v-for="c in categories" :key="c.name" :label="c.name" :value="c.name">
-        </el-option>
-      </el-select>
-    </el-form-item>
-
-    <el-form-item label="所属单位：">
-      <el-select placeholder="请选择" v-model="department" style="width: 120px;">
-        <el-option label="计算学部" value="计算学部"></el-option>
-        <el-option label="数学学院" value="数学学院"></el-option>
-        <el-option label="物理学院" value="物理学院"></el-option>
-      </el-select>
-    </el-form-item>
-
-    <el-form-item label="设备名称：">
-      <el-input v-model="name" placeholder="请输入设备名称"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="fetchCardsPageList">搜索</el-button>
-      <el-button @click="type = ''; name = ''; department=''">重置</el-button>
-    </el-form-item>
-  </el-form>
-  
-  <div class="equipment-book">
-    <el-row :gutter="30">
-      <el-col :span="4.8" v-for="(item, index) in cardsThisPage" :key="index" class="equipment-col">
-        <EquipmentCard :equipmentModel="item"/>
-      </el-col>
-    </el-row>
-
-    <template v-if="!cardsThisPage || cardsThisPage.length === 0" >
-      <el-empty description="没有数据"/>
+  <el-card class="page-container">
+    <template #header>
+      <div class="header">
+        <span>科研设备预约</span>
+      </div>
     </template>
+    <!-- 搜索表单 -->
+    <el-form inline>
+      <el-form-item label="设备类型：">
+        <el-select placeholder="请选择" v-model="type" style="width: 120px;">
+          <el-option v-for="c in categories" :key="c.name" :label="c.name" :value="c.name">
+          </el-option>
+        </el-select>
+      </el-form-item>
 
-    <Pager :pageNum="pageNum" :pageSize="pageSize" :total="total"
-           @size-change="onSizeChange" @current-change="onCurrentChange"/>
-  </div>
+      <el-form-item label="所属单位：">
+        <el-select placeholder="请选择" v-model="department" style="width: 120px;">
+          <el-option label="计算学部" value="计算学部"></el-option>
+          <el-option label="数学学院" value="数学学院"></el-option>
+          <el-option label="物理学院" value="物理学院"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="设备名称：">
+        <el-input v-model="name" placeholder="请输入设备名称"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="fetchCardsPageList">搜索</el-button>
+        <el-button @click="type = ''; name = ''; department=''">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <div class="equipment-book">
+      <el-row :gutter="30">
+        <el-col :span="4.8" v-for="(item, index) in cardsThisPage" :key="index" class="equipment-col">
+          <EquipmentCard :equipmentModel="item"/>
+        </el-col>
+      </el-row>
+
+      <template v-if="!cardsThisPage || cardsThisPage.length === 0" >
+        <el-empty description="没有数据"/>
+      </template>
+
+      <Pager :pageNum="pageNum" :pageSize="pageSize" :total="total"
+             @size-change="onSizeChange" @current-change="onCurrentChange"/>
+    </div>
+  </el-card>
+
 </template>
 
 <script setup>
@@ -109,7 +117,18 @@ const onCurrentChange = (num) => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.page-container {
+  min-height: 100%;
+  box-sizing: border-box;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
 .equipment-book {
   padding: 16px;
 }

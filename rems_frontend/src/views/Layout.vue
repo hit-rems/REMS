@@ -167,17 +167,17 @@ const collapseNavigator = () =>{
                     </el-menu-item>
                 </el-sub-menu>
             </el-menu>
+            <div class="collapse-btn" @click="collapseNavigator">
+              <el-icon>
+                <Fold />
+              </el-icon>
+            </div>
         </el-aside>
 
         <!-- 右侧主区域 -->
         <el-container>
             <!-- 头部区域 -->
             <el-header>
-                <div class="collapse-btn" @click="collapseNavigator">
-                  <el-icon>
-                    <Fold />
-                  </el-icon>
-                </div>
                 <div>
                     <p>欢迎来自 <strong>{{ userInfoStore.info ? userInfoStore.info.department : '' }}</strong> 的
                         <strong>{{userInfoStore.info.type}}</strong>：<strong>{{ userInfoStore.info ? userInfoStore.info.nickname : '' }}</strong></p>
@@ -216,6 +216,7 @@ const collapseNavigator = () =>{
     height: 98vh;
 
     .el-aside {
+        position: relative;
         margin-top: -10px;
         margin-left: -10px;
         margin-bottom: -10px;
@@ -241,6 +242,15 @@ const collapseNavigator = () =>{
         .el-menu-vertical-demo:not(.el-menu--collapse) {
           width: 190px;
         }
+
+        .collapse-btn {
+          position: absolute; /* 绝对定位 */
+          bottom: 20px; /* 距离底部10px */
+          right: 20px; /* 距离右侧10px */
+          font-size: 24px;
+          color: #ffffff;
+          padding-top: 6px;
+        }
     }
 
     .el-header {
@@ -248,13 +258,6 @@ const collapseNavigator = () =>{
         display: flex;
         align-items: center;
         justify-content: space-between;
-
-        .collapse-btn {
-          font-size: 24px;
-          margin-right: 10px;
-          color: #545c64;
-          padding-top: 6px;
-        }
 
         .el-dropdown__box {
             display: flex;

@@ -234,29 +234,50 @@ watch(currentTab, () => {
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
-    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
-  </Tabs>
-  <el-row type="flex" justify="space-between" align="bottom">
-    <el-col v-if="currentTab === '待审核'" :span="2">
-      <el-button type="primary" size="small" @click="BatchPasses(idList)">
-        批量通过
-      </el-button>
-    </el-col>
-    <el-col v-if="currentTab === '待审核'" :span="2">
-      <el-button type="primary" size="small" @click="BatchFailure(idList)">
-        批量拒绝
-      </el-button>
-    </el-col>
-    <el-col :span="currentTab === '待审核' ? 20 : 24">
-      <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
-             :on-current-change="onCurrentChange"/>
-    </el-col>
-  </el-row>
+  <el-card class="page-container">
+    <template #header>
+      <div class="header">
+        <span>设备预约审核</span>
+      </div>
+    </template>
+
+    <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
+      <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
+    </Tabs>
+    <el-row type="flex" justify="space-between" align="bottom">
+      <el-col v-if="currentTab === '待审核'" :span="2">
+        <el-button type="primary" size="small" @click="BatchPasses(idList)">
+          批量通过
+        </el-button>
+      </el-col>
+      <el-col v-if="currentTab === '待审核'" :span="2">
+        <el-button type="primary" size="small" @click="BatchFailure(idList)">
+          批量拒绝
+        </el-button>
+      </el-col>
+      <el-col :span="currentTab === '待审核' ? 20 : 24">
+        <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+               :on-current-change="onCurrentChange"/>
+      </el-col>
+    </el-row>
+  </el-card>
+
+
 </template>
 
 
 <style scoped lang="scss">
+.page-container {
+  min-height: 100%;
+  box-sizing: border-box;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
 .button-row {
   display: flex;
   align-items: center;

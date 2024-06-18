@@ -97,9 +97,29 @@ watch (currentTab, () => {
 
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
-    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
-  </Tabs>
-  <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
-         :on-current-change="onCurrentChange"/>
+  <el-card class="page-container">
+    <template #header>
+      <div class="header">
+        <span>个人预约详情</span>
+      </div>
+    </template>
+    <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
+      <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns"/>
+    </Tabs>
+    <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+           :on-current-change="onCurrentChange"/>
+  </el-card>
 </template>
+
+<style lang="scss" scoped>
+.page-container {
+    min-height: 100%;
+    box-sizing: border-box;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+</style>

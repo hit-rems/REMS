@@ -158,19 +158,38 @@ watch(currentTab, () => {
 </script>
 
 <template>
-  <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
-    <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
-  </Tabs>
-  <el-row type="flex" justify="space-between" align="bottom">
-    <el-col>
-      <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
-             :on-current-change="onCurrentChange"/>
-    </el-col>
-  </el-row>
+  <el-card class="page-container">
+    <template #header>
+      <div class="header">
+        <span>用户管理</span>
+      </div>
+    </template>
+
+    <Tabs :tabs="tabs" v-model="currentTab" :total="total" :eachTotal="eachTotal">
+      <Table :content="currentContent" :title.sync="title" @update:title="title = $event" :columns="columns" :show-selection-column="currentTab === '待审核'" @selection-change="handleTableSelectionChange"/>
+    </Tabs>
+    <el-row type="flex" justify="space-between" align="bottom">
+      <el-col>
+        <Pager :pageNum.sync="pageNum" :pageSize.sync="pageSize" :total="total" :on-size-change="onSizeChange"
+               :on-current-change="onCurrentChange"/>
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 
 
 <style scoped lang="scss">
+.page-container {
+  min-height: 100%;
+  box-sizing: border-box;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
 .button-row {
   display: flex;
   align-items: center;
