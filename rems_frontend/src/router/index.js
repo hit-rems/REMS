@@ -49,4 +49,32 @@ const router = createRouter({
     routes: routes
 })
 
+router.beforeEach((to, from, next) => {
+    const userHasPermission = checkUserPermission(to)
+
+    if (userHasPermission) {
+        // 如果有权限访问，则直接进入
+        next()
+    } else {
+        // 如果没有权限访问，则跳转到登录页面
+        next('/login')
+    }
+})
+
+function checkUserPermission(to) {
+    console.log(to)
+    const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
+    console.log(userInfo.info.type)
+    if (!userInfo) {
+        return false
+    }
+    if (userInfo.info.type === '管理员' && to.path === '/superadmin') {
+        return false
+    }
+    if (userInfo.info.type === '学生' && (to.path === '/superadmin' || to.path === '/audits' || to.path === '/equipment')) {
+        return false
+    }
+    return true
+}
+
 export default router
