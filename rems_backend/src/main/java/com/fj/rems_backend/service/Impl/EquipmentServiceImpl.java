@@ -73,9 +73,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         Integer userId = (Integer) user.get("id");
 
         //3.调用mapper
-        if (!map.containsKey("department")&&user.get("type").equals("管理员")){
+/*        if (!map.containsKey("department")&&user.get("type").equals("管理员")){
             map.put("department",user.get("department"));
-        }
+        }*/
         List<Equipment> as = equipmentMapper.pagelist(map,userId);
         //Page中提供了方法,可以获取PageHelper分页查询后 得到的总记录条数和当前页数据
         Page<Equipment> p = (Page<Equipment>) as;
