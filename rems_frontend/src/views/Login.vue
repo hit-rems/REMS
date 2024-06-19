@@ -167,7 +167,9 @@ let registerValid = true
             <!-- 注册表单 -->
             <el-form ref="registerForm" size="large" autocomplete="off" v-if="isRegister" :model="registerData" :rules="rules">
                 <el-form-item>
+                  <div style="width: 100%; text-align: center;">
                     <h1>注册</h1>
+                  </div>
                 </el-form-item>
                 <el-form-item prop="email">
                     <el-input :prefix-icon="Message" placeholder="请输入邮箱" v-model="registerData.email"></el-input>
@@ -217,7 +219,9 @@ let registerValid = true
             <!-- 登录表单 -->
             <el-form ref="loginForm" size="large" autocomplete="off" v-else :model="loginData" :rules="rules">
                 <el-form-item>
+                  <div style="width: 100%; text-align: center;">
                     <h1>登录</h1>
+                  </div>
                 </el-form-item>
                 <el-form-item prop="username">
                     <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="loginData.username"></el-input>

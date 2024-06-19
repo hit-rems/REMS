@@ -48,12 +48,15 @@ const forgetPassword = async () => {
     <el-col :span="6" :offset="3" class="form">
       <el-form ref='forgetPasswordForm' :model="registerData" :rules="rules">
         <el-form-item>
-          <h1>忘记密码</h1>
+          <div style="width: 100%; text-align: center;">
+            <h1>忘记密码</h1>
+          </div>
         </el-form-item>
         <el-form-item prop="username">
           <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
         </el-form-item>
-        <el-form-item>
+
+        <el-form-item style="margin-top: 40px;">
           <el-button class="button" type="primary" auto-insert-space @click="forgetPassword">
             找回密码
           </el-button>
