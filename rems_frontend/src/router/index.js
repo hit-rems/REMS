@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
 })
 
 function checkUserPermission(to) {
-    if (to.path === '/login') {
+    if (to.path === '/' || to.path === '/login') {
         return true
     }
     console.log(to)
