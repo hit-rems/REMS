@@ -61,6 +61,9 @@ router.beforeEach((to, from, next) => {
 })
 
 function checkUserPermission(to) {
+    if (to.path === '/login') {
+        return true
+    }
     const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
     if (!userInfo) {
         return false
