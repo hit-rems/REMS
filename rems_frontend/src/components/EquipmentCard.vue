@@ -57,7 +57,7 @@ const handleCardClick = (id) => {
 .equipment-card {
   max-width: 300px;
   width: 220px;
-  height: 340px;
+  height: 320px;
   margin-bottom: 10px;
   position: relative;
   cursor: pointer;
@@ -67,7 +67,7 @@ const handleCardClick = (id) => {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 150px;
+  height: 140px;
 }
 
 :deep(.descriptions .el-descriptions__title) {
