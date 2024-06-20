@@ -56,7 +56,7 @@ const handleCardClick = (id) => {
 
 .equipment-card {
   max-width: 300px;
-  width: 240px;
+  width: 220px;
   height: 340px;
   margin-bottom: 10px;
   position: relative;
