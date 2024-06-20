@@ -51,7 +51,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const userHasPermission = checkUserPermission(to)
-
     if (userHasPermission) {
         // 如果有权限访问，则直接进入
         next()
@@ -62,6 +61,9 @@ router.beforeEach((to, from, next) => {
 })
 
 function checkUserPermission(to) {
+    if (to.path === '/login') {
+        return true
+    }
     console.log(to)
     const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
     console.log(userInfo.info.type)
