@@ -144,7 +144,7 @@ const collapseNavigator = () =>{
 
                 <el-menu-item index="/superadmin" v-if='userInfoStore.info.type==="超级管理员"'>
                   <el-icon><Odometer /></el-icon>
-                  <span>用户管理</span>
+                  <span>管理员权限审批</span>
                 </el-menu-item>
 
                 <el-sub-menu >
