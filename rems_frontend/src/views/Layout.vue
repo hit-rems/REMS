@@ -26,15 +26,15 @@ import { computed } from 'vue'
 const tokenStore = useTokenStore();
 const userInfoStore = useUserInfoStore();
 
-// 调用函数,获取用户详细信息
-const getUserInfo = async()=>{
-    //调用接口
-    let result = await userInfoService();
-    //数据存储到pinia中
-    userInfoStore.setInfo(result.data);
-}
-
-getUserInfo();
+// 调用函数,获取用户详细信息const getUserInfo = async()=>{
+//     //调用接口
+//     let result = await userInfoService();
+//     //数据存储到pinia中
+//     userInfoStore.setInfo(result.data);
+// }
+//
+// getUserInfo();
+//
 // console.log(userInfoStore.info)
 
 //条目被点击后,调用的函数

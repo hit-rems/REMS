@@ -72,7 +72,7 @@ const rules = {
 }
 
 //调用后台接口,完成注册
-import { userRegisterService, userLoginService} from '@/api/user.js'
+import {userRegisterService, userLoginService, userInfoService} from '@/api/user.js'
 const register = async () => {
   const form = registerForm.value
   form.validate(async (valid) => {
@@ -94,9 +94,11 @@ const register = async () => {
 //表单数据校验
 //登录函数
 import {useTokenStore} from '@/stores/token.js'
+import useUserInfoStore from '@/stores/userInfo.js'
 import {useRouter} from 'vue-router'
 const router = useRouter()
 const tokenStore = useTokenStore();
+const userInfoStore = useUserInfoStore();
 const login = async () => {
   const form = loginForm.value
   form.validate(async (valid) => {
@@ -109,6 +111,10 @@ const login = async () => {
     //把得到的token存储到pinia中
     tokenStore.setToken(result.data)
     //跳转到首页 路由完成跳转
+    //调用接口
+    let result1 = await userInfoService();
+    //数据存储到pinia中
+    userInfoStore.setInfo(result1.data);
     router.push('/')
     if (rememberMe.value) {
       localStorage.setItem('username', loginData.value.username)
