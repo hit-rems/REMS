@@ -64,8 +64,17 @@ function checkUserPermission(to) {
     if (to.path === '/login') {
         return true
     }
-    const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
+    // 判断是否存在const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
+    try {
+        var userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
+    }catch (e) {
+        return false
+    }
     if (!userInfo) {
+        return false
+    }
+    //判断userinfo是否有info属性
+    if (!userInfo.info||!userInfo.info.type) {
         return false
     }
     if (userInfo.info.type === '管理员' && to.path === '/superadmin') {
