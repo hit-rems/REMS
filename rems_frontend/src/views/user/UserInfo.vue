@@ -20,9 +20,9 @@ const rules = {
   ]
 }
 
-const userInfoForm = ref([
+const userInfoForm = ref(
   { nickname: '', department: '' }
-])
+)
 
 // 修改个人信息
 let userInfoValid = false
@@ -30,22 +30,22 @@ const updateUserInfo = async () => {
   const form = userInfoForm.value
   form.validate(async (valid) => {
     userInfoValid = valid
-  })
-  if(userInfoValid){
-    let params = {
-      nickname: userInfo.value.nickname,
-      department: userInfo.value.department
+    if(userInfoValid){
+      let params = {
+        nickname: userInfo.value.nickname,
+        department: userInfo.value.department
+      }
+      // 调用接口
+      let result = await userInfoUpdateService(params);
+      ElMessage.success(result.message ? result.message : '修改成功');
+      // 修改 pinia 中的个人信息
+      //创建一个新的对象，避免直接修改userInfo.value
+      userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
+      // userInfoStore.setInfo(userInfo.value)
+    } else {
+      ElMessage.error('请确保所有字段都填写正确!')
     }
-    // 调用接口
-    let result = await userInfoUpdateService(params);
-    ElMessage.success(result.message ? result.message : '修改成功');
-    // 修改 pinia 中的个人信息
-    //创建一个新的对象，避免直接修改userInfo.value
-    userInfoStore.setInfo(JSON.parse(JSON.stringify(userInfo.value)))
-    // userInfoStore.setInfo(userInfo.value)
-  } else {
-    ElMessage.error('请确保所有字段都填写正确!')
-  }
+  })
 }
 
 // 选择的文件
