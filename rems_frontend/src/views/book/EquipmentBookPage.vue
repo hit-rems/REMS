@@ -162,7 +162,10 @@ const bookAdd = async () => {
     timelist: bookArray,
     reason: reason.value,
   })
-  console.log(params.value);
+  if (selectedTimeCount === 0) {
+    ElMessage({type: 'warning', message: '请选择预约时间段'});
+    return;
+  }
 
   ElMessageBox.confirm(
       '请确认预约（共' + selectedTimeCount + '个时间段）',
