@@ -25,4 +25,7 @@ public interface EquipmentMapper {
 
     @Update("update equipment set type=#{nameNew} where type=#{nameOld}")
     void updateType(String nameOld, String nameNew);
+
+    @Select("select count(*) from book where equipment_id=#{id}")
+    int findBookEquipmentNo(Integer id);
 }

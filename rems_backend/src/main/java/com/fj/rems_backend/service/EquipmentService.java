@@ -21,4 +21,6 @@ public interface EquipmentService {
 
     void update(Map<String,Object> map);
 
+    int findBookEquipmentNo(Integer id);
+
 }

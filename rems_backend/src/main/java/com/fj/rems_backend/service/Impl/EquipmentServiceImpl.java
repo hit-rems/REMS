@@ -127,4 +127,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentMapper.update(map);
     }
 
+    @Override
+    public int findBookEquipmentNo(Integer id) {
+        return equipmentMapper.findBookEquipmentNo(id);
+    }
+
 }
