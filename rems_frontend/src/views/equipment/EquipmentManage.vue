@@ -305,7 +305,7 @@ const formatDate = (dateString) => {
 }
 
 const columns = [
-  {label: '设备号', width: '80', type: 'index', align: 'center'},
+  {label: '设备号', width: '80', prop: 'id', align: 'center'},
   {label: '设备名称', width: '250', prop: 'name', align: 'center'},
   {label: '设备类型', width: '150', prop: 'type', align: 'center'},
   {label: '品牌', width: '250', prop: 'brand', align: 'center'},
