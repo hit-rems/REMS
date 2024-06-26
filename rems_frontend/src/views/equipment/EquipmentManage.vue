@@ -85,6 +85,7 @@ const equipmentPageList = async () => {
     pageSize: pageSize.value,
     type: type.value ? type.value : null,
     discard: discard.value ? discard.value : null,
+    department: adminDepartment
   }
 
   let result = await equipmentListService(params);
