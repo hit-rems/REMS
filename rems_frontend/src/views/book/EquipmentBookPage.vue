@@ -180,6 +180,7 @@ const bookAdd = async () => {
     ElMessage({type: 'success', message: '预约成功'});
     bookArray.fill(false);
     reason.value = '';
+    selectedTimeCount = 0;
     getEquipmentBookStatus();
   })
     .catch(() => {
