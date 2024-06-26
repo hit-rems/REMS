@@ -73,6 +73,10 @@ public class EquipmentController {
     //设备删除根据id
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Integer id){
+        //判断是否有预约
+        if (equipmentService.findBookEquipmentNo(id)>0){
+            return Result.error("设备已经被预约，不能删除");
+        }
         equipmentService.delete(id);
         return Result.success();
     }
