@@ -37,4 +37,7 @@ public interface UserMapper {
 
     @Insert("insert into authorization(username,nickname,department,email,status,create_time) values(#{username},#{nickname},#{department},#{email},'待审核',now())")
     void adminActive(User user);
+
+    @Select("select count(*) from authorization where username=#{username} and status!='未通过'")
+    int adminFind(String username);
 }

@@ -81,6 +81,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void adminactive(String username) {
         User user = userMapper.findByUserName(username);
+        //判断是否发起请求过
+        if (userMapper.adminFind(username)>0){
+            return;
+        }
         userMapper.adminActive(user);
     }
 }

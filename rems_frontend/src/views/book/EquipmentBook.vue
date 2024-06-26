@@ -83,7 +83,8 @@ const fetchCardsPageList = async () => {
   try {
     let params = {
       pageNum: pageNum.value,
-      pageSize: pageSize.value      
+      pageSize: pageSize.value,
+      discard: '正常'
     }
     if (type.value) {
       params.type = type.value;
