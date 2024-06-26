@@ -71,9 +71,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         //获取当前用户的id
         Map<String,Object> user = ThreadLocalUtil.get();
         Integer userId = (Integer) user.get("id");
-
+/*
         //3.调用mapper
-/*        if (!map.containsKey("department")&&user.get("type").equals("管理员")){
+        if (!map.containsKey("department")&&user.get("type").equals("管理员")){
             map.put("department",user.get("department"));
         }*/
         List<Equipment> as = equipmentMapper.pagelist(map,userId);
