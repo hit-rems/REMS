@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
 })
 
 function checkUserPermission(to) {
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path === '/forgetPassword') {
         return true
     }
     // 判断是否存在const userInfo = JSON.parse(localStorage.getItem('pinia-userInfo'))
